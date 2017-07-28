@@ -216,7 +216,7 @@ declare namespace basic {
 declare namespace input {
 
     /**
-     * Do something when a button (``A``, ``B`` or both ``A+B``) is pressed
+     * Do something when a button (A, B or both A+B) is pushed down and released again.
      * @param button the button that needs to be pressed
      * @param body code to run when event is raised
      */
@@ -237,7 +237,7 @@ declare namespace input {
     function onGesture(gesture: Gesture, body: () => void): void;
 
     /**
-     * Do something when a pin is pressed.
+     * Do something when a pin is touched and released again (while also touching the GND pin).
      * @param name the pin that needs to be pressed, eg: TouchPin.P0
      * @param body the code to run when the pin is pressed
      */
@@ -391,6 +391,7 @@ declare namespace control {
      * @param mode optional definition of how the event should be processed after construction (default is CREATE_AND_FIRE).
      */
     //% weight=21 blockGap=12 blockId="control_raise_event" block="raise event|from source %src=control_event_source_id|with value %value=control_event_value_id" blockExternalInputs=1
+    //% help=control/raise-event
     //% mode.defl=1 shim=control::raiseEvent
     function raiseEvent(src: number, value: number, mode?: EventCreationMode): void;
 
@@ -398,6 +399,7 @@ declare namespace control {
      * Raises an event in the event bus.
      */
     //% weight=20 blockGap=8 blockId="control_on_event" block="on event|from %src=control_event_source_id|with value %value=control_event_value_id"
+    //% help=control/on-event
     //% blockExternalInputs=1 shim=control::onEvent
     function onEvent(src: number, value: number, handler: () => void): void;
 
@@ -405,6 +407,7 @@ declare namespace control {
      * Gets the value of the last event executed on the bus
      */
     //% blockId=control_event_value" block="event value"
+    //% help=control/event-value
     //% weight=18 shim=control::eventValue
     function eventValue(): number;
 
@@ -412,6 +415,7 @@ declare namespace control {
      * Gets the timestamp of the last event executed on the bus
      */
     //% blockId=control_event_timestamp" block="event timestamp"
+    //% help=control/event-timestamp
     //% weight=19 blockGap=8 shim=control::eventTimestamp
     function eventTimestamp(): number;
 
@@ -604,6 +608,7 @@ declare namespace pins {
      */
     //% blockId="pins_pulse_in" block="pulse in (µs)|pin %name|pulsed %value"
     //% weight=20 advanced=true
+    //% help=pins/pulse-in
     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
     //% name.fieldOptions.tooltips="false" name.fieldOptions.width="300" maxDuration.defl=2000000 shim=pins::pulseIn
     function pulseIn(name: DigitalPin, value: PulseValue, maxDuration?: number): number;
@@ -637,7 +642,7 @@ declare namespace pins {
      * @param name pin to modulate pitch from
      */
     //% blockId=device_analog_set_pitch_pin block="analog set pitch pin %name"
-    //% help=pins/analog-set-pitch weight=3 advanced=true
+    //% help=pins/analog-set-pitch-pin weight=3 advanced=true
     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
     //% name.fieldOptions.tooltips="false" shim=pins::analogSetPitchPin
     function analogSetPitchPin(name: AnalogPin): void;
@@ -768,13 +773,15 @@ declare namespace serial {
     /**
      * Sends a buffer through Serial connection
      */
+    //% blockId=serial_writebuffer block="serial|write buffer %buffer"
     //% help=serial/write-buffer advanced=true weight=6 shim=serial::writeBuffer
     function writeBuffer(buffer: Buffer): void;
 
     /**
-     * Reads multiple characters from the rxBuff and fills a user buffer.
+     * Reads multiple characters from the receive buffer and fills a user buffer.
      * @param length default buffer length, eg: 64
      */
+    //% blockId=serial_readbuffer block="serial|read buffer %length"
     //% help=serial/read-buffer advanced=true weight=5 shim=serial::readBuffer
     function readBuffer(length: number): Buffer;
 

@@ -149,21 +149,21 @@ enum IconNames {
 }
 
 enum ArrowNames {
-    //% blockIdentity=images.arrowNumber
+    //% blockIdentity=images.arrowNumber block="North"
     North = 0,
-    //% blockIdentity=images.arrowNumber
+    //% blockIdentity=images.arrowNumber block="North East"
     NorthEast,
-    //% blockIdentity=images.arrowNumber
+    //% blockIdentity=images.arrowNumber block="East"
     East,
-    //% blockIdentity=images.arrowNumber
+    //% blockIdentity=images.arrowNumber block="South East"
     SouthEast,
-    //% blockIdentity=images.arrowNumber
+    //% blockIdentity=images.arrowNumber block="South"
     South,
-    //% blockIdentity=images.arrowNumber 
+    //% blockIdentity=images.arrowNumber block="South West"
     SouthWest,
-    //% blockIdentity=images.arrowNumber
+    //% blockIdentity=images.arrowNumber block="West"
     West,
-    //% blockIdentity=images.arrowNumber
+    //% blockIdentity=images.arrowNumber block="North West"
     NorthWest,
 }
 
@@ -208,6 +208,7 @@ namespace basic {
 namespace images {
 
     //% weight=50 blockGap=8
+    //% help=images/arrow-image
     //% blockId=builtin_arrow_image block="arrow image %i=device_arrow"
     export function arrowImage(i: ArrowNames): Image {
         switch (i) {
@@ -271,6 +272,7 @@ namespace images {
     }
 
     //% weight=50 blockGap=8
+    //% help=images/icon-image
     //% blockId=builtin_image block="icon image %i"
     export function iconImage(i: IconNames): Image {
         switch (i) {
@@ -532,6 +534,7 @@ namespace images {
     }
 
     //% weight=50 blockGap=8
+    //% help=images/arrow-number
     //% blockId=device_arrow block="%arrow"
     //% shim=TD_ID
     export function arrowNumber(arrow: ArrowNames): number {
