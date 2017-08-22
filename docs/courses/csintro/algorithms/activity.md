@@ -100,22 +100,21 @@ Now we can use our LED lights to display different images depending on what butt
 	
 ```blocks
 input.onButtonPressed(Button.A, () => {
-   basic.showLeds(`
-       . . . . .
-       . . . . .
-       . . . . .
-       . . . . .
-       . . . . .
-       `)
+    basic.showLeds(`. . . . .
+    . . . . .
+    . . . . .
+    . . . . .
+    . . . . .
+    `)
 })
 input.onButtonPressed(Button.B, () => {
-   basic.showLeds(`
-       . . . . .
-       . . . . .
-       . . . . .
-       . . . . .
-       . . . . .
-       `)
+    basic.showLeds(`
+    . . . . .
+    . . . . .
+    . . . . .
+    . . . . .
+    . . . . .
+    `)
 })
 ```
 * Click on the individual little boxes in the ‘show leds’ block that is in the ‘on button A pressed’ event handler to create the image of a happy face.
@@ -123,22 +122,22 @@ input.onButtonPressed(Button.B, () => {
 
 ```blocks
 input.onButtonPressed(Button.A, () => {
-   basic.showLeds(`
-       . . . . .
-       . # . # .
-       . . . . .
-       # . . . #
-       . # # # .
-       `)
+   basic.showLeds(`
+       . . . . .
+       . # . # .
+       . . . . .
+       # . . . #
+       . # # # .
+       `)
 })
 input.onButtonPressed(Button.B, () => {
-   basic.showLeds(`
-       . . . . .
-       . # . # .
-       . . . . .
-       . # # # .
-       # . . . #
-       `)
+   basic.showLeds(`
+       . . . . .
+       . # . # .
+       . . . . .
+       . # # # .
+       # . . . #
+       `)
 })
 ```
 
@@ -198,7 +197,7 @@ Notes
 
 Clean up your coding workspace before you do a final save! What does this mean?
 
-* It means that only the code and blocks that you are using in your program are still in the workspace.  
+* It means that only the code and blocks that you are using in your program are still in the workspace.  
 * Remove (delete) any other blocks that you may have dragged into the coding workspace as you were experimenting and building your program.
 	
 ## Save and download
@@ -209,23 +208,23 @@ Here is the complete program:
 ```blocks
 // Display a happy face when button A is pressed.
 input.onButtonPressed(Button.A, () => {
-   basic.showLeds(`
-       . . . . .
-       . # . # .
-       . . . . .
-       # . . . #
-       . # # # .
-       `)
+   basic.showLeds(`
+       . . . . .
+       . # . # .
+       . . . . .
+       # . . . #
+       . # # # .
+       `)
 })
 // Display a sad face when button B is pressed.
 input.onButtonPressed(Button.B, () => {
-   basic.showLeds(`
-       . . . . .
-       . # . # .
-       . . . . .
-       . # # # .
-       # . . . #
-       `)
+   basic.showLeds(`
+       . . . . .
+       . # . # .
+       . . . . .
+       . # # # .
+       # . . . #
+       `)
 })
 basic.clearScreen()
 ```
