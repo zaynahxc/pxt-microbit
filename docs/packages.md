@@ -77,6 +77,10 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
     "name": "Pimoroni Envirobit",
     "url": "pkg/pimoroni/pxt-envirobit",
     "cardType": "package"
+}, {
+    "name": "Makerbit",
+    "url": "pkg/1010Technologies/pxt-makerbit",
+    "cardType": "package"
 }]
 ```
 ## Sensing & Individual Components
