@@ -61,5 +61,6 @@
         "uk",
         "zh-CN",
         "zh-TW"
-    ]
+    ],
+    "newEditorLink" :  "https://makecode.microbit.org/beta"
 }
