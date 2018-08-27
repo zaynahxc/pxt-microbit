@@ -427,7 +427,7 @@ namespace pxt.editor {
         if (canHID())
             pxt.commands.deployCoreAsync = (r: pxtc.CompileResult, d: pxt.commands.DeployOptions): Promise<void> => {
                 return deployCoreAsync(r)
-                    .timeout(18000)
+                    .timeout(20000)
                     .catch((e) => {
                         return previousDapWrapper.reconnectAsync(true)
                             .catch((e) => {
