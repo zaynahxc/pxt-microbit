@@ -3,7 +3,7 @@
 ## Introduction @unplugged
 
 Learn sign language by playing a game of charage with the @boardname! In this game,
-the @boardname@ is help on the forehead of the player and other players have to sign the letter displayed on the screen. Tilting forward (screen down) earns a point, tilting backward skips the letter, game ends after 30 seconds.
+the @boardname@ is help on the forehead of the player and other players have to mimic the drawing displayed on the screen. Tilting forward (screen down) earns a point, tilting backward skips the letter, game ends after 30 seconds.
 
 ## Step 1 @fullscreen
 
@@ -16,7 +16,7 @@ input.onGesture(Gesture.LogoUp, function () {
 
 ## Step 2 @fullscreen
 
-Make a new variable **guess** and assign it to a ``||math:pick random||`` block to generate a number.
+Make a new variable ``||variables:guess||`` and assign it to a ``||math:pick random||`` block to generate a number.
 
 ```blocks
 let guess = 0
@@ -64,3 +64,7 @@ Add a ``||game:start countdown||`` in ``||basic:on start||`` to limit the game t
 ```blocks
 game.startCountdown(10000)
 ```
+
+## Step 7 @fullscreen
+
+Include the range in random and keep add other drawings to your game!
