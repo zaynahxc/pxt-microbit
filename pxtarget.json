@@ -11,7 +11,8 @@
         "libs/devices",
         "libs/bluetooth",
         "libs/servo",
-        "libs/radio-broadcast"
+        "libs/radio-broadcast",
+        "libs/light"
     ],
     "cloud": {
         "workspace": false,

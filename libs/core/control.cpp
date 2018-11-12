@@ -224,6 +224,15 @@ namespace control {
     }
 
     /**
+    * Blocks the calling thread until the specified event is raised.
+    */
+    //% help=control/wait-for-event async
+    //% blockId=control_wait_for_event block="wait for event|from %src|with value %value"
+    void waitForEvent(int src, int value) {
+        pxt::waitForEvent(src, value);
+    }
+
+    /**
      * Resets the BBC micro:bit.
      */
     //% weight=30 async help=control/reset blockGap=8
@@ -302,6 +311,24 @@ namespace control {
     int deviceSerialNumber() {
         return microbit_serial_number();
     }
+
+    /**
+    * Allocates the next user notification event
+    */
+    //% help=control/allocate-notify-event
+    int allocateNotifyEvent() {
+        return ::allocateNotifyEvent();
+    }
+
+    /**
+    * Gets the number of milliseconds elapsed since power on.
+    */
+    //% help=control/millis weight=50
+    //% blockId=control_running_time block="millis (ms)"
+    int millis() {
+        return current_time_ms();
+    }
+
 
     /**
     * Informs simulator/runtime of a MIDI message

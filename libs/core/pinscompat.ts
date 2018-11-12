@@ -9,6 +9,11 @@ const enum PinEvent {
     Fall = DAL.MICROBIT_PIN_EVT_FALL,  // DEVICE_PIN_EVT_FALL
 }
 
+declare const enum DAL {
+    DEVICE_ID_NOTIFY = DAL.MICROBIT_ID_NOTIFY,
+    DEVICE_ID_NOTIFY_ONE = DAL.MICROBIT_ID_NOTIFY_ONE
+}
+
 //% noRefCounting fixedInstances
 interface DigitalInOutPin {
     digitalRead(): boolean;

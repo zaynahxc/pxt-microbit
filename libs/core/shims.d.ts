@@ -371,6 +371,13 @@ declare namespace control {
     function inBackground(a: () => void): void;
 
     /**
+     * Blocks the calling thread until the specified event is raised.
+     */
+    //% help=control/wait-for-event async
+    //% blockId=control_wait_for_event block="wait for event|from %src|with value %value" shim=control::waitForEvent
+    function waitForEvent(src: int32, value: int32): void;
+
+    /**
      * Resets the BBC micro:bit.
      */
     //% weight=30 async help=control/reset blockGap=8
@@ -433,6 +440,19 @@ declare namespace control {
     //% blockId="control_device_serial_number" block="device serial number" weight=9
     //% advanced=true shim=control::deviceSerialNumber
     function deviceSerialNumber(): int32;
+
+    /**
+     * Allocates the next user notification event
+     */
+    //% help=control/allocate-notify-event shim=control::allocateNotifyEvent
+    function allocateNotifyEvent(): int32;
+
+    /**
+     * Gets the number of milliseconds elapsed since power on.
+     */
+    //% help=control/millis weight=50
+    //% blockId=control_running_time block="millis (ms)" shim=control::millis
+    function millis(): int32;
 
     /**
      * Informs simulator/runtime of a MIDI message
