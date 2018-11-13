@@ -1,0 +1,11 @@
+{
+    "name": "radio-firefly",
+    "files": [
+        "pxt.json",
+        "radio-firefly.ts"
+    ],
+    "dependencies": {
+        "core": "file:../core",
+        "radio": "file:../radio"
+    }
+}
