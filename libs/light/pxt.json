@@ -2,6 +2,7 @@
     "additionalFilePath": "../../node_modules/pxt-common-packages/libs/light",
     "public": true,
     "dependencies": {
-        "core": "file:../core"
+        "core": "file:../core",
+        "color": "file:../color"
     }
 }
