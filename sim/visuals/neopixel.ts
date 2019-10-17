@@ -128,7 +128,7 @@ namespace pxsim.visuals {
                     this.canvas.appendChild(pixel.el);
                 }
                 let color = colors[i];
-                pixel.setRgb(color);
+                pixel.setRgb(truncate(color));
             }
 
             //show the canvas if it's hidden
@@ -143,6 +143,10 @@ namespace pxsim.visuals {
                 let scalar = newH / oldH;
                 let newW = oldW * scalar;
                 this.updateViewBox(-newW / 2, oldY, newW, newH);
+            }
+
+            function truncate(rgbw: RGBW): [number, number, number] {
+                return [rgbw[0], rgbw[1], rgbw[2]]
             }
         }
 
