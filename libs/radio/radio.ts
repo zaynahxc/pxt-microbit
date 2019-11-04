@@ -441,4 +441,14 @@ namespace radio {
                 return undefined;
         }
     }
+
+    /**
+     * Run code when a packet was dropped because the queue was full.
+     * @param handler 
+     */
+    //% blockId=radioondroppedpacket block="on radio dropped packet"
+    //% advanced=true
+    export function onDroppedPacket(handler: () => void) {
+        control.onEvent(DAL.MICROBIT_ID_RADIO, DAL.MICROBIT_RADIO_EVT_PACKET_DROPPED, handler);
+    }
 }

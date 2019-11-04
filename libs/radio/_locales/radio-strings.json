@@ -5,6 +5,7 @@
   "radio._packetProperty|block": "%note",
   "radio.onDataPacketReceived|block": "on radio received",
   "radio.onDataReceived|block": "radio on data received",
+  "radio.onDroppedPacket|block": "on radio dropped packet",
   "radio.onReceivedBufferDeprecated|block": "on radio received",
   "radio.onReceivedBuffer|block": "on radio received",
   "radio.onReceivedNumberDeprecated|block": "on radio received",

@@ -21,8 +21,10 @@ namespace pxsim {
         queue(packet: PacketBuffer) {
             if (this.datagram.length < 4) {
                 this.datagram.push(packet);
+                (<DalBoard>runtime.board).bus.queue(DAL.MICROBIT_ID_RADIO, DAL.MICROBIT_RADIO_EVT_DATAGRAM);
+            } else {
+                (<DalBoard>runtime.board).bus.queue(DAL.MICROBIT_ID_RADIO, DAL.MICROBIT_RADIO_EVT_PACKET_DROPPED);
             }
-            (<DalBoard>runtime.board).bus.queue(DAL.MICROBIT_ID_RADIO, DAL.MICROBIT_RADIO_EVT_DATAGRAM);
         }
 
         send(payload: SimulatorRadioPacketPayload) {
