@@ -21,7 +21,14 @@
                     "enabled": 0
                 }
             }
-        }
-    },
-    "installedVersion": "rlfgis"
+        },
+        "userConfigs": [
+            {
+                "description": "(Radio) Large radio packet queue.",
+                "config": {
+                    "MICROBIT_RADIO_MAXIMUM_RX_BUFFERS": 8
+                }
+            }
+        ]
+    }
 }
