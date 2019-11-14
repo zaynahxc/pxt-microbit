@@ -955,7 +955,7 @@ function webUsbPairDialogAsync(confirmAsync: (options: any) => Promise<number>):
     }
 
     return confirmAsync({
-        header: lf("Pair device for one-click downloads"),
+        header: lf("Pair with USB"),
         jsx,
         hasCloseIcon: true,
         agreeLbl: lf("Pair device"),
@@ -1031,8 +1031,8 @@ function showUploadInstructionsAsync(fn: string, url: string, confirmAsync: (opt
         buttons.push({
             label: lf("Pair device"),
             icon: "usb",
-            class: `secondary`,
-            onClick: () => projectView.pair()
+            className: `secondary`,
+            onclick: () => projectView.pair()
         })
     }
 
@@ -1040,7 +1040,7 @@ function showUploadInstructionsAsync(fn: string, url: string, confirmAsync: (opt
         buttons.push({
             label: userDownload ? lf("Download") : fn,
             icon: "download",
-            class: `${userDownload ? "primary" : "lightgrey"}`,
+            //class: `${userDownload ? "primary" : "lightgrey"}`, old behavior this is ignored
             url,
             fileName: fn
         });
