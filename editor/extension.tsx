@@ -791,9 +791,10 @@ function renameField(dom: Element, blockType: string, oldName: string, newName: 
         });
 }
 
+let projectView: pxt.editor.IProjectView;
 pxt.editor.initExtensionsAsync = function (opts: pxt.editor.ExtensionOptions): Promise<pxt.editor.ExtensionResult> {
     pxt.debug('loading microbit target extensions...')
-
+    projectView = opts.projectView;
     function cantImportAsync(project: pxt.editor.IProjectView) {
         // this feature is support in v0 only
         return project.showModalDialogAsync({
@@ -1025,6 +1026,15 @@ function showUploadInstructionsAsync(fn: string, url: string, confirmAsync: (opt
         </div> : undefined;
 
     const buttons: any[] = [];
+
+    if (projectView.canPair()) {
+        buttons.push({
+            label: lf("Pair device"),
+            icon: "usb",
+            class: `secondary`,
+            onClick: () => projectView.pair()
+        })
+    }
 
     if (downloadAgain) {
         buttons.push({
