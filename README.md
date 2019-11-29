@@ -17,9 +17,26 @@ Please add an issue if you discover an (unreported) bug.
 
 Authoring and testing of new extensions can be done directly from the web editor. See [our documentation](https://makecode.com/blog/github-packages) on how to get started. If you want to run the editor locally, keep reading.
 
-## Local server
+## Local server setup
 
 The local server lets you to run the editor and serve the documentation from your own computer. It is meant for a single developer used and not designed to serve the editor to a large amount of users.
+
+1. Install [Node.js](https://nodejs.org/) 8.9.4 or higher.
+2. Clone this repository.
+```
+git clone https://github.com/microsoft/pxt-microbit
+cd pxt-microbit
+```
+3. Install the PXT command line (add `sudo` for Mac/Linux shells).
+```
+npm install -g pxt
+```
+4. Install the pxt-microbit dependencies.
+```
+npm install
+```
+
+Go to the **Running** section.
 
 ### Developer Setup
 
@@ -63,8 +80,8 @@ This step is only required if you intend to make changes to pxt and/or
 pxt-common-packages repos. If all you want is serve a local Makecode, you can skip
 this step.
 ```
-npm link ../pxt
-npm link ../pxt-common-packages
+pxt link ../pxt
+pxt link ../pxt-common-packages
 ```
 Note the above command assumes the folder structure of   
 ```
@@ -100,6 +117,23 @@ Sometimes, your built folder might be in a bad state, clean it and try again.
 ```
 pxt clean
 ```
+
+
+### Building with CODAL locally
+
+The following commands force a local build using CODAL.
+
+```
+pxt buildtarget --local
+```
+
+To disable docker, run
+
+```
+export PXT_NODOCKER=1
+```
+
+If you are also modifiying CODAL, consider running ``pxt clean`` to ensure the proper branch is picked up.
 
 ### Updates
 
