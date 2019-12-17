@@ -38,6 +38,11 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
   "cardType": "package"
 },
 {
+  "name": "4tronix MiniBit",
+  "url":"/pkg/4tronix/MiniBit",
+  "cardType": "package"
+},
+{
   "name": "DF Robot Maqueen",
   "url":"/pkg/DFRobot/pxt-maqueen",
   "cardType": "package"
