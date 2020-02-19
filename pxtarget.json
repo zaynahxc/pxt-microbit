@@ -477,5 +477,10 @@
             }
         }
     },
+    "unsupportedBrowsers": [
+        {
+            "id": "ie"
+        }
+    ],
     "disableDocsUpload": true
 }
