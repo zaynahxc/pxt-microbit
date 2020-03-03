@@ -468,8 +468,7 @@
         "importExtensionFiles": true,
         "githubEditor": true,
         "openProjectNewTab": true,
-        "python": true,
-        "pythonToolbox": true
+        "python": true
     },
     "queryVariants": {
         "hidemenu": {
