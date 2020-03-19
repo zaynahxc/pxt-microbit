@@ -8,6 +8,11 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
 
 ```codecard
 [{
+  "name": "MeArm",
+  "url":"/pkg/MeArm/pxt-microbit-mearm",
+  "cardType": "package"
+},
+{
   "name": "Strawbees Robotic Inventions Kit",
   "url":"/pkg/strawbees/pxt-robotic-inventions",
   "cardType": "package"
