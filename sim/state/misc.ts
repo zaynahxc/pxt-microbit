@@ -98,6 +98,13 @@ namespace pxsim.control {
     export function eventValue() {
         return board().bus.getLastEventValue()
     }
+
+    export function nextHandlerToBackground() {
+        board().bus.setBackgroundHandlerFlag();
+    }
+    export function removeFromBackground(handler: RefAction) {
+        board().bus.removeBackgroundHandler(handler);
+    }
 }
 
 namespace pxsim.pxtcore {
