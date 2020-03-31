@@ -5,13 +5,13 @@
 Let's turn the @boardname@ into a dice!
 (Want to learn how the accelerometer works? [Watch this video](https://youtu.be/byngcwjO51U)).
 
-![A microbit dice](/static/mb/projects/dice.png)
+We need 3 pieces of code: one to detect a throw (shake), another to pick a random number, and then one to show the number.
+
+![A @boardname@ dice](/static/mb/projects/dice.png)
 
 ## Step 1 @fullscreen
 
-We need 3 pieces of code: one to detect a throw (shake), another to pick a random number, and then one to show the number.
-
-Place the ``||input:on shake||`` block onto the editor workspace. It runs code when you shake the @boardname@.
+Add an event to run code when a ``||input:shake||`` is detected.
 
 ```blocks
 input.onGesture(Gesture.Shake, () => {
@@ -19,9 +19,9 @@ input.onGesture(Gesture.Shake, () => {
 })
 ```
 
-## Step 2 @fullscreen
+## Step 2
 
-Get a ``||basic:show number||`` block and place it inside the ``||input:on shake||`` block to display a number.
+Put code to ``||basic:show a number||`` when ``||input:on shake||`` happens.
 
 ```blocks
 input.onGesture(Gesture.Shake, () => {
@@ -29,9 +29,9 @@ input.onGesture(Gesture.Shake, () => {
 })
 ```
 
-## Step 3 @fullscreen
+## Step 3
 
-Put a ``||Math:pick random||`` block in the ``||basic:show number||`` block to pick a random number.
+Put code to ``||Math:pick a random||`` number and ``||basic:show||`` it on the screen.
 
 ```blocks
 input.onGesture(Gesture.Shake, () => {
@@ -39,9 +39,9 @@ input.onGesture(Gesture.Shake, () => {
 })
 ```
 
-## Step 4 @fullscreen
+## Step 4
 
-A typical dice shows values from `1` to `6`. So, in ``||Math:pick random||``, don't forget to choose the right minimum and maximum values!
+A typical dice shows values from `1` to `6`. Change the minimum and maximum values in ``||Math:pick random||`` to "``1`` to ``6``"!
 
 ```blocks
 input.onGesture(Gesture.Shake, () => {

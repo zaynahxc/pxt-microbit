@@ -21,7 +21,8 @@ Here are some cool tutorials to get you started with your @boardname@!
   "imageUrl": "/static/mb/projects/name-tag.png",
   "url": "/projects/name-tag",
   "cardType": "tutorial",
-  "youTubeId": "xpRI5jjQ31E"
+  "youTubeId": "xpRI5jjQ31E",
+  "otherActions": []
 }, {
   "name": "Smiley Buttons",
   "url":"/projects/smiley-buttons",
@@ -29,21 +30,24 @@ Here are some cool tutorials to get you started with your @boardname@!
   "imageUrl": "/static/mb/projects/a2-buttons.png",
   "largeImageUrl": "/static/mb/projects/smiley-buttons/sim.gif",
   "cardType": "tutorial",
-  "youTubeId": "BgDxz3M7JIM"
+  "youTubeId": "BgDxz3M7JIM",
+  "otherActions": []
 }, {
   "name": "Dice",
   "url":"/projects/dice",
   "description": "Shake the dice and see what number comes up!",
   "imageUrl": "/static/mb/projects/dice.png",
   "cardType": "tutorial",
-  "youTubeId": "OmrmjtOm_sQ"
+  "youTubeId": "OmrmjtOm_sQ",
+  "otherActions": []
 }, {
   "name": "Love Meter",
   "url":"/projects/love-meter",
   "description": "Is the micro:bit is feeling the love, see how much!",
   "imageUrl":"/static/mb/projects/a3-pins.png",
   "cardType": "tutorial",
-  "youTubeId": "1IYsy0_9n8g"
+  "youTubeId": "1IYsy0_9n8g",
+  "otherActions": []
 }, {
   "name": "Micro Chat",
   "url":"/projects/micro-chat",

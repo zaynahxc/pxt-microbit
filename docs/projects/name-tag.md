@@ -8,7 +8,7 @@ Tell everyone who you are. Show you name on the LEDs.
 
 ## Step 1 @fullscreen
 
-Place the ``||basic:show string||`` block in the ``||basic:forever||`` block to repeat it. Change the text to your name.
+Place ``||basic:show string||`` in the ``||basic:forever||`` block to repeat it. Change the text to your name.
 
 ```blocks
 basic.forever(() => {
@@ -16,23 +16,23 @@ basic.forever(() => {
 });
 ```
 
-## Step 2 @fullscreen
+## Step 2
 
 Look at the simulator and make sure it shows your name on the screen.
 
 ![Name scrolling on the LEDs](/static/mb/projects/name-tag/name-tag.gif)
 
-## Step 3 @fullscreen
+## Step 3
 
-Place more ``||basic:show string||`` blocks to create your own story.
+Place more ``||basic:show string||`` to create your own story.
 
 ```blocks
 basic.forever(() => {
     basic.showString("MICRO");
-    basic.showString("<3<3<3");
+    basic.showString("BIT");
 })
 ```
 
-## Step 4 @unplugged
+## Step 4
 
-If you have a @boardname@ connected, click ``|Download|`` to transfer your code and watch your name scroll!
+If you have a @boardname@ connected, click ``|Download|`` and transfer your code to the @boardname@!

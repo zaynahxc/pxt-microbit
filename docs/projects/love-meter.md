@@ -2,13 +2,13 @@
 
 ## Introduction @unplugged
 
-Make a love meter, how sweet! The @boardname@ is feeling the love, then sometimes not so much!
+Make a **LOVE METER** machine, how sweet! The @boardname@ is feeling the love, then sometimes not so much!
 
 ![Love meter banner message](/static/mb/projects/love-meter/love-meter.gif)
 
-## Step 1
+## Step 1 @fullscreen
 
-Let's build a **LOVE METER** machine. Place an ``||input:on pin pressed||`` block to run code when pin **0** is pressed. Use ``P0`` from the list of pin inputs.
+Add an event to run code when ``||input:on pin 0 is pressed||``. Use ``P0`` from the list of pin inputs.
 
 ```blocks
 input.onPinPressed(TouchPin.P0, () => {
@@ -17,7 +17,7 @@ input.onPinPressed(TouchPin.P0, () => {
 
 ## Step 2
 
-Using ``||basic:show number||`` and ``||Math:pick random||`` blocks, show a random number from `0` to `100` when pin **0** is pressed.
+Add code to ``||basic:show||`` a ``||Math:random number||``between `0` to `100` when pin **0** is pressed.
 
 ```blocks
 input.onPinPressed(TouchPin.P0, () => {
@@ -30,7 +30,7 @@ Click on pin **0** in the simulator and see which number is chosen.
 
 ## Step 4
 
-Show ``"LOVE METER"`` on the screen when the @boardname@ starts.
+Add code to ``||basic:show||`` ``"LOVE METER"`` on the screen when the @boardname@ ``||basic:starts||``.
 
 ```blocks
 basic.showString("LOVE METER");

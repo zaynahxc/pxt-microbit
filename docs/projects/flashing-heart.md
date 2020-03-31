@@ -10,7 +10,7 @@ Learn how to use the LEDs and make a flashing heart!
 
 ## Step 1 @fullscreen
 
-Place the ``||basic:show leds||`` block in the ``||basic:forever||`` block and draw a heart.
+Put a ``||basic:show leds||`` block in the ``||basic:forever||`` block and draw a heart.
 
 ![An animation that shows how to drag a block and paint a heart](/static/mb/projects/flashing-heart/showleds.gif)
 
@@ -43,4 +43,4 @@ Look at the virtual @boardname@, you should see the heart and your drawing blink
 
 ## Step 4 @fullscreen
 
-If you have a @boardname@ connected, click ``|Download|`` to transfer your code and watch the hearts flash!
+If you have a @boardname@ connected, click ``|Download|`` and transfer your code to the @boardname@!

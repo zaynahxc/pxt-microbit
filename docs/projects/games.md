@@ -13,26 +13,30 @@ Fun games to build with your @boardname@.
   "description": "Make the Rock-Paper-Scissors game on your micro:bit and challenge your friends.",
   "imageUrl":"/static/mb/projects/a4-motion.png",
   "cardType": "tutorial",
-  "youTubeId": "94lLBB3b1kU"
+  "youTubeId": "94lLBB3b1kU",
+  "otherActions": []
 }, {
   "name": "Coin Flipper",
   "url":"/projects/coin-flipper",
   "description": "Guess the coin toss and see if you're lucky.",
   "imageUrl": "/static/mb/projects/coin-flipper.png",
-  "cardType": "tutorial"
+  "cardType": "tutorial",
+  "otherActions": []
 }, {
   "name": "Hot Potato",
   "url":"/projects/hot-potato",
   "description": "Toss the potato around before time is up and you're caught holding it.",
   "imageUrl": "/static/mb/projects/hot-potato.png",
   "cardType": "tutorial",
-  "youTubeId": "xLEy1B_gWKY"
+  "youTubeId": "xLEy1B_gWKY",
+  "otherActions": []
 }, {
   "name": "Heads Guess!",
   "url":"/projects/heads-guess",
   "description": "Try to guess words with your friends!",
   "imageUrl": "/static/mb/projects/heads-guess.png",
-  "cardType": "tutorial"
+  "cardType": "tutorial",
+  "otherActions": []
 }, {
   "name": "Reaction Time",
   "url":"/projects/reaction-time",
@@ -48,7 +52,8 @@ Fun games to build with your @boardname@.
   "url": "/projects/snap-the-dot",
   "description": "Use the game blocks to create a skill game",
   "imageUrl": "/static/mb/projects/snap-the-dot.png",
-  "cardType": "tutorial"
+  "cardType": "tutorial",
+  "otherActions": []
 }, {
   "name": "Salute!",
   "url":"/projects/salute",
