@@ -7,23 +7,14 @@ If the guess is correct, the player tilts the @boardname@ forward; to pass, the 
 
 ## Step 1
 
-Put in code to ``||game:start a countdown||`` of 30 seconds.
-
-```blocks
-game.startCountdown(30000)
-```
-
-## Step 2
-
 Create a ``||arrays:text list||`` of words to guess. You will find **Arrays** under **Advanced**.
 
 ```blocks
-game.startCountdown(30000)
 let text_list: string[] = []
 text_list = ["PUPPY", "CLOCK", "NIGHT"]
 ```
 
-## Step 3
+## Step 2
 
 Add an event to run code when the @boardname@ ``||input:logo||`` is pointing ``||input:up||``.
 This is the gesture to get a new word.
@@ -33,7 +24,7 @@ input.onGesture(Gesture.LogoUp, function () {
 })
 ```
 
-## Step 4
+## Step 3
 
 The items in ``||arrays:text list||`` are numbered ``0`` to ``length - 1``. 
 Add code to pick a ``||math:random||`` ``||variables:index||``.
@@ -47,7 +38,7 @@ input.onGesture(Gesture.LogoUp, function () {
 })
 ```
 
-## Step 5
+## Step 4
 
 Add code to ``||basic:show||`` the value of the item stored at ``||variables:index||`` in  ``||arrays:text list||``.
 
@@ -61,7 +52,7 @@ input.onGesture(Gesture.LogoUp, function () {
 })
 ```
 
-## Step 6
+## Step 5
 
 Use an event to run code when the @boardname@ ``||input:screen||`` is pointing ``||input:down||``.
 This is the gesture for a correct guess.
@@ -71,7 +62,7 @@ input.onGesture(Gesture.ScreenDown, function () {
 })
 ```
 
-## Step 7
+## Step 6
 
 Put in code to add points to the ``||game:score||``.
 
@@ -82,9 +73,9 @@ input.onGesture(Gesture.ScreenDown, function () {
 })
 ```
 
-## Step 8
+## Step 7
 
-Add anonther event to run code when the @boardname@ ``||input:screen||`` is pointing ``||input:up||``.
+Add another event to run code when the @boardname@ ``||input:screen||`` is pointing ``||input:up||``.
 This is the gesture for a pass.
 
 ```blocks
@@ -92,7 +83,7 @@ input.onGesture(Gesture.ScreenUp, function () {
 })
 ```
 
-## Step 9
+## Step 8
 
 For the pass gesture, add code to remove a ``||game:life||`` from the player.
 
@@ -102,3 +93,19 @@ input.onGesture(Gesture.ScreenUp, function () {
     game.removeLife(1)
 })
 ```
+
+
+## Step 9
+
+Put in code to ``||game:start a countdown||`` of 30 seconds.
+
+```blocks
+let text_list: string[] = []
+text_list = ["PUPPY", "CLOCK", "NIGHT"]
+// @highlight
+game.startCountdown(30000)
+```
+
+## Step 10
+
+If you have a @boardname@ connected, click ``|Download|`` to transfer your code and play the game!
