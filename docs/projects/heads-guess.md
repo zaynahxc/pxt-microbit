@@ -18,9 +18,9 @@ game.startCountdown(30000)
 Create a ``||arrays:text list||`` of words to guess. You will find **Arrays** under **Advanced**.
 
 ```blocks
-game.startCountdown(30000)
 let text_list: string[] = []
 text_list = ["PUPPY", "CLOCK", "NIGHT"]
+game.startCountdown(30000)
 ```
 
 ## Step 3
