@@ -20,6 +20,8 @@
 * [Games](/projects/games)
   * [Rock Paper Scissors](/projects/rock-paper-scissors)
   * [Coin Flipper](/projects/coin-flipper)
+  * [Hot Potato](/projects/hot-potato)
+  * [Heads Guess!](/projects/head-guess)
   * [Reaction Time](/projects/reaction-time)
   * [Magic Button Trick](/projects/magic-button-trick)
   * [Snap the dot](/projects/snap-the-dot)
