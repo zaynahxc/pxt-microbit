@@ -6,12 +6,17 @@ Tell everyone who you are. Show you name on the LEDs.
 
 ![Name scrolling on the LEDs](/static/mb/projects/name-tag/name-tag.gif)
 
+```template
+forever(function() {})
+```
+
 ## Step 1 @fullscreen
 
-Place ``||basic:show string||`` in the ``||basic:forever||`` block to repeat it. Change the text to your name.
+Place ``||basic:show string||`` in ``||basic:forever||`` to show text in a loop.
 
 ```blocks
 basic.forever(() => {
+    // @highlight
     basic.showString("MICRO");
 });
 ```
@@ -29,6 +34,7 @@ Place more ``||basic:show string||`` to create your own story.
 ```blocks
 basic.forever(() => {
     basic.showString("MICRO");
+    // @highlight
     basic.showString("BIT");
 })
 ```
