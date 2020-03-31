@@ -6,20 +6,30 @@
 
 Use the **radio** to send and receive messages with other @boardname@.
 
+## Handle buttons @fullscreen
+
+Add an event to run code when ``||input:button A is pressed||``.
+
+```blocks
+input.onButtonPressed(Button.A, () => {
+});
+```
+
 ## Sending a message @fullscreen
 
-Use ``||input:on button pressed||`` to send a text message over radio with ``||radio:send string||``.
+Add code to ``||radio:send a string||`` over ``||radio:radio||`` when ``||input:button A is pressed||``. 
 Every @boardname@ nearby will receive this message.
 
 ```blocks
 input.onButtonPressed(Button.A, () => {
-    radio.sendString("Yo");
+    // @highlight
+    radio.sendString(":)");
 });
 ```
 
 ## Receiving a message
 
-Add a ``||radio:on received string||`` block to run when a message is received. 
+Add an event to run code when a ``||radio:string is received||`` over ``||radio:radio||``. 
 
 ```blocks
 radio.onReceivedString(function (receivedString) {
@@ -28,26 +38,18 @@ radio.onReceivedString(function (receivedString) {
 
 ## Displaying text
 
-Add a ``||basic:show string||`` to display the string on the screen. Pull the ``||variables:receivedString||`` out of ``||radio:on received string||`` and put it into ``||basic:show string||``.
+Add code to ``||basic:show||`` the ``||variables:receivedString||``. In blocks, drag out ``||variables:receivedString||`` out of ``||radio:on received string||`` and put it into ``||basic:show string||``.
 
 ```blocks
 radio.onReceivedString(function (receivedString) {
+    // @highlight
     basic.showString(receivedString);
 })
 ```
 
-## Testing in the simulator
+## Testing in the simulator @fullscreen
 
 Press button **A** on the simulator, you will notice that a second @boardname@ appears (if your screen is too small, the simulator might decide not to show it). Try pressing **A** again and notice that the "Yo" message gets displayed on the other @boardname@.
-
-```blocks
-input.onButtonPressed(Button.A, () => {
-    radio.sendString("Yo");
-});
-radio.onReceivedString(function (receivedString) {
-    basic.showString(receivedString);
-})
-```
 
 ## Try it for real
 
@@ -55,12 +57,11 @@ If you two @boardname@s, download the program to each one. Press button **A** on
 
 ## Groups
 
-Use the ``||radio:set group||`` block to assign a **group** number to your program. You will only receive messages from @boardname@s within the same group. Use this to avoid receiving messages from every @boardname@ that is transmitting.
+Add code to ``||radio:set the group||`` number of your program. You will only receive messages from @boardname@s within the same group. Use this to avoid receiving messages from every @boardname@ that is transmitting.
 
 ```blocks
 radio.setGroup(123)
 ```
-
 
 ```package
 radio

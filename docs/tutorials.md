@@ -54,6 +54,7 @@ Here are some cool tutorials to get you started with your @boardname@!
   "description": "Build your own social network made of micro:bits.",
   "imageUrl": "/static/mb/projects/a9-radio.png",
   "cardType": "tutorial",
-  "youTubeId": "5XqsGROG2fI"
+  "youTubeId": "5XqsGROG2fI",
+  "otherActions": []
 }]
 ```
