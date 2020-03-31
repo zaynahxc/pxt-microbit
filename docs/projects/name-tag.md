@@ -16,7 +16,7 @@ basic.forever(() => {
 });
 ```
 
-## Step 2
+## Step 2 @fullscreen
 
 Look at the simulator and make sure it shows your name on the screen.
 
@@ -33,6 +33,6 @@ basic.forever(() => {
 })
 ```
 
-## Step 4
+## Step 4 @fullscreen
 
 If you have a @boardname@ connected, click ``|Download|`` and transfer your code to the @boardname@!
