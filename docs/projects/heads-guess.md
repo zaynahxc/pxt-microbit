@@ -20,7 +20,7 @@ Create a ``||arrays:text list||`` of words to guess. You will find **Arrays** un
 ```blocks
 game.startCountdown(30000)
 let text_list: string[] = []
-text_list = ["PUPPY", "CLOCK", "NIGHT", "CAT", "COW"]
+text_list = ["PUPPY", "CLOCK", "NIGHT"]
 ```
 
 ## Step 3
