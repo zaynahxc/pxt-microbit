@@ -75,6 +75,6 @@ input.onButtonPressed(Button.AB, () => {
 
 Click ``|Download|`` to transfer your code to your @boardname@ (if you have one). Try buttons **A**, **B** and then **A** and **B** together.
 
-## Step 6
+## Step 6 @fullscreen
 
 If you have a @boardname@ connected, click ``|Download|`` and transfer your code to the @boardname@!
