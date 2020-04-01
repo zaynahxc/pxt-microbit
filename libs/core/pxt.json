@@ -56,8 +56,7 @@
     "yotta": {
         "config": {
             "microbit-dal": {
-                "fiber_user_data": 1,
-                "message_bus_concurrency_mode": 1
+                "fiber_user_data": 1
             }
         },
         "optionalConfig": {
