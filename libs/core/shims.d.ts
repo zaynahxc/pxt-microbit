@@ -332,22 +332,6 @@ declare namespace input {
     function magneticForce(dimension: Dimension): int32;
 
     /**
-     * Gets the number of milliseconds elapsed since power on.
-     */
-    //% help=input/running-time weight=50 blockGap=8
-    //% blockId=device_get_running_time block="running time (ms)"
-    //% advanced=true shim=input::runningTime
-    function runningTime(): int32;
-
-    /**
-     * Gets the number of microseconds elapsed since power on.
-     */
-    //% help=input/running-time-micros weight=49
-    //% blockId=device_get_running_time_micros block="running time (micros)"
-    //% advanced=true shim=input::runningTimeMicros
-    function runningTimeMicros(): int32;
-
-    /**
      * Obsolete, compass calibration is automatic.
      */
     //% help=input/calibrate-compass advanced=true
@@ -374,11 +358,31 @@ declare namespace input {
 declare namespace control {
 
     /**
+     * Gets the number of milliseconds elapsed since power on.
+     */
+    //% help=control/millis weight=50
+    //% blockId=control_running_time block="millis (ms)" shim=control::millis
+    function millis(): int32;
+
+    /**
+     * Gets current time in microseconds. Overflows every ~18 minutes.
+     */
+    //% shim=control::micros
+    function micros(): int32;
+
+    /**
      * Schedules code that run in the background.
      */
     //% help=control/in-background blockAllowMultiple=1 afterOnStart=true
     //% blockId="control_in_background" block="run in background" blockGap=8 shim=control::inBackground
     function inBackground(a: () => void): void;
+
+    /**
+     * Blocks the calling thread until the specified event is raised.
+     */
+    //% help=control/wait-for-event async
+    //% blockId=control_wait_for_event block="wait for event|from %src|with value %value" shim=control::waitForEvent
+    function waitForEvent(src: int32, value: int32): void;
 
     /**
      * Resets the BBC micro:bit.
@@ -450,6 +454,17 @@ declare namespace control {
      */
     //% part=midioutput blockHidden=1 shim=control::__midiSend
     function __midiSend(buffer: Buffer): void;
+
+    /** The next handler to be added will be put in the background, 
+    which supports multiple handlers per event type. */
+    //%
+    //% help=control/next-handler-to-background shim=control::nextHandlerToBackground
+    function nextHandlerToBackground(): void;
+
+    /** Remove a handler from the background for all events */
+    //%
+    //% help=control/remove-from-background shim=control::removeFromBackground
+    function removeFromBackground(handler: () => void): void;
 
     /**
      *
@@ -675,6 +690,12 @@ declare namespace pins {
     function servoWritePin(name: AnalogPin, value: int32): void;
 
     /**
+     * Specifies that a continuous servo is connected.
+     */
+    //% shim=pins::servoSetContinuous
+    function servoSetContinuous(name: AnalogPin, value: boolean): void;
+
+    /**
      * Configure the IO pin as an analog/pwm output and set a pulse width. The period is 20 ms period and the pulse width is set based on the value given in **microseconds** or `1/1000` milliseconds.
      * @param name pin name
      * @param micros pulse duration in micro seconds, eg:1500
@@ -694,6 +715,22 @@ declare namespace pins {
     //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
     //% name.fieldOptions.tooltips="false" name.fieldOptions.width="250" shim=pins::analogSetPitchPin
     function analogSetPitchPin(name: AnalogPin): void;
+
+    /**
+     * Sets the volume the pitch pin
+     * @param volume the intensity of the sound from 0..255
+     */
+    //% blockId=device_analog_set_pitch_volume block="analog set pitch volume $volume"
+    //% help=pins/analog-set-pitch-volume weight=3 advanced=true
+    //% volume.min=0 volume.max=255 shim=pins::analogSetPitchVolume
+    function analogSetPitchVolume(volume: int32): void;
+
+    /**
+     * Gets the volume the pitch pin from 0..255
+     */
+    //% blockId=device_analog_pitch_volume block="analog pitch volume"
+    //% help=pins/analog-pitch-volume weight=3 advanced=true shim=pins::analogPitchVolume
+    function analogPitchVolume(): int32;
 
     /**
      * Emit a plse-width modulation (PWM) signal to the current pitch pin. Use `analog set pitch pin` to define the pitch pin.
@@ -895,6 +932,12 @@ declare interface Buffer {
     getUint8(off: int32): int32;
 
     /**
+     * Returns false when the buffer can be written to.
+     */
+    //% shim=BufferMethods::isReadOnly
+    isReadOnly(): boolean;
+
+    /**
      * Writes an unsigned byte at a particular location
      */
     //% shim=BufferMethods::setUint8
@@ -972,14 +1015,14 @@ declare namespace control {
      * Create a new zero-initialized buffer.
      * @param size number of bytes in the buffer
      */
-    //% shim=control::createBuffer
+    //% deprecated=1 shim=control::createBuffer
     function createBuffer(size: int32): Buffer;
 
     /**
      * Create a new buffer with UTF8-encoded string
      * @param str the string to put in the buffer
      */
-    //% shim=control::createBufferFromUTF8
+    //% deprecated=1 shim=control::createBufferFromUTF8
     function createBufferFromUTF8(str: string): Buffer;
 }
 

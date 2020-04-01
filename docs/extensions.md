@@ -8,6 +8,11 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
 
 ```codecard
 [{
+  "name": "Strawbees Robotic Inventions Kit",
+  "url":"/pkg/strawbees/pxt-robotic-inventions",
+  "cardType": "package"
+},
+{
   "name": "Kitronik :MOVE mini",
   "url":"/pkg/KitronikLtd/pxt-kitronik-servo-lite",
   "cardType": "package"
@@ -38,12 +43,40 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
   "cardType": "package"
 },
 {
+  "name": "4tronix Servo:Bit",
+  "url":"/pkg/4tronix/ServoBit",
+  "cardType": "package"
+},
+{
   "name": "4tronix MiniBit",
   "url":"/pkg/4tronix/MiniBit",
   "cardType": "package"
-}, {
+},
+{
+  "name": "Elecfreaks TPBot",
+  "url":"/pkg/elecfreaks/pxt-TPBot",
+  "cardType": "package"
+},
+{
+  "name": "DF Robot Maqueen",
+  "url":"/pkg/DFRobot/pxt-maqueen",
+  "cardType": "package"
+},
+{
   "name": "Sunfounder Sloth",
   "url":"/pkg/sunfounder/pxt-sloth",
+  "cardType": "package"
+}, {
+  "name": "Sphero RVR",
+  "url":"/pkg/sphero-inc/sphero-sdk-microbit-makecode",
+  "cardType": "package"
+}, {
+ "name": "EBOTICS MIBO",
+  "url":"/pkg/EBOTICS/pxt-eboticsMIBO",
+  "cardType": "package"
+}, {
+  "name": "ALSRobot MinCruise",
+  "url":"/pkg/alsrobot-microbit-makecode-packages/MiniCruise",
   "cardType": "package"
 }, {
   "name": "ReroKit rero:micro",
@@ -200,6 +233,16 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
 
 ```codecard
 [{
+  "name": "Inksmith Climate Action Kit",
+  "url":"/pkg/dugbraden/pxt-climate-action-kit",
+  "cardType": "package"
+},
+{
+  "name": "DFRobot Natural Science Board",
+  "url":"/pkg/DFRobot/pxt-DFRobot-NaturalScience",
+  "cardType": "package"
+},
+{
   "name": "Kitronik Realtime Clock",
   "url":"/pkg/KitronikLtd/pxt-kitronik-rtc",
   "cardType": "package"
@@ -227,6 +270,16 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
 {
   "name": "Kitronik Access:Bit",
   "url":"/pkg/KitronikLtd/pxt-kitronik-accessbit",
+  "cardType": "package"
+},
+{
+  "name": "Kitronik Halo HD",
+  "url":"/pkg/KitronikLtd/pxt-kitronik-halohd",
+  "cardType": "package"
+},
+{
+  "name": "Make&Learn micro:shield",
+  "url":"/pkg/MakeAndLearn/pxt-microshield",
   "cardType": "package"
 },
 {
@@ -262,6 +315,10 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
   "url":"/pkg/Seeed-Studio/pxt-grove",
   "cardType": "package"
 }, {
+  "name": "Cytron Edubit",
+  "url":"/pkg/CytronTechnologies/pxt-edubit",
+  "cardType": "package"  
+}, {
     "name": "WS2812B",
     "url": "/pkg/microsoft/pxt-ws2812b",
     "cardType": "package"
@@ -296,10 +353,24 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
 }]
 ```
 
+## Wearables
+
+```codecard
+[{
+  "name": "Bright Wearables Bright Board",
+  "url":"/pkg/BrightWearables/pxt-microbit-brightboard",
+  "cardType": "package"
+}]
+```
+
 ## Sensing & Individual Components
 
 ```codecard
 [{
+  "name": "MU Vision camera",
+  "url":"/pkg/mu-opensource/pxt-muvision",
+  "cardType": "package"
+}, {
  "name": "Let's Talk Science COZIR sensor",
   "url":"/pkg/letstalkscience/pxt-cozir",
   "cardType": "package"
@@ -314,6 +385,10 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
 }, {
   "name": "Non-blocking Ultrasonic Sensing",
   "url":"/pkg/1010Technologies/pxt-makerbit-ultrasonic",
+  "cardType": "package"
+}, {
+  "name": "HX711 Weight Sensor",
+  "url":"/pkg/daferdur/pxt-myHX711",
   "cardType": "package"
 }, {
   "name": "Bluetooth Temperature Sensor",
@@ -411,6 +486,10 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
     "name": "HTS221 Humidity and temperature",
     "url": "/pkg/makecode-extensions/HTS221",
     "cardType": "package"
+}, {
+    "name": "Kitronik clip detector",
+    "url": "/pkg/KitronikLtd/pxt-kitronik-clip-detector",
+    "cardType": "package"
 }]
 ```
 
@@ -428,6 +507,10 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
 }, {
   "name": "ESP8266 and ThingSpeak",
   "url":"/pkg/alankrantas/pxt-ESP8266_ThingSpeak",
+  "cardType": "package"
+}, {
+  "name": "DFRobot microIoT board",
+  "url":"/pkg/DFRobot/pxt-DFRobot-microIoT",
   "cardType": "package"
 }]
 ```

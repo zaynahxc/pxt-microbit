@@ -47,6 +47,19 @@ namespace pxsim.control {
     export function waitMicros(micros: number) {
         // TODO
     }
+    export function waitForEvent(id: number, evid: number) {
+        const cb = getResume();
+        board().bus.wait(id, evid, cb);
+    }
+
+    export function millis(): number {
+        return runtime.runningTime();
+    }
+
+    export function micros(): number {
+        return runtime.runningTimeUs();
+    }
+
 
     export function deviceName(): string {
         let b = board();
@@ -85,6 +98,13 @@ namespace pxsim.control {
     export function eventValue() {
         return board().bus.getLastEventValue()
     }
+
+    export function nextHandlerToBackground() {
+        board().bus.setBackgroundHandlerFlag();
+    }
+    export function removeFromBackground(handler: RefAction) {
+        board().bus.removeBackgroundHandler(handler);
+    }
 }
 
 namespace pxsim.pxtcore {
@@ -94,14 +114,6 @@ namespace pxsim.pxtcore {
 }
 
 namespace pxsim.input {
-    export function runningTime(): number {
-        return runtime.runningTime();
-    }
-
-    export function runningTimeMicros(): number {
-        return runtime.runningTimeUs();
-    }
-
     export function calibrateCompass() {
         // device calibrates...
     }

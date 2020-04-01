@@ -26,11 +26,12 @@ MicroBit uBit;
 MicroBitEvent lastEvent;
 
 void platform_init() {
-    microbit_seed_random();    
+    microbit_seed_random();
     seedRandom(microbit_random(0x7fffffff));
 }
 
 void initMicrobitGC() {
+    uBit.init();
     if (device_heap_size(1) > NON_GC_HEAP_RESERVATION + 4)
         gcPreAllocateBlock(device_heap_size(1) - NON_GC_HEAP_RESERVATION);
 }
@@ -42,9 +43,28 @@ struct FreeList {
     FreeList *next;
 };
 
-static void initCodal() {
+void dispatchBackground(MicroBitEvent e, void *action) {
+    lastEvent = e;
+    auto value = fromInt(e.value);
+    runAction1((Action)action, value);
+}
 
-    uBit.init();
+void dispatchForeground(MicroBitEvent e, void *action) {
+    lastEvent = e;
+    auto value = fromInt(e.value);
+    runAction1((Action)action, value);
+}
+
+void deleteListener(MicroBitListener *l) {
+    if (l->cb_param == (void (*)(MicroBitEvent, void *))dispatchBackground ||
+        l->cb_param == (void (*)(MicroBitEvent, void *))dispatchForeground) {
+        decr((Action)(l->cb_arg));
+        unregisterGCPtr((Action)(l->cb_arg));
+    }
+}
+
+static void initCodal() {
+    uBit.messageBus.setListenerDeletionCallback(deleteListener);
 
     // repeat error 4 times and restart as needed
     microbit_panic_timeout(4);
@@ -56,27 +76,25 @@ void dumpDmesg() {}
 // An adapter for the API expected by the run-time.
 // ---------------------------------------------------------------------------
 
-// We have the invariant that if [dispatchEvent] is registered against the DAL
-// for a given event, then [handlersMap] contains a valid entry for that
-// event.
-void dispatchEvent(MicroBitEvent e) {
-    lastEvent = e;
-
-    auto curr = findBinding(e.source, e.value);
-    auto value = fromInt(e.value);
-    if (curr)
-        runAction1(curr->action, value);
-
-    curr = findBinding(e.source, DEVICE_EVT_ANY);
-    if (curr)
-        runAction1(curr->action, value);
+static bool backgroundHandlerFlag = false;
+void setBackgroundHandlerFlag() {
+    backgroundHandlerFlag = true;
 }
 
 void registerWithDal(int id, int event, Action a, int flags) {
-    // first time?
-    if (!findBinding(id, event))
-        uBit.messageBus.listen(id, event, dispatchEvent, flags);
-    setBinding(id, event, a);
+    if (backgroundHandlerFlag) {
+        uBit.messageBus.listen(id, event, dispatchBackground, a);
+        backgroundHandlerFlag = false;
+    } else {
+        uBit.messageBus.ignore(id, event, dispatchForeground);
+        uBit.messageBus.listen(id, event, dispatchForeground, a);
+    }
+    incr(a);
+    registerGCPtr(a);
+}
+
+void unregisterFromDal(void *a) {
+    uBit.messageBus.ignore(MICROBIT_EVT_ANY, MICROBIT_EVT_ANY, dispatchBackground, a);
 }
 
 void fiberDone(void *a) {
@@ -224,7 +242,6 @@ void sendSerial(const char *data, int len) {
     logwriten(data, len);
 }
 
-#ifdef PXT_GC
 ThreadContext *getThreadContext() {
     if (!currentFiber)
         return NULL;
@@ -245,11 +262,28 @@ void gcProcessStacks(int flags) {
     // check scheduler is initialized
     if (!currentFiber) {
         // make sure we allocate something to at least initalize the memory allocator
-        void * volatile p = xmalloc(1);
+        void *volatile p = xmalloc(1);
         xfree(p);
         return;
     }
 
+#ifdef MICROBIT_GET_FIBER_LIST_SUPPORTED
+    for (Fiber *fib = get_fiber_list(); fib; fib = fib->next) {
+        auto ctx = (ThreadContext *)fib->user_data;
+        if (!ctx)
+            continue;
+        for (auto seg = &ctx->stack; seg; seg = seg->next) {
+            auto ptr = (TValue *)threadAddressFor(fib, seg->top);
+            auto end = (TValue *)threadAddressFor(fib, seg->bottom);
+            if (flags & 2)
+                DMESG("RS%d:%p/%d", cnt++, ptr, end - ptr);
+            // VLOG("mark: %p - %p", ptr, end);
+            while (ptr < end) {
+                gcProcess(*ptr++);
+            }
+        }
+    }
+#else
     int numFibers = list_fibers(NULL);
     Fiber **fibers = (Fiber **)xmalloc(sizeof(Fiber *) * numFibers);
     int num2 = list_fibers(fibers);
@@ -274,7 +308,7 @@ void gcProcessStacks(int flags) {
         }
     }
     xfree(fibers);
-}
 #endif
+}
 
 } // namespace pxt

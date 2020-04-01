@@ -23,7 +23,10 @@
         "preferredPackages": [
             "Microsoft/pxt-neopixel"
         ],
-        "githubPackages": true
+        "githubPackages": true,
+        "cloudProviders": {
+            "github": {}
+        }
     },
     "compile": {
         "isNative": false,
@@ -242,7 +245,7 @@
         "yottaTarget": "bbc-microbit-classic-gcc",
         "yottaCorePackage": "microbit",
         "githubCorePackage": "lancaster-university/microbit",
-        "gittag": "pxtgc-0",
+        "gittag": "v2.2.0-rc1",
         "serviceId": "microbit",
         "dockerImage": "pext/yotta:latest"
     },
@@ -267,7 +270,7 @@
     },
     "appTheme": {
         "accentColor": "#5C005C",
-        "logoUrl": "https://microbit.org/code/",
+        "logoUrl": "https://microbit.org/",
         "logo": "./static/logo.portrait.white.svg",
         "docsLogo": "./static/logo.square.white.svg",
         "portraitLogo": "./static/logo.square.white.svg",
@@ -297,14 +300,11 @@
         "experiments": [
             "allowPackageExtensions",
             "instructions",
-            "debugger",
             "debugExtensionCode",
             "bluetoothUartConsole",
             "bluetoothPartialFlashing",
             "simScreenshot",
-            "simGif",
-            "qrCode",
-            "githubBlocksDiff"
+            "simGif"
         ],
         "bluetoothUartFilters": [
             {
@@ -319,14 +319,6 @@
             {
                 "name": "Reference",
                 "path": "/reference"
-            },
-            {
-                "name": "Blocks",
-                "path": "/blocks"
-            },
-            {
-                "name": "JavaScript",
-                "path": "/javascript"
             },
             {
                 "name": "Hardware",
@@ -405,6 +397,12 @@
         "coloredToolbox": true,
         "monacoToolbox": true,
         "hasAudio": true,
+        "socialOptions": {
+            "orgTwitterHandle": "MSMakeCode",
+            "hashtags": "MakeCode",
+            "discourse": "https://forum.makecode.com/",
+            "discourseCategory": "micro:bit"
+        },
         "blocklyOptions": {
             "grid": {
                 "spacing": 45,
@@ -423,8 +421,10 @@
             "functions": "#3455DB",
             "arrays": "#E65722"
         },
+        "blocksCollapsing": true,
         "highContrast": true,
         "greenScreen": true,
+        "accessibleBlocks": true,
         "print": true,
         "selectLanguage": true,
         "availableLocales": [
@@ -443,7 +443,7 @@
             "ja",
             "ko",
             "nl",
-            "no",
+            "nb",
             "pl",
             "pt-BR",
             "pt-PT",
@@ -468,10 +468,17 @@
         },
         "showProjectSettings": true,
         "scriptManager": true,
+        "debugger": true,
         "simGifTransparent": "rgba(0,0,0,0)",
         "simGifMaxFrames": 44,
         "simScreenshotMaxUriLength": 300000,
-        "importExtensionFiles": true
+        "qrCode": true,
+        "importExtensionFiles": true,
+        "nameProjectFirst": true,
+        "githubEditor": true,
+        "chooseLanguageRestrictionOnNewProject": true,
+        "openProjectNewTab": true,
+        "python": true
     },
     "queryVariants": {
         "hidemenu": {
@@ -479,5 +486,6 @@
                 "hideMenuBar": true
             }
         }
-    }
+    },
+    "disableDocsUpload": true
 }
