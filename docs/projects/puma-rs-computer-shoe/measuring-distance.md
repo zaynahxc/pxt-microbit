@@ -1,4 +1,4 @@
-# Watch
+# Measuring Distance
 
 Now that we have identified the values needed to calibrate the shoe, we can create the final program that will be running on the runner watch.
 
