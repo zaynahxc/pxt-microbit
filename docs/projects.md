@@ -46,7 +46,7 @@
     {
         "name": "Tools",
         "url": "/projects/tools",
-        "imageUrl": "/static/mb/projects/plot-acceleration.png"
+        "imageUrl": "/static/mb/projects/stopwatch.png"
     },
     {
         "name": "Turtle",
