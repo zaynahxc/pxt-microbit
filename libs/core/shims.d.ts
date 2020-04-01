@@ -706,7 +706,7 @@ declare namespace pins {
     function analogSetPitchPin(name: AnalogPin): void;
 
     /**
-     * Sets the volume the pitch pin
+     * Sets the volume on the pitch pin
      * @param volume the intensity of the sound from 0..255
      */
     //% blockId=device_analog_set_pitch_volume block="analog set pitch volume $volume"
