@@ -290,7 +290,7 @@
   "game.setScore|block": "set score %points",
   "game.startCountdown|block": "start countdown|(ms) %duration",
   "game|block": "game",
-  "images.arrowImage|block": "arrow image %i=device_arrow",
+  "images.arrowImage|block": "arrow image %i",
   "images.arrowNumber|block": "%arrow",
   "images.createBigImage|block": "create big image",
   "images.createImage|block": "create image",
