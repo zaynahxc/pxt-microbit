@@ -68,24 +68,26 @@ function murmur3_core(data: Uint8Array) {
     return [h0, h1]
 }
 
-class DAPWrapper {
-    cortexM: DapJS.CortexM
-    packetIo: pxt.HF2.PacketIO;
-    cmsisdap: any;
-    flashing = true;
-    pbuf = new pxt.U.PromiseBuffer<Uint8Array>();
+class DAPWrapper implements pxt.packetio.PacketIOWrapper {
+    familyID: number;
+    private cortexM: DapJS.CortexM
+    private cmsisdap: any;
+    private flashing = true;
+    private pbuf = new pxt.U.PromiseBuffer<Uint8Array>();
     private useSerial = true;
 
-    constructor(h: pxt.HF2.PacketIO) {
-        this.packetIo = h;
+    constructor(public readonly io: pxt.packetio.PacketIO) {
+        this.familyID = 0x0D28; // this is the microbit vendor id, not quite UF2 family id
+        this.init();
+    }
 
-        h.onData = buf => {
+    private init() {
+        this.io.onData = buf => {
             // console.log("RD: " + pxt.Util.toHex(buf))
             this.pbuf.push(buf);
         }
 
         this.allocDAP()
-
         const readSerial = () => {
             if (!this.useSerial) {
                 return
@@ -105,21 +107,19 @@ class DAPWrapper {
                     }
                     if (str.length > 0) {
                         pxt.U.nextTick(readSerial)
-                        window.postMessage({
-                            type: 'serial',
-                            id: 'n/a', // TODO
-                            data: str
-                        }, "*")
-                        // console.log("SERIAL: " + str)
+                        if (this.onSerial)
+                            this.onSerial(pxt.U.stringToUint8Array(str), false)
                     } else
                         setTimeout(readSerial, 50)
                 }, (err: any) => {
                     setTimeout(readSerial, 1000)
                 })
         }
-
         readSerial()
     }
+
+    onConnectionChanged: () => void;
+    onSerial: (buf: Uint8Array, isStderr: boolean) => void;
 
     private allocDAP() {
         /*
@@ -140,7 +140,7 @@ class DAPWrapper {
         this.cmsisdap = (dev as any).dap;
         this.cortexM = new DapJS.CortexM(dev);
 
-        let h = this.packetIo
+        let h = this.io
         let pbuf = this.pbuf
 
         function writeAsync(data: ArrayBuffer) {
@@ -153,11 +153,11 @@ class DAPWrapper {
         }
     }
 
-    reconnectAsync(first: boolean) {
+    reconnectAsync(first?: boolean) {
         // configure serial at 115200
         let p = Promise.resolve();
         if (!first) {
-            p = this.packetIo.reconnectAsync()
+            p = this.io.reconnectAsync()
                 .then(() => this.allocDAP());
         }
 
@@ -170,226 +170,270 @@ class DAPWrapper {
     }
 
     disconnectAsync() {
-        return this.packetIo.disconnectAsync();
+        return this.io.disconnectAsync();
     }
-}
 
+    reflashAsync(resp: pxtc.CompileResult): Promise<void> {
+        startTime = 0
+        log("init")
 
-let packetIoPromise: Promise<pxt.HF2.PacketIO>;
-let previousDapWrapper: DAPWrapper;
-
-function initPacketIOAsync(): Promise<pxt.HF2.PacketIO> {
-    if (!packetIoPromise) {
-        packetIoPromise = pxt.HF2.mkPacketIOAsync()
-            .catch(err => {
-                packetIoPromise = null;
-                return Promise.reject(err);
-            });
-        return packetIoPromise;
-    } else {
-        let packetIo: pxt.HF2.PacketIO;
-        return packetIoPromise
-            .then((io) => {
-                packetIo = io;
-                return io.reconnectAsync();
+        pxt.tickEvent("hid.flash.start");
+        this.flashing = true;
+        return this.cortexM.init()
+            .then(() => this.cortexM.reset(true))
+            .catch(e => {
+                log("trying re-connect");
+                return this.reconnectAsync(false)
+                    .then(() => this.cortexM.reset(true));
             })
-            .then(() => packetIo);
+            .then(() => this.cortexM.memory.readBlock(0x10001014, 1, pageSize))
+            .then(v => {
+                if (pxt.HF2.read32(v, 0) != 0x3C000) {
+                    pxt.tickEvent("hid.flash.uicrfail");
+                    return this.fullVendorCommandFlashAsync(resp);
+                }
+                return this.quickHidFlashAsync(resp);
+            });
+            /*
+            .catch(e => {
+                pxt.log(`flash error: ${e.type}`);
+                if (e.type === "devicenotfound" && this.reportDeviceNotFoundAsync) {
+                    pxt.tickEvent("hid.flash.devicenotfound");
+                    return this.options.reportDeviceNotFoundAsync("/device/windows-app/troubleshoot", resp);
+                } else if (e.message === timeoutMessage) {
+                    pxt.tickEvent("hid.flash.timeout");
+                    return this.reconnectAsync(true)
+                        .catch((e) => { })
+                        .then(() => {
+                            // Best effort disconnect; at this point we don't even know the state of the device
+                            pxt.reportException(e);
+                            return resp.confirmAsync({
+                                header: lf("Something went wrong..."),
+                                body: lf("One-click download took too long. Please disconnect your {0} from your computer and reconnect it, then manually download your program using drag and drop.", pxt.appTarget.appTheme.boardName || lf("device")),
+                                agreeLbl: lf("Ok"),
+                                hideCancel: true
+                            });
+                        })
+                        .then(() => {
+                            return pxt.commands.saveOnlyAsync(resp);
+                        });
+                } else if (e.isUserError) {
+                    d.reportError(e.message);
+                    return Promise.resolve();
+                } else {
+                    pxt.tickEvent("hid.flash.unknownerror");
+                    pxt.reportException(e);
+                    return resp.confirmAsync({
+                        header: pxt.U.lf("Something went wrong..."),
+                        body: pxt.U.lf("Please manually download your program to your device using drag and drop. One-click download might work afterwards."),
+                        agreeLbl: lf("Ok"),
+                        hideCancel: true
+                    })
+                        .then(() => {
+                            return pxt.commands.saveOnlyAsync(resp);
+                        });
+                }
+            });
+            */
     }
-}
 
-function dapAsync() {
-    if (previousDapWrapper)
-        return previousDapWrapper.reconnectAsync(false) // Always fully reconnect to handle device unplugged mid-session
-            .then(() => previousDapWrapper);
-    return Promise.resolve()
-        .then(() => {
-            if (previousDapWrapper) {
-                return previousDapWrapper.disconnectAsync()
-                    .finally(() => {
-                        previousDapWrapper = null;
-                    });
-            }
-            return Promise.resolve();
-        })
-        .then(() => initPacketIOAsync())
-        .then(h => {
-            let w = new DAPWrapper(h)
-            previousDapWrapper = w;
-            return w.reconnectAsync(true)
-                .then(() => {
-                    return w
-                })
-        })
-}
-
-function pageAlignBlocks(blocks: ts.pxtc.UF2.Block[], pageSize: number) {
-    pxt.U.assert(pageSize % 256 == 0)
-    let res: ts.pxtc.UF2.Block[] = []
-    for (let i = 0; i < blocks.length;) {
-        let b0 = blocks[i]
-        let newbuf = new Uint8Array(pageSize)
-        let startPad = b0.targetAddr & (pageSize - 1)
-        let newAddr = b0.targetAddr - startPad
-        for (; i < blocks.length; ++i) {
-            let b = blocks[i]
-            if (b.targetAddr + b.payloadSize > newAddr + pageSize)
-                break
-            pxt.U.memcpy(newbuf, b.targetAddr - newAddr, b.data, 0, b.payloadSize)
-        }
-        let bb = pxt.U.flatClone(b0)
-        bb.data = newbuf
-        bb.targetAddr = newAddr
-        bb.payloadSize = pageSize
-        res.push(bb)
-    }
-    return res
-}
-
-function fullVendorCommandFlashAsync(resp: pxtc.CompileResult, wrap: DAPWrapper): Promise<void> {
-    const chunkSize = 62;
-    let aborted = false;
-
-    return Promise.resolve()
-        .then(() => {
-            return wrap.cmsisdap.cmdNums(0x8A /* DAPLinkFlash.OPEN */, [1]);
-        })
-        .then((res) => {
-            const hexUint8 = pxt.U.stringToUint8Array(resp.outfiles[pxtc.BINARY_HEX]);
-            const hexArray: number[] = Array.prototype.slice.call(hexUint8);
-
-            const sendPages = (offset: number = 0): Promise<void> => {
-                const end = Math.min(hexArray.length, offset + chunkSize);
-                const nextPage = hexArray.slice(offset, end);
-                nextPage.unshift(nextPage.length);
-                return wrap.cmsisdap.cmdNums(0x8C /* DAPLinkFlash.WRITE */, nextPage)
-                    .then(() => {
-                        if (!aborted && end < hexArray.length) {
-                            return sendPages(end);
-                        }
-                        return Promise.resolve();
-                    });
-            }
-
-            return sendPages();
-        })
-        .then((res) => {
-            return wrap.cmsisdap.cmdNums(0x8B /* DAPLinkFlash.CLOSE */, []);
-        })
-        .timeout(60000, timeoutMessage)
-        .catch((e) => {
-            aborted = true;
-            return wrap.cmsisdap.cmdNums(0x89 /* DAPLinkFlash.RESET */, [])
-                .catch((e2: any) => {
-                    // Best effort reset, no-op if there's an error
-                })
-                .then(() => {
-                    return Promise.reject(e);
-                });
-        });
-}
-
-function quickHidFlashAsync(resp: pxtc.CompileResult, wrap: DAPWrapper): Promise<void> {
-    let logV = (msg: string) => { }
-    //let logV = log
-    let aborted = false;
-
-    const runFlash = (b: ts.pxtc.UF2.Block, dataAddr: number) => {
-        const cmd = wrap.cortexM.prepareCommand();
-
-        cmd.halt();
-
-        cmd.writeCoreRegister(DapJS.CortexReg.PC, loadAddr + 4 + 1);
-        cmd.writeCoreRegister(DapJS.CortexReg.LR, loadAddr + 1);
-        cmd.writeCoreRegister(DapJS.CortexReg.SP, stackAddr);
-
-        cmd.writeCoreRegister(0, b.targetAddr);
-        cmd.writeCoreRegister(1, dataAddr);
+    private fullVendorCommandFlashAsync(resp: pxtc.CompileResult): Promise<void> {
+        const chunkSize = 62;
+        let aborted = false;
 
         return Promise.resolve()
             .then(() => {
-                logV("setregs")
-                return cmd.go()
+                return this.cmsisdap.cmdNums(0x8A /* DAPLinkFlash.OPEN */, [1]);
             })
-            .then(() => {
-                logV("dbg en")
-                // starts the program
-                return wrap.cortexM.debug.enable()
+            .then((res) => {
+                const hexUint8 = pxt.U.stringToUint8Array(resp.outfiles[pxtc.BINARY_HEX]);
+                const hexArray: number[] = Array.prototype.slice.call(hexUint8);
+
+                const sendPages = (offset: number = 0): Promise<void> => {
+                    const end = Math.min(hexArray.length, offset + chunkSize);
+                    const nextPage = hexArray.slice(offset, end);
+                    nextPage.unshift(nextPage.length);
+                    return this.cmsisdap.cmdNums(0x8C /* DAPLinkFlash.WRITE */, nextPage)
+                        .then(() => {
+                            if (!aborted && end < hexArray.length) {
+                                return sendPages(end);
+                            }
+                            return Promise.resolve();
+                        });
+                }
+
+                return sendPages();
             })
+            .then((res) => {
+                return this.cmsisdap.cmdNums(0x8B /* DAPLinkFlash.CLOSE */, []);
+            })
+            .timeout(60000, timeoutMessage)
+            .catch((e) => {
+                aborted = true;
+                return this.cmsisdap.cmdNums(0x89 /* DAPLinkFlash.RESET */, [])
+                    .catch((e2: any) => {
+                        // Best effort reset, no-op if there's an error
+                    })
+                    .then(() => {
+                        return Promise.reject(e);
+                    });
+            });
     }
 
-    let checksums: Uint8Array
-    return getFlashChecksumsAsync(wrap)
-        .then(buf => {
-            checksums = buf;
-            log("write code");
-            return wrap.cortexM.memory.writeBlock(loadAddr, flashPageBIN);
-        })
-        .then(() => {
-            log("convert");
-            // TODO this is seriously inefficient (130ms on a fast machine)
-            let uf2 = ts.pxtc.UF2.newBlockFile();
-            ts.pxtc.UF2.writeHex(uf2, resp.outfiles[pxtc.BINARY_HEX].split(/\r?\n/));
-            let bytes = pxt.U.stringToUint8Array(ts.pxtc.UF2.serializeFile(uf2));
-            let parsed = ts.pxtc.UF2.parseFile(bytes);
+    private quickHidFlashAsync(resp: pxtc.CompileResult): Promise<void> {
+        let logV = (msg: string) => { }
+        //let logV = log
+        let aborted = false;
 
-            let aligned = pageAlignBlocks(parsed, pageSize);
-            log(`initial: ${aligned.length} pages`);
-            aligned = onlyChanged(aligned, checksums);
-            log(`incremental: ${aligned.length} pages`);
+        const runFlash = (b: ts.pxtc.UF2.Block, dataAddr: number) => {
+            const cmd = this.cortexM.prepareCommand();
 
-            return Promise.mapSeries(pxt.U.range(aligned.length),
-                i => {
-                    if (aborted) return Promise.resolve();
-                    let b = aligned[i];
-                    if (b.targetAddr >= 0x10000000)
-                        return Promise.resolve();
+            cmd.halt();
 
-                    logV("about to write at 0x" + b.targetAddr.toString(16));
+            cmd.writeCoreRegister(DapJS.CortexReg.PC, loadAddr + 4 + 1);
+            cmd.writeCoreRegister(DapJS.CortexReg.LR, loadAddr + 1);
+            cmd.writeCoreRegister(DapJS.CortexReg.SP, stackAddr);
 
-                    let writeBl = Promise.resolve();
+            cmd.writeCoreRegister(0, b.targetAddr);
+            cmd.writeCoreRegister(1, dataAddr);
 
-                    let thisAddr = (i & 1) ? dataAddr : dataAddr + pageSize;
-                    let nextAddr = (i & 1) ? dataAddr + pageSize : dataAddr;
-
-                    if (i == 0) {
-                        let u32data = new Uint32Array(b.data.length / 4);
-                        for (let i = 0; i < b.data.length; i += 4)
-                            u32data[i >> 2] = pxt.HF2.read32(b.data, i);
-                        writeBl = wrap.cortexM.memory.writeBlock(thisAddr, u32data);
-                    }
-
-                    return writeBl
-                        .then(() => runFlash(b, thisAddr))
-                        .then(() => {
-                            let next = aligned[i + 1];
-                            if (!next)
-                                return Promise.resolve();
-                            logV("write next");
-                            let buf = new Uint32Array(next.data.buffer);
-                            return wrap.cortexM.memory.writeBlock(nextAddr, buf);
-                        })
-                        .then(() => {
-                            logV("wait");
-                            return wrap.cortexM.waitForHalt(500);
-                        })
-                        .then(() => {
-                            logV("done block");
-                        });
+            return Promise.resolve()
+                .then(() => {
+                    logV("setregs")
+                    return cmd.go()
                 })
                 .then(() => {
-                    log("flash done");
-                    pxt.tickEvent("hid.flash.done");
-                    return wrap.cortexM.reset(false);
+                    logV("dbg en")
+                    // starts the program
+                    return this.cortexM.debug.enable()
                 })
-                .then(() => {
-                    wrap.flashing = false;
-                });
+        }
+
+        let checksums: Uint8Array
+        return this.getFlashChecksumsAsync()
+            .then(buf => {
+                checksums = buf;
+                log("write code");
+                return this.cortexM.memory.writeBlock(loadAddr, flashPageBIN);
+            })
+            .then(() => {
+                log("convert");
+                // TODO this is seriously inefficient (130ms on a fast machine)
+                let uf2 = ts.pxtc.UF2.newBlockFile();
+                ts.pxtc.UF2.writeHex(uf2, resp.outfiles[pxtc.BINARY_HEX].split(/\r?\n/));
+                let bytes = pxt.U.stringToUint8Array(ts.pxtc.UF2.serializeFile(uf2));
+                let parsed = ts.pxtc.UF2.parseFile(bytes);
+
+                let aligned = DAPWrapper.pageAlignBlocks(parsed, pageSize);
+                log(`initial: ${aligned.length} pages`);
+                aligned = DAPWrapper.onlyChanged(aligned, checksums);
+                log(`incremental: ${aligned.length} pages`);
+
+                return Promise.mapSeries(pxt.U.range(aligned.length),
+                    i => {
+                        if (aborted) return Promise.resolve();
+                        let b = aligned[i];
+                        if (b.targetAddr >= 0x10000000)
+                            return Promise.resolve();
+
+                        logV("about to write at 0x" + b.targetAddr.toString(16));
+
+                        let writeBl = Promise.resolve();
+
+                        let thisAddr = (i & 1) ? dataAddr : dataAddr + pageSize;
+                        let nextAddr = (i & 1) ? dataAddr + pageSize : dataAddr;
+
+                        if (i == 0) {
+                            let u32data = new Uint32Array(b.data.length / 4);
+                            for (let i = 0; i < b.data.length; i += 4)
+                                u32data[i >> 2] = pxt.HF2.read32(b.data, i);
+                            writeBl = this.cortexM.memory.writeBlock(thisAddr, u32data);
+                        }
+
+                        return writeBl
+                            .then(() => runFlash(b, thisAddr))
+                            .then(() => {
+                                let next = aligned[i + 1];
+                                if (!next)
+                                    return Promise.resolve();
+                                logV("write next");
+                                let buf = new Uint32Array(next.data.buffer);
+                                return this.cortexM.memory.writeBlock(nextAddr, buf);
+                            })
+                            .then(() => {
+                                logV("wait");
+                                return this.cortexM.waitForHalt(500);
+                            })
+                            .then(() => {
+                                logV("done block");
+                            });
+                    })
+                    .then(() => {
+                        log("flash done");
+                        pxt.tickEvent("hid.flash.done");
+                        return this.cortexM.reset(false);
+                    })
+                    .then(() => {
+                        this.flashing = false;
+                    });
+            })
+            .timeout(25000, timeoutMessage)
+            .catch((e) => {
+                aborted = true;
+                return Promise.reject(e);
+            });
+    }
+
+    private getFlashChecksumsAsync() {
+        log("getting existing flash checksums")
+        let pages = numPages
+        return this.cortexM.runCode(computeChecksums2, loadAddr, loadAddr + 1, 0xffffffff, stackAddr, true,
+            dataAddr, 0, pageSize, pages)
+            .then(() => this.cortexM.memory.readBlock(dataAddr, pages * 2, pageSize))
+    }
+
+    static onlyChanged(blocks: ts.pxtc.UF2.Block[], checksums: Uint8Array) {
+        return blocks.filter(b => {
+            let idx = b.targetAddr / pageSize
+            pxt.U.assert((idx | 0) == idx)
+            pxt.U.assert(b.data.length == pageSize)
+            if (idx * 8 + 8 > checksums.length)
+                return true // out of range?
+            let c0 = pxt.HF2.read32(checksums, idx * 8)
+            let c1 = pxt.HF2.read32(checksums, idx * 8 + 4)
+            let ch = murmur3_core(b.data)
+            if (c0 == ch[0] && c1 == ch[1])
+                return false
+            return true
         })
-        .timeout(25000, timeoutMessage)
-        .catch((e) => {
-            aborted = true;
-            return Promise.reject(e);
-        });
+    }
+
+    static pageAlignBlocks(blocks: ts.pxtc.UF2.Block[], pageSize: number) {
+        pxt.U.assert(pageSize % 256 == 0)
+        let res: ts.pxtc.UF2.Block[] = []
+        for (let i = 0; i < blocks.length;) {
+            let b0 = blocks[i]
+            let newbuf = new Uint8Array(pageSize)
+            let startPad = b0.targetAddr & (pageSize - 1)
+            let newAddr = b0.targetAddr - startPad
+            for (; i < blocks.length; ++i) {
+                let b = blocks[i]
+                if (b.targetAddr + b.payloadSize > newAddr + pageSize)
+                    break
+                pxt.U.memcpy(newbuf, b.targetAddr - newAddr, b.data, 0, b.payloadSize)
+            }
+            let bb = pxt.U.flatClone(b0)
+            bb.data = newbuf
+            bb.targetAddr = newAddr
+            bb.payloadSize = pageSize
+            res.push(bb)
+        }
+        return res
+    }
+}
+
+export function mkPacketIOWrapper(io: pxt.packetio.PacketIO): pxt.packetio.PacketIOWrapper {
+    return new DAPWrapper(io);
 }
 
 export function canHID(): boolean {
@@ -407,110 +451,3 @@ export function canHID(): boolean {
     return r;
 }
 
-function initAsync() {
-    if (canHID()) {
-        return dapAsync();
-    } else {
-        return Promise.reject(new Error("no HID"))
-    }
-}
-
-export function flashAsync(resp: pxtc.CompileResult, d: pxt.commands.DeployOptions = {}): Promise<void> {
-    startTime = 0
-    let wrap: DAPWrapper
-    log("init")
-
-    d.showNotification(pxt.U.lf("Downloading..."));
-    pxt.tickEvent("hid.flash.start");
-    return Promise.resolve()
-        .then(() => {
-            if (previousDapWrapper) {
-                previousDapWrapper.flashing = true;
-                return Promise.delay(100);
-            }
-            return Promise.resolve();
-        })
-        .then(initAsync)
-        .then(w => {
-            wrap = w
-            log("reset");
-            return wrap.cortexM.init()
-                .then(() => wrap.cortexM.reset(true))
-                .catch(e => {
-                    log("trying re-connect");
-                    return wrap.reconnectAsync(false)
-                        .then(() => wrap.cortexM.reset(true));
-                });
-        })
-        .then(() => wrap.cortexM.memory.readBlock(0x10001014, 1, pageSize))
-        .then(v => {
-            if (pxt.HF2.read32(v, 0) != 0x3C000) {
-                pxt.tickEvent("hid.flash.uicrfail");
-                return fullVendorCommandFlashAsync(resp, wrap);
-            }
-            return quickHidFlashAsync(resp, wrap);
-        })
-        .catch(e => {
-            pxt.log(`flash error: ${e.type}`);
-            if (e.type === "devicenotfound" && d.reportDeviceNotFoundAsync) {
-                pxt.tickEvent("hid.flash.devicenotfound");
-                return d.reportDeviceNotFoundAsync("/device/windows-app/troubleshoot", resp);
-            } else if (e.message === timeoutMessage) {
-                pxt.tickEvent("hid.flash.timeout");
-                return previousDapWrapper.reconnectAsync(true)
-                    .catch((e) => { })
-                    .then(() => {
-                        // Best effort disconnect; at this point we don't even know the state of the device
-                        pxt.reportException(e);
-                        return resp.confirmAsync({
-                            header: lf("Something went wrong..."),
-                            body: lf("One-click download took too long. Please disconnect your {0} from your computer and reconnect it, then manually download your program using drag and drop.", pxt.appTarget.appTheme.boardName || lf("device")),
-                            agreeLbl: lf("Ok"),
-                            hideCancel: true
-                        });
-                    })
-                    .then(() => {
-                        return pxt.commands.saveOnlyAsync(resp);
-                    });
-            } else if (e.isUserError) {
-                d.reportError(e.message);
-                return Promise.resolve();
-            } else {
-                pxt.tickEvent("hid.flash.unknownerror");
-                pxt.reportException(e);
-                return resp.confirmAsync({
-                    header: pxt.U.lf("Something went wrong..."),
-                    body: pxt.U.lf("Please manually download your program to your device using drag and drop. One-click download might work afterwards."),
-                    agreeLbl: lf("Ok"),
-                    hideCancel: true
-                })
-                    .then(() => {
-                        return pxt.commands.saveOnlyAsync(resp);
-                    });
-            }
-        });
-}
-
-function getFlashChecksumsAsync(wrap: DAPWrapper) {
-    log("getting existing flash checksums")
-    let pages = numPages
-    return wrap.cortexM.runCode(computeChecksums2, loadAddr, loadAddr + 1, 0xffffffff, stackAddr, true,
-        dataAddr, 0, pageSize, pages)
-        .then(() => wrap.cortexM.memory.readBlock(dataAddr, pages * 2, pageSize))
-}
-
-function onlyChanged(blocks: ts.pxtc.UF2.Block[], checksums: Uint8Array) {
-    return blocks.filter(b => {
-        let idx = b.targetAddr / pageSize
-        pxt.U.assert((idx | 0) == idx)
-        pxt.U.assert(b.data.length == pageSize)
-        if (idx * 8 + 8 > checksums.length)
-            return true // out of range?
-        let c0 = pxt.HF2.read32(checksums, idx * 8)
-        let c1 = pxt.HF2.read32(checksums, idx * 8 + 4)
-        let ch = murmur3_core(b.data)
-        if (c0 == ch[0] && c1 == ch[1])
-            return false
-        return true
-    })
-}

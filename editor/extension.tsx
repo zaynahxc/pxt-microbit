@@ -77,6 +77,7 @@ pxt.editor.initExtensionsAsync = function (opts: pxt.editor.ExtensionOptions): P
     else if ((flash.canHID() || pxt.webBluetooth.hasPartialFlash()) && !pxt.BrowserUtils.isPxtElectron())
         pxt.commands.deployCoreAsync = deployCoreAsync;
 
+    res.mkPacketIOWrapper = flash.mkPacketIOWrapper;
     res.blocklyPatch = patch.patchBlocks;
     res.showUploadInstructionsAsync = dialogs.showUploadInstructionsAsync;
     res.webUsbPairDialogAsync = dialogs.webUsbPairDialogAsync;
