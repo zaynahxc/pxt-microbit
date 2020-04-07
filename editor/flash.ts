@@ -156,14 +156,12 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     reconnectAsync(): Promise<void> {
         log(`reconnect`)
         // configure serial at 115200
-        if (this.io.isConnected())
-            return Promise.resolve();
-        let p = Promise.resolve();
-        return p
+        this.useSerial = false;
+        return this.io.reconnectAsync()
             .then(() => this.cortexM.init())
-            .then(() => {
-                return this.cmsisdap.cmdNums(0x82, [0x00, 0xC2, 0x01, 0x00])
-                    .then(() => { this.useSerial = true }, (err: any) => { this.useSerial = false; });
+            .then(() => this.cmsisdap.cmdNums(0x82, [0x00, 0xC2, 0x01, 0x00]))
+            .then(() => { 
+                this.useSerial = true 
             });
     }
 
