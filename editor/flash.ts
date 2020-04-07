@@ -70,6 +70,7 @@ function murmur3_core(data: Uint8Array) {
 
 class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     familyID: number;
+    private dap: DapJS.DAP;
     private cortexM: DapJS.CortexM
     private cmsisdap: any;
     private flashing = false;
@@ -78,10 +79,6 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     constructor(public readonly io: pxt.packetio.PacketIO) {
         this.familyID = 0x0D28; // this is the microbit vendor id, not quite UF2 family id
-        this.init();
-    }
-
-    private init() {
         this.io.onData = buf => {
             // console.log("RD: " + pxt.Util.toHex(buf))
             this.pbuf.push(buf);
@@ -118,27 +115,17 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     private allocDAP() {
         log(`alloc dap`);
-        /*
-        let sendMany = (cmds: Uint8Array[]) => {
-            return h.talksAsync(cmds.map(c => ({ cmd: 0, data: c })));
-        }
-
-        if (!h.talksAsync)
-            sendMany = null;
-        */
-
-        let dev = new DapJS.DAP({
+        this.dap = new DapJS.DAP({
             write: writeAsync,
             close: this.disconnectAsync,
             read: readAsync,
             //sendMany: sendMany
         });
-        this.cmsisdap = (dev as any).dap;
-        this.cortexM = new DapJS.CortexM(dev);
+        this.cmsisdap = (this.dap as any).dap;
+        this.cortexM = new DapJS.CortexM(this.dap);
 
-        let h = this.io
-        let pbuf = this.pbuf
-
+        const h = this.io;
+        const pbuf = this.pbuf;
         function writeAsync(data: ArrayBuffer) {
             // console.log("WR: " + pxt.Util.toHex(new Uint8Array(data)));
             return h.sendPacketAsync(new Uint8Array(data));
