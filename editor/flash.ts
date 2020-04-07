@@ -168,7 +168,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         startTime = 0
         pxt.tickEvent("hid.flash.start");
         this.flashing = true;
-        return this.cortexM.init()
+        return this.io.reconnectAsync()
+            .then(() => this.cortexM.init())
             .then(() => this.cortexM.reset(true))
             .catch(e => {
                 log("trying re-connect");
