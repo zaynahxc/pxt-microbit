@@ -72,9 +72,9 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     familyID: number;
     private cortexM: DapJS.CortexM
     private cmsisdap: any;
-    private flashing = true;
-    private pbuf = new pxt.U.PromiseBuffer<Uint8Array>();
+    private flashing = false;
     private useSerial = true;
+    private pbuf = new pxt.U.PromiseBuffer<Uint8Array>();
 
     constructor(public readonly io: pxt.packetio.PacketIO) {
         this.familyID = 0x0D28; // this is the microbit vendor id, not quite UF2 family id
@@ -88,34 +88,30 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         }
 
         this.allocDAP()
-        const readSerial = () => {
-            if (!this.useSerial) {
-                return
-            }
+    }
 
-            if (this.flashing) {
-                setTimeout(readSerial, 300)
-                return
-            }
-
-            this.cmsisdap.cmdNums(0x83, [])
-                .then((r: number[]) => {
-                    const len = r[1]
-                    let str = ""
-                    for (let i = 2; i < len + 2; ++i) {
-                        str += String.fromCharCode(r[i])
-                    }
-                    if (str.length > 0) {
-                        pxt.U.nextTick(readSerial)
-                        if (this.onSerial)
-                            this.onSerial(pxt.U.stringToUint8Array(str), false)
-                    } else
-                        setTimeout(readSerial, 50)
-                }, (err: any) => {
-                    setTimeout(readSerial, 1000)
-                })
+    private readSerial() {
+        if (!this.useSerial || this.flashing) {
+            return
         }
-        readSerial()
+
+        const rs = this.readSerial.bind(this);
+        this.cmsisdap.cmdNums(0x83, [])
+            .then((r: number[]) => {
+                const len = r[1]
+                let str = ""
+                for (let i = 2; i < len + 2; ++i) {
+                    str += String.fromCharCode(r[i])
+                }
+                if (str.length > 0) {
+                    pxt.U.nextTick(rs)
+                    if (this.onSerial)
+                        this.onSerial(pxt.U.stringToUint8Array(str), false)
+                } else
+                    setTimeout(rs, 50)
+            }, (err: any) => {
+                setTimeout(rs, 1000)
+            })
     }
 
     onSerial: (buf: Uint8Array, isStderr: boolean) => void;
@@ -160,20 +156,21 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         return this.io.reconnectAsync()
             .then(() => this.cortexM.init())
             .then(() => this.cmsisdap.cmdNums(0x82, [0x00, 0xC2, 0x01, 0x00]))
-            .then(() => { 
-                this.useSerial = true 
+            .then(() => {
+                this.useSerial = true;
+                this.readSerial();
             });
     }
 
     disconnectAsync() {
         log(`disconnect`)
+        this.useSerial = false;
         return this.io.disconnectAsync();
     }
 
     reflashAsync(resp: pxtc.CompileResult): Promise<void> {
         log("reflash")
         startTime = 0
-
         pxt.tickEvent("hid.flash.start");
         this.flashing = true;
         return this.cortexM.init()
@@ -190,48 +187,49 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                     return this.fullVendorCommandFlashAsync(resp);
                 }
                 return this.quickHidFlashAsync(resp);
-            });
-            /*
-            .catch(e => {
-                pxt.log(`flash error: ${e.type}`);
-                if (e.type === "devicenotfound" && this.reportDeviceNotFoundAsync) {
-                    pxt.tickEvent("hid.flash.devicenotfound");
-                    return this.options.reportDeviceNotFoundAsync("/device/windows-app/troubleshoot", resp);
-                } else if (e.message === timeoutMessage) {
-                    pxt.tickEvent("hid.flash.timeout");
-                    return this.reconnectAsync()
-                        .catch((e) => { })
-                        .then(() => {
-                            // Best effort disconnect; at this point we don't even know the state of the device
-                            pxt.reportException(e);
-                            return resp.confirmAsync({
-                                header: lf("Something went wrong..."),
-                                body: lf("One-click download took too long. Please disconnect your {0} from your computer and reconnect it, then manually download your program using drag and drop.", pxt.appTarget.appTheme.boardName || lf("device")),
-                                agreeLbl: lf("Ok"),
-                                hideCancel: true
-                            });
-                        })
-                        .then(() => {
-                            return pxt.commands.saveOnlyAsync(resp);
+            })
+            .finally(() => { this.flashing = false })
+        /*
+        .catch(e => {
+            pxt.log(`flash error: ${e.type}`);
+            if (e.type === "devicenotfound" && this.reportDeviceNotFoundAsync) {
+                pxt.tickEvent("hid.flash.devicenotfound");
+                return this.options.reportDeviceNotFoundAsync("/device/windows-app/troubleshoot", resp);
+            } else if (e.message === timeoutMessage) {
+                pxt.tickEvent("hid.flash.timeout");
+                return this.reconnectAsync()
+                    .catch((e) => { })
+                    .then(() => {
+                        // Best effort disconnect; at this point we don't even know the state of the device
+                        pxt.reportException(e);
+                        return resp.confirmAsync({
+                            header: lf("Something went wrong..."),
+                            body: lf("One-click download took too long. Please disconnect your {0} from your computer and reconnect it, then manually download your program using drag and drop.", pxt.appTarget.appTheme.boardName || lf("device")),
+                            agreeLbl: lf("Ok"),
+                            hideCancel: true
                         });
-                } else if (e.isUserError) {
-                    d.reportError(e.message);
-                    return Promise.resolve();
-                } else {
-                    pxt.tickEvent("hid.flash.unknownerror");
-                    pxt.reportException(e);
-                    return resp.confirmAsync({
-                        header: pxt.U.lf("Something went wrong..."),
-                        body: pxt.U.lf("Please manually download your program to your device using drag and drop. One-click download might work afterwards."),
-                        agreeLbl: lf("Ok"),
-                        hideCancel: true
                     })
-                        .then(() => {
-                            return pxt.commands.saveOnlyAsync(resp);
-                        });
-                }
-            });
-            */
+                    .then(() => {
+                        return pxt.commands.saveOnlyAsync(resp);
+                    });
+            } else if (e.isUserError) {
+                d.reportError(e.message);
+                return Promise.resolve();
+            } else {
+                pxt.tickEvent("hid.flash.unknownerror");
+                pxt.reportException(e);
+                return resp.confirmAsync({
+                    header: pxt.U.lf("Something went wrong..."),
+                    body: pxt.U.lf("Please manually download your program to your device using drag and drop. One-click download might work afterwards."),
+                    agreeLbl: lf("Ok"),
+                    hideCancel: true
+                })
+                    .then(() => {
+                        return pxt.commands.saveOnlyAsync(resp);
+                    });
+            }
+        });
+        */
     }
 
     private fullVendorCommandFlashAsync(resp: pxtc.CompileResult): Promise<void> {
@@ -371,9 +369,6 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                         log("flash done");
                         pxt.tickEvent("hid.flash.done");
                         return this.cortexM.reset(false);
-                    })
-                    .then(() => {
-                        this.flashing = false;
                     });
             })
             .timeout(25000, timeoutMessage)
