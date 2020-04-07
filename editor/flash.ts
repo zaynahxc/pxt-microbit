@@ -44,7 +44,7 @@ function log(msg: string) {
     if (!startTime) startTime = now
     now -= startTime
     let ts = ("00000" + now).slice(-5)
-    pxt.log(`HID ${ts}: ${msg}`)
+    pxt.log(`dap ${ts}: ${msg}`)
 }
 
 
