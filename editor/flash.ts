@@ -118,7 +118,6 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         readSerial()
     }
 
-    onConnectionChanged: () => void;
     onSerial: (buf: Uint8Array, isStderr: boolean) => void;
 
     private allocDAP() {
