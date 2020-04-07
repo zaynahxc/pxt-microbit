@@ -173,7 +173,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             .then(() => this.cortexM.reset(true))
             .catch(e => {
                 log("trying re-connect");
-                return this.reconnectAsync()
+                return this.io.reconnectAsync()
+                    .then(() => this.cortexM.init())
                     .then(() => this.cortexM.reset(true));
             })
             .then(() => this.cortexM.memory.readBlock(0x10001014, 1, pageSize))
