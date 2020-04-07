@@ -121,6 +121,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     onSerial: (buf: Uint8Array, isStderr: boolean) => void;
 
     private allocDAP() {
+        log(`alloc dap`);
         /*
         let sendMany = (cmds: Uint8Array[]) => {
             return h.talksAsync(cmds.map(c => ({ cmd: 0, data: c })));
@@ -152,14 +153,12 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         }
     }
 
-    reconnectAsync(first?: boolean) {
+    reconnectAsync(): Promise<void> {
+        log(`reconnect`)
         // configure serial at 115200
+        if (this.io.isConnected())
+            return Promise.resolve();
         let p = Promise.resolve();
-        if (!first) {
-            p = this.io.reconnectAsync()
-                .then(() => this.allocDAP());
-        }
-
         return p
             .then(() => this.cortexM.init())
             .then(() => {
@@ -169,12 +168,13 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     }
 
     disconnectAsync() {
+        log(`disconnect`)
         return this.io.disconnectAsync();
     }
 
     reflashAsync(resp: pxtc.CompileResult): Promise<void> {
+        log("reflash")
         startTime = 0
-        log("init")
 
         pxt.tickEvent("hid.flash.start");
         this.flashing = true;
@@ -182,7 +182,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             .then(() => this.cortexM.reset(true))
             .catch(e => {
                 log("trying re-connect");
-                return this.reconnectAsync(false)
+                return this.reconnectAsync()
                     .then(() => this.cortexM.reset(true));
             })
             .then(() => this.cortexM.memory.readBlock(0x10001014, 1, pageSize))
@@ -201,7 +201,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                     return this.options.reportDeviceNotFoundAsync("/device/windows-app/troubleshoot", resp);
                 } else if (e.message === timeoutMessage) {
                     pxt.tickEvent("hid.flash.timeout");
-                    return this.reconnectAsync(true)
+                    return this.reconnectAsync()
                         .catch((e) => { })
                         .then(() => {
                             // Best effort disconnect; at this point we don't even know the state of the device
@@ -237,9 +237,10 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     }
 
     private fullVendorCommandFlashAsync(resp: pxtc.CompileResult): Promise<void> {
+        log("full flash")
+
         const chunkSize = 62;
         let aborted = false;
-
         return Promise.resolve()
             .then(() => {
                 return this.cmsisdap.cmdNums(0x8A /* DAPLinkFlash.OPEN */, [1]);
@@ -280,6 +281,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     }
 
     private quickHidFlashAsync(resp: pxtc.CompileResult): Promise<void> {
+        log("quick flash")
         let logV = (msg: string) => { }
         //let logV = log
         let aborted = false;
@@ -384,7 +386,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     }
 
     private getFlashChecksumsAsync() {
-        log("getting existing flash checksums")
+        log("flash checksums")
         let pages = numPages
         return this.cortexM.runCode(computeChecksums2, loadAddr, loadAddr + 1, 0xffffffff, stackAddr, true,
             dataAddr, 0, pageSize, pages)
@@ -432,6 +434,6 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 }
 
 export function mkPacketIOWrapper(io: pxt.packetio.PacketIO): pxt.packetio.PacketIOWrapper {
-    pxt.log(`packetio: wrapper dap`)
+    pxt.log(`packetio: mk wrapper dap`)
     return new DAPWrapper(io);
 }
