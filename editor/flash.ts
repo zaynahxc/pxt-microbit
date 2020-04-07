@@ -84,15 +84,22 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             this.pbuf.push(buf);
         }
 
-        this.allocDAP()
+        this.allocDAP();
     }
 
     private readSerial() {
-        if (!this.useSerial || this.flashing) {
-            return
+        if (!this.useSerial) { // stop reading
+            log('stop read serial')
+            return;
+        }
+        
+        const rs = this.readSerial.bind(this);
+        if (this.flashing) {
+            setTimeout(rs, 500);
+            return;
         }
 
-        const rs = this.readSerial.bind(this);
+        // done
         this.cmsisdap.cmdNums(0x83, [])
             .then((r: number[]) => {
                 const len = r[1]
@@ -144,6 +151,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             .then(() => this.cortexM.init())
             .then(() => this.cmsisdap.cmdNums(0x82, [0x00, 0xC2, 0x01, 0x00]))
             .then(() => {
+                log(`start read serial`)
                 this.useSerial = true;
                 this.readSerial();
             });
