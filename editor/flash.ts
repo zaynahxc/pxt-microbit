@@ -435,19 +435,3 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 export function mkPacketIOWrapper(io: pxt.packetio.PacketIO): pxt.packetio.PacketIOWrapper {
     return new DAPWrapper(io);
 }
-
-export function canHID(): boolean {
-    let r = false
-    if (pxt.usb.isEnabled) {
-        r = true
-    } else if (pxt.U.isNodeJS) {
-        r = true
-    } else {
-        const forceHexDownload = /forceHexDownload/i.test(window.location.href);
-        const isUwp = !!(window as any).Windows;
-        if (pxt.BrowserUtils.isLocalHost() && pxt.Cloud.localToken && !forceHexDownload || isUwp)
-            r = true
-    }
-    return r;
-}
-

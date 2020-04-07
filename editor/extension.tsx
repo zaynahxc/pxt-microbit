@@ -8,29 +8,6 @@ import * as dialogs from "./dialogs";
 import * as flash from "./flash";
 import * as patch from "./patch";
 
-function uwpDeployCoreAsync(resp: pxtc.CompileResult, d: pxt.commands.DeployOptions = {}): Promise<void> {
-    // Go straight to flashing
-    return flash.flashAsync(resp, d);
-}
-
-function deployCoreAsync(resp: pxtc.CompileResult, d: pxt.commands.DeployOptions = {}): Promise<void> {
-    return pxt.usb.isPairedAsync()
-        .then(isPaired => {
-            if (isPaired) {
-                // Already paired from earlier in the session or from previous session
-                return flash.flashAsync(resp, d);
-            }
-
-            // try bluetooth if device is paired
-            if (pxt.webBluetooth.isPaired())
-                return pxt.webBluetooth.flashAsync(resp, d)
-                    .catch(e => pxt.commands.saveOnlyAsync(resp));
-
-            // No device paired, prompt user
-            return pxt.commands.saveOnlyAsync(resp);
-        });
-}
-
 pxt.editor.initExtensionsAsync = function (opts: pxt.editor.ExtensionOptions): Promise<pxt.editor.ExtensionResult> {
     pxt.debug('loading microbit target extensions...')
 
@@ -70,12 +47,6 @@ pxt.editor.initExtensionsAsync = function (opts: pxt.editor.ExtensionOptions): P
         classCode: 0xff,
         subclassCode: 0x03
     }])
-
-    const isUwp = !!(window as any).Windows;
-    if (isUwp)
-        pxt.commands.deployCoreAsync = uwpDeployCoreAsync;
-    else if ((flash.canHID() || pxt.webBluetooth.hasPartialFlash()) && !pxt.BrowserUtils.isPxtElectron())
-        pxt.commands.deployCoreAsync = deployCoreAsync;
 
     res.mkPacketIOWrapper = flash.mkPacketIOWrapper;
     res.blocklyPatch = patch.patchBlocks;
