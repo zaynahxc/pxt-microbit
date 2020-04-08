@@ -116,8 +116,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                     } else
                         setTimeout(readSerial, 50)
                 }, (err: any) => {
-                    log(`read error: ` + err.message)
-                    setTimeout(readSerial, 1000)
+                    log(`read error: ` + err.message);
+                    this.disconnectAsync(); // force disconnect
                 });
         }
         readSerial();
