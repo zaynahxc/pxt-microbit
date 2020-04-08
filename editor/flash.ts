@@ -92,7 +92,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         const rid = this.readSerialId;
         const readSerial = () => {
             if (rid != this.readSerialId) {
-                log('stop read serial')
+                log(`stopped read serial ${rid}`)
                 return;
             }
             if (this.flashing) {
@@ -116,13 +116,17 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                     } else
                         setTimeout(readSerial, 50)
                 }, (err: any) => {
-                    if (rid != this.readSerialId) 
-                        return;
                     log(`read error: ` + err.message)
                     setTimeout(readSerial, 1000)
                 });
         }
         readSerial();
+    }
+
+    private stopSerialAsync() {
+        log(`stopping serial reader`)
+        this.readSerialId++;
+        return Promise.delay(200);
     }
 
     onSerial: (buf: Uint8Array, isStderr: boolean) => void;
@@ -153,8 +157,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     reconnectAsync(): Promise<void> {
         log(`reconnect`)
         // configure serial at 115200
-        this.readSerialId++; // invalidate readers
-        return this.io.reconnectAsync()
+        return this.stopSerialAsync()
+            .then(() => this.io.reconnectAsync())
             .then(() => this.cortexM.init())
             .then(() => this.cmsisdap.cmdNums(0x82, [0x00, 0xC2, 0x01, 0x00]))
             .then(() => this.startReadSerial());
@@ -162,8 +166,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     disconnectAsync() {
         log(`disconnect`)
-        this.readSerialId++; // invalidate readers
-        return this.io.disconnectAsync();
+        return this.stopSerialAsync()
+            .then(() => this.io.disconnectAsync());
     }
 
     reflashAsync(resp: pxtc.CompileResult): Promise<void> {
@@ -183,47 +187,6 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 return this.quickHidFlashAsync(resp);
             })
             .finally(() => { this.flashing = false })
-        /*
-        .catch(e => {
-            pxt.log(`flash error: ${e.type}`);
-            if (e.type === "devicenotfound" && this.reportDeviceNotFoundAsync) {
-                pxt.tickEvent("hid.flash.devicenotfound");
-                return this.options.reportDeviceNotFoundAsync("/device/windows-app/troubleshoot", resp);
-            } else if (e.message === timeoutMessage) {
-                pxt.tickEvent("hid.flash.timeout");
-                return this.reconnectAsync()
-                    .catch((e) => { })
-                    .then(() => {
-                        // Best effort disconnect; at this point we don't even know the state of the device
-                        pxt.reportException(e);
-                        return resp.confirmAsync({
-                            header: lf("Something went wrong..."),
-                            body: lf("One-click download took too long. Please disconnect your {0} from your computer and reconnect it, then manually download your program using drag and drop.", pxt.appTarget.appTheme.boardName || lf("device")),
-                            agreeLbl: lf("Ok"),
-                            hideCancel: true
-                        });
-                    })
-                    .then(() => {
-                        return pxt.commands.saveOnlyAsync(resp);
-                    });
-            } else if (e.isUserError) {
-                d.reportError(e.message);
-                return Promise.resolve();
-            } else {
-                pxt.tickEvent("hid.flash.unknownerror");
-                pxt.reportException(e);
-                return resp.confirmAsync({
-                    header: pxt.U.lf("Something went wrong..."),
-                    body: pxt.U.lf("Please manually download your program to your device using drag and drop. One-click download might work afterwards."),
-                    agreeLbl: lf("Ok"),
-                    hideCancel: true
-                })
-                    .then(() => {
-                        return pxt.commands.saveOnlyAsync(resp);
-                    });
-            }
-        });
-        */
     }
 
     private fullVendorCommandFlashAsync(resp: pxtc.CompileResult): Promise<void> {
