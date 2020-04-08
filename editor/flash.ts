@@ -109,8 +109,10 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 }
                 if (str.length > 0) {
                     pxt.U.nextTick(rs)
-                    if (this.onSerial)
-                        this.onSerial(pxt.U.stringToUint8Array(str), false)
+                    if (this.onSerial) {
+                        const utf8Str = pxt.U.toUTF8(str);
+                        this.onSerial(pxt.U.stringToUint8Array(utf8Str), false)
+                    }
                 } else
                     setTimeout(rs, 50)
             }, (err: any) => {
