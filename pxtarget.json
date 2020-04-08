@@ -299,6 +299,7 @@
         "enableTrace": true,
         "ignoreDocsErrors": true,
         "experiments": [
+            "autoWebUSBDownload",
             "allowPackageExtensions",
             "instructions",
             "accessibleBlocks",
@@ -480,7 +481,8 @@
         "githubEditor": true,
         "chooseLanguageRestrictionOnNewProject": true,
         "openProjectNewTab": true,
-        "python": true
+        "python": true,
+        "appFlashingTroubleshoot": "/device/windows-app/troubleshoot"
     },
     "queryVariants": {
         "hidemenu": {
