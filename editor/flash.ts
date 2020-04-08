@@ -74,7 +74,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     private cortexM: DapJS.CortexM
     private cmsisdap: any;
     private flashing = false;
-    private useSerial = true;
+    private readSerialId = 0;
     private pbuf = new pxt.U.PromiseBuffer<Uint8Array>();
 
     constructor(public readonly io: pxt.packetio.PacketIO) {
@@ -87,37 +87,42 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         this.allocDAP();
     }
 
-    private readSerial() {
-        if (!this.useSerial) { // stop reading
-            log('stop read serial')
-            return;
-        }
-        
-        const rs = this.readSerial.bind(this);
-        if (this.flashing) {
-            setTimeout(rs, 500);
-            return;
-        }
-
-        // done
-        this.cmsisdap.cmdNums(0x83, [])
-            .then((r: number[]) => {
-                const len = r[1]
-                let str = ""
-                for (let i = 2; i < len + 2; ++i) {
-                    str += String.fromCharCode(r[i])
-                }
-                if (str.length > 0) {
-                    pxt.U.nextTick(rs)
-                    if (this.onSerial) {
-                        const utf8Str = pxt.U.toUTF8(str);
-                        this.onSerial(pxt.U.stringToUint8Array(utf8Str), false)
+    private startReadSerial() {
+        log(`start read serial`)
+        const rid = this.readSerialId;
+        const readSerial = () => {
+            if (rid != this.readSerialId) {
+                log('stop read serial')
+                return;
+            }
+            if (this.flashing) {
+                setTimeout(readSerial, 500);
+                return;
+            }
+            // done
+            this.cmsisdap.cmdNums(0x83, [])
+                .then((r: number[]) => {
+                    const len = r[1]
+                    let str = ""
+                    for (let i = 2; i < len + 2; ++i) {
+                        str += String.fromCharCode(r[i])
                     }
-                } else
-                    setTimeout(rs, 50)
-            }, (err: any) => {
-                setTimeout(rs, 1000)
-            })
+                    if (str.length > 0) {
+                        pxt.U.nextTick(readSerial)
+                        if (this.onSerial) {
+                            const utf8Str = pxt.U.toUTF8(str);
+                            this.onSerial(pxt.U.stringToUint8Array(utf8Str), false)
+                        }
+                    } else
+                        setTimeout(readSerial, 50)
+                }, (err: any) => {
+                    if (rid != this.readSerialId) 
+                        return;
+                    log(`read error: ` + err.message)
+                    setTimeout(readSerial, 1000)
+                });
+        }
+        readSerial();
     }
 
     onSerial: (buf: Uint8Array, isStderr: boolean) => void;
@@ -148,20 +153,16 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     reconnectAsync(): Promise<void> {
         log(`reconnect`)
         // configure serial at 115200
-        this.useSerial = false;
+        this.readSerialId++; // invalidate readers
         return this.io.reconnectAsync()
             .then(() => this.cortexM.init())
             .then(() => this.cmsisdap.cmdNums(0x82, [0x00, 0xC2, 0x01, 0x00]))
-            .then(() => {
-                log(`start read serial`)
-                this.useSerial = true;
-                this.readSerial();
-            });
+            .then(() => this.startReadSerial());
     }
 
     disconnectAsync() {
         log(`disconnect`)
-        this.useSerial = false;
+        this.readSerialId++; // invalidate readers
         return this.io.disconnectAsync();
     }
 
@@ -173,12 +174,6 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         return this.io.reconnectAsync()
             .then(() => this.cortexM.init())
             .then(() => this.cortexM.reset(true))
-            .catch(e => {
-                log("trying re-connect");
-                return this.io.reconnectAsync()
-                    .then(() => this.cortexM.init())
-                    .then(() => this.cortexM.reset(true));
-            })
             .then(() => this.cortexM.memory.readBlock(0x10001014, 1, pageSize))
             .then(v => {
                 if (pxt.HF2.read32(v, 0) != 0x3C000) {
