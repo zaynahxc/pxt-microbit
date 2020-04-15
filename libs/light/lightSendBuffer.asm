@@ -1,5 +1,5 @@
 
-lightSendBufferAsm:
+sendBufferAsm:
     push {r4,r5,r6,r7,lr}
     
     mov r4, r0 ; save buff
