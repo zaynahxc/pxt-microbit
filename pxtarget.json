@@ -12,6 +12,7 @@
         "libs/bluetooth",
         "libs/servo",
         "libs/radio-broadcast",
+        "libs/color",
         "libs/light"
     ],
     "cloud": {
