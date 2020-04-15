@@ -4,7 +4,7 @@ namespace light {
         sendBufferAsm(buf, dataPin.id);
     }
 
-    //% shim=lightSendBufferAsm
+    //% shim=sendBufferAsm
     function sendBufferAsm(buf: Buffer, pin: DigitalPin) {
 
     }
