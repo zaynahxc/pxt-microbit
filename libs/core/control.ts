@@ -52,6 +52,14 @@ namespace control {
      */
     //% shim=pxtrt::runtimeWarning
     export function runtimeWarning(message: string) { }
+
+    let nextUserId = 1024;
+    export function allocateNotifyEvent(): number {
+        const n = ++nextUserId;
+        if (n >= 0xffff)
+            nextUserId = 1024;
+        return n;
+    }
 }
 
 /**
