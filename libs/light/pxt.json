@@ -13,7 +13,7 @@
         "neopixeloverrides.ts",
         "animations.jres",
         "targetoverrides.ts",
-        "sendBufferAsm.asm"
+        "lightSendBufferAsm.asm"
     ],
     "testFiles": [
         "test.ts"

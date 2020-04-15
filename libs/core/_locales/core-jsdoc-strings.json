@@ -256,6 +256,8 @@
   "console.logValue|param|name": "name of the value stream, eg: \"x\"",
   "console.logValue|param|value": "to write",
   "control": "Runtime and event utilities.",
+  "control.AnimationQueue.cancel": "Cancels the current running animation and clears the queue",
+  "control.AnimationQueue.runUntilDone": "Runs 'render' in a loop until it returns false or the 'stop' function is called",
   "control.assert": "If the condition is false, display msg on serial console, and panic with code 098.",
   "control.createBuffer": "Create a new zero-initialized buffer.",
   "control.createBufferFromUTF8": "Create a new buffer with UTF8-encoded string",

@@ -85,7 +85,6 @@
   "light.hsv|param|hue": "value of the hue channel between 0 and 255. eg: 255",
   "light.hsv|param|sat": "value of the saturation channel between 0 and 255. eg: 255",
   "light.hsv|param|val": "value of the value channel between 0 and 255. eg: 255",
-  "light.onboardStrip": "Get the default light strip.",
   "light.photonFlip": "Switch the direction of the photon pulse.",
   "light.photonForward": "Move a photon effect along the pixel strip by a number of steps.",
   "light.photonForward|param|steps": "number of steps (lights) to move, eg: 1",

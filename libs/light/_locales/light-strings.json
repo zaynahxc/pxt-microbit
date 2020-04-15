@@ -53,7 +53,6 @@
   "light.fade|block": "fade %color=neopixel_colors|by %brightness",
   "light.graph|block": "graph %value||up to %high",
   "light.hsv|block": "hue %hue|sat %sat|val %val",
-  "light.onboardStrip|block": "onboard strip",
   "light.photonFlip|block": "photon flip",
   "light.photonForward|block": "photon forward by %steps",
   "light.pixelColor|block": "pixel color at %pixeloffset",
