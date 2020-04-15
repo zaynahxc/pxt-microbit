@@ -1,5 +1,5 @@
 namespace light {
-    export function sendBuffer(data: DigitalInOutPin, clk: DigitalInOutPin, mode: int32, buf: Buffer): void {
+    export function sendBuffer(data: DigitalInOutPin, clk: DigitalInOutPin, mode: number, buf: Buffer): void {
         const dataPin = data as MicrobitPin;
         sendBufferAsm(buf, dataPin.id);
     }

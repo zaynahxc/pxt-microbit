@@ -11,6 +11,6 @@ namespace light {
     export function defaultStrip(): LightStrip {
         if (_defaultStrip) return _defaultStrip;
 
-        return _defaultStrip = light.createStrip(DigitalPin.P1, 30);
+        return _defaultStrip = light.createStrip(pins.P1, 30);
     }
 }
