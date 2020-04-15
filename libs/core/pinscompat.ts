@@ -236,3 +236,10 @@ namespace pins {
     //% fixedInstance whenUsed
     export const P20: DigitalInOutPin = new MicrobitPin(DigitalPin.P20);
 }
+
+namespace control {
+    //% hidden=1
+    export function runInBackground(f: () => void) {
+        control.inBackground(f);
+    }
+}

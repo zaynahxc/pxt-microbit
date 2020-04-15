@@ -13,8 +13,4 @@ namespace light {
 
         return _defaultStrip = light.createStrip(pins.P1, 30);
     }
-
-    export function onboardStrip(): LightStrip {
-        return defaultStrip();
-    }
 }

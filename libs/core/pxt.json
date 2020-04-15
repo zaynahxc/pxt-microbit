@@ -48,6 +48,7 @@
         "trig.cpp",
         "fixed.ts",
         "templates.ts",
+        "animationqueue.ts",
         "parts/speaker.svg",
         "parts/headphone.svg"
     ],
