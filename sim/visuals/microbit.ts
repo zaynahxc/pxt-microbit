@@ -412,7 +412,7 @@ path.sim-board {
             this.updateButtonAB();
             this.updateGestures();
 
-            if (!runtime || runtime.dead) U.addClass(this.element, "grayscale");
+            if (!this.props.runtime || this.props.runtime.dead) U.addClass(this.element, "grayscale");
             else U.removeClass(this.element, "grayscale");
         }
 
@@ -506,6 +506,8 @@ path.sim-board {
                     fill: `url(#${gid})`
                 });
                 this.thermometerText = svg.child(this.g, "text", { class: 'sim-text', x: 58, y: 130 }) as SVGTextElement;
+                if (this.props.runtime)
+                    this.props.runtime.environmentGlobals[pxsim.localization.lf("temperature")] = state.thermometerState.temperature;
                 this.updateTheme();
 
                 let pt = this.element.createSVGPoint();
@@ -582,6 +584,8 @@ path.sim-board {
             if (txt != this.headText.textContent) {
                 svg.rotateElement(this.head, xc, yc, state.compassState.heading + 180);
                 this.headText.textContent = txt;
+                if (this.props.runtime)
+                    this.props.runtime.environmentGlobals[pxsim.localization.lf("heading")] = state.compassState.heading;
             }
         }
 
@@ -667,6 +671,8 @@ path.sim-board {
                         }
                     });
                 this.lightLevelText = svg.child(this.g, "text", { x: 85, y: cy + r - 5, text: '', class: 'sim-text' }) as SVGTextElement;
+                if (this.props.runtime)
+                    this.props.runtime.environmentGlobals[pxsim.localization.lf("lightLevel")] = state.lightSensorState.lightLevel;
                 this.updateTheme();
 
                 accessibility.makeFocusable(this.lightLevelButton);
@@ -706,6 +712,8 @@ path.sim-board {
             const z = acc.getZ();
             const af = 8 / 1023;
             const s = 1 - Math.min(0.1, Math.pow(Math.max(Math.abs(x), Math.abs(y)) / 1023, 2) / 35);
+
+            acc.updateEnvironmentGlobals();
 
             // fix top parent and apply style to it
             const el = this.findParentElement();
