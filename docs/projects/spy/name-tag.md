@@ -1,5 +1,7 @@
 # Name Tag
 
+### @explicitHints true
+
 ## Introduction @unplugged
 
 Tell everyone who you are. Show you name on the LEDs.
@@ -8,18 +10,20 @@ Tell everyone who you are. Show you name on the LEDs.
 
 ## Step 1
 
-Add an event to repeat code ``||basic:forever||``.
+Use the ``||basic:forever||`` loop to run some code continuously.
 
-```blocks
+```spy
 basic.forever(function() {
+
 });
 ```
 
 ## Step 2
 
-Place ``||basic:show string||`` in ``||basic:forever||`` to show text in a loop.
+Show your name using ``||basic:show string||`` inside the ``||basic:forever||`` loop. Set your
+name as the string value for ``||basic:show string||``.
 
-```blocks
+```spy
 basic.forever(function() {
     // @highlight
     basic.showString("MICRO");
@@ -34,9 +38,9 @@ Look at the simulator and make sure it shows your name on the screen.
 
 ## Step 4
 
-Place more ``||basic:show string||`` to create your own story.
+Place more ``||basic:show strings||`` to create a longer message.
 
-```blocks
+```spy
 basic.forever(function() {
     basic.showString("MICRO");
     // @highlight

@@ -30,7 +30,15 @@ Fun games to build with your @boardname@.
   "imageUrl": "/static/mb/projects/coin-flipper.png",
   "cardType": "tutorial",
   "youTubeId": "678ATmGGlvk",
-  "otherActions": []
+  "otherActions": [{
+    "url": "/projects/spy/coin-flipper",
+    "editor": "py",
+    "cardType": "tutorial"
+  }, {
+    "url": "/projects/spy/coin-flipper",
+    "editor": "js",
+    "cardType": "tutorial"
+  }]
 }, {
   "name": "7 seconds",
   "url":"/projects/7-seconds",
@@ -38,7 +46,15 @@ Fun games to build with your @boardname@.
   "imageUrl": "/static/mb/projects/7-seconds.png",
   "cardType": "tutorial",
   "youTubeId": "LINr5wa4okg",
-  "otherActions": []
+  "otherActions": [{
+    "url": "/projects/spy/7-seconds",
+    "editor": "py",
+    "cardType": "tutorial"
+  }, {
+    "url": "/projects/spy/7-seconds",
+    "editor": "js",
+    "cardType": "tutorial"
+  }]
 }, {
   "name": "Hot Potato",
   "url":"/projects/hot-potato",
@@ -46,14 +62,30 @@ Fun games to build with your @boardname@.
   "imageUrl": "/static/mb/projects/hot-potato.png",
   "cardType": "tutorial",
   "youTubeId": "xLEy1B_gWKY",
-  "otherActions": []
+  "otherActions": [{
+    "url": "/projects/spy/hot-potato",
+    "editor": "py",
+    "cardType": "tutorial"
+  }, {
+    "url": "/projects/spy/hot-potato",
+    "editor": "js",
+    "cardType": "tutorial"
+  }]
 }, {
   "name": "Heads Guess!",
   "url":"/projects/heads-guess",
   "description": "Try to guess words with your friends!",
   "imageUrl": "/static/mb/projects/heads-guess.png",
   "cardType": "tutorial",
-  "otherActions": []
+  "otherActions": [{
+    "url": "/projects/spy/heads-guess",
+    "editor": "py",
+    "cardType": "tutorial"
+  }, {
+    "url": "/projects/spy/heads-guess",
+    "editor": "js",
+    "cardType": "tutorial"
+  }]
 }, {
   "name": "Reaction Time",
   "url":"/projects/reaction-time",
@@ -65,7 +97,15 @@ Fun games to build with your @boardname@.
   "description": "Button smashing rope pulling games using LEDs",
   "imageUrl":"/static/mb/projects/tug-of-led.png",
   "cardType": "tutorial",
-  "otherActions": []
+  "otherActions": [{
+    "url": "/projects/spy/tug-of-led",
+    "editor": "py",
+    "cardType": "tutorial"
+  }, {
+    "url": "/projects/spy/tug-of-led",
+    "editor": "js",
+    "cardType": "tutorial"
+  }]
 }, {
   "name": "Magic Button Trick",
   "url":"/projects/magic-button-trick",
@@ -77,7 +117,15 @@ Fun games to build with your @boardname@.
   "description": "Use the game blocks to create a skill game",
   "imageUrl": "/static/mb/projects/snap-the-dot.png",
   "cardType": "tutorial",
-  "otherActions": []
+  "otherActions": [{
+    "url": "/projects/spy/snap-the-dot",
+    "editor": "py",
+    "cardType": "tutorial"
+  }, {
+    "url": "/projects/spy/snap-the-dot",
+    "editor": "js",
+    "cardType": "tutorial"
+  }]
 }, {
   "name": "Salute!",
   "url":"/projects/salute",
