@@ -9,6 +9,8 @@
   * [Micro Chat](/projects/micro-chat)
 * [Live Coding](/live-coding)
   * [Live Coding](https://mixer.com/MakeCode)
+  * [Compass](https://youtu.be/9IyssvevhJ0)
+  * [Hot Or Cold](https://youtu.be/uUeY3dHiXkE)
   * [Radio Firefly](https://youtu.be/_t14jxCuMJg)
   * [Arcade Buttons!](https://youtu.be/Gy_B--9iuXQ)
   * [Tug of LED](https://youtu.be/oZrvVB4cGWU)
