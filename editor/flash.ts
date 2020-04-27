@@ -116,7 +116,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                         pxt.U.nextTick(readSerial)
                         if (this.onSerial) {
                             const utf8Str = pxt.U.toUTF8(str);
-                            this.onSerial(pxt.U.stringToUint8Array(utf8Str), false)
+                            this.onSerial(this.io.deviceId(), pxt.U.stringToUint8Array(utf8Str), false)
                         }
                     } else
                         setTimeout(readSerial, 50)
@@ -134,7 +134,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         return Promise.delay(200);
     }
 
-    onSerial: (buf: Uint8Array, isStderr: boolean) => void;
+    onSerial: (deviceid: string, buf: Uint8Array, isStderr: boolean) => void;
 
     private allocDAP() {
         log(`alloc dap`);
