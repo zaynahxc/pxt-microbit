@@ -87,6 +87,7 @@
 * [Tools](/projects/tools)
   * [Stopwatch](/projects/stopwatch)
   * [Level](/projects/level)
+  * [Compass](/projects/compass)
   * [Plot Acceleration](/projects/plot-acceleration)
   * [Light Level Meter](/projects/light-level-meter)
   * [Analog Pin Tester](/projects/analog-pin-tester)
