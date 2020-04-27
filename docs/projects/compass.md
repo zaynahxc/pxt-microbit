@@ -116,5 +116,7 @@ basic.forever(() => {
 
 ## Step 8 @unplugged
 
-If you have a @boardname@, click `|Download|` and follow the screen instructions. The first time you run your program,
-you will have to follow the screen instructions to calibrate your compass.
+If you have a @boardname@, click `|Download|` and follow the screen instructions. 
+You will have to follow the screen instructions to calibrate your compass.
+
+https://youtu.be/IL5grHtz_MU
