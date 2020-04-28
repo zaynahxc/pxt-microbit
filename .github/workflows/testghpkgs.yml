@@ -2,6 +2,8 @@ name: pxt-testghpkgs
 
 on:
   push:
+    branches: 
+      - master
     tags:        
       - v*
   schedule:
@@ -28,6 +30,17 @@ jobs:
           npm install
       - name: pxt buildtarget
         run: pxt buildtarget
+      - name: cache build output
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-testghpkgs
+        with:
+          path: temp/ghpkgs
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-       
       - name: pxt testghpkgs
         run: pxt testghpkgs
         env:
