@@ -2,8 +2,8 @@ name: pxt-testghpkgs
 
 on:
   push:
-    branches:    
-          - master
+    tags:        
+      - v*
   schedule:
     - cron:  '0 0 * * *'
 
