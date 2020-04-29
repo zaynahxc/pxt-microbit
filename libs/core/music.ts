@@ -450,7 +450,7 @@ namespace music {
     //% blockId=synth_set_volume block="set volume %volume"
     //% parts="speaker"
     //% volume.min=0 volume.max=255
-    //% volume.defl=20
+    //% volume.defl=127
     //% help=music/set-volume
     //% weight=70
     //% group="Volume"
