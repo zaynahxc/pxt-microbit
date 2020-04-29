@@ -13,6 +13,13 @@ Live coding of tutorials for MakeCode for micro:bit on https://mixer.com/MakeCod
         "imageUrl": "/static/live-coding/live.png"
     },
     {
+        "name": "Programmable LEDs",
+        "description": "Use programmables LED strips in MakeCode for micro:bit.",
+        "youTubeId": "bV8Co98AYkA",
+        "youTubePlaylistId": "PLMMBk9hE-SepocOwueEtTDyOPI_TBE9yC",
+        "imageUrl": "/static/live-coding/bV8Co98AYkA.jpg"
+    },
+    {
         "name": "Compass",
         "description": "Build a compass with your micro:bit",
         "youTubeId": "9IyssvevhJ0",
@@ -81,13 +88,6 @@ Live coding of tutorials for MakeCode for micro:bit on https://mixer.com/MakeCod
         "youTubeId": "S_hzUenqAM0",
         "youTubePlaylistId": "PLMMBk9hE-SepocOwueEtTDyOPI_TBE9yC",
         "imageUrl": "/static/live-coding/S_hzUenqAM0.jpg"
-    },
-    {
-        "name": "Hand Washing Timer",
-        "description": "Wash your hands for 20 seconds!",
-        "youTubeId": "yFviqqPlWyQ",
-        "youTubePlaylistId": "PLMMBk9hE-SepocOwueEtTDyOPI_TBE9yC",
-        "imageUrl": "/static/live-coding/yFviqqPlWyQ.jpg"
     },
     {
         "name": "Hand Washing Timer",
@@ -212,6 +212,7 @@ Live coding of tutorials for MakeCode for micro:bit on https://mixer.com/MakeCod
         "name": "PlayList",
         "description": "See entire playlist on YouTube",
         "url": "https://www.youtube.com/playlist?list=PLMMBk9hE-SepocOwueEtTDyOPI_TBE9yC",
+        "youTubePlaylistId": "PLMMBk9hE-SepocOwueEtTDyOPI_TBE9yC",
         "imageUrl": "/static/live-coding/playlist.png"
     }
 ]
