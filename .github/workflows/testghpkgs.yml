@@ -50,5 +50,5 @@ jobs:
         uses: actions/upload-artifact@v2
         if: ${{ always() }}
         with:
-          name: log.txt
-          path: temp/ghpkgs/log.txt
+          name: logs
+          path: temp/ghpkgs/*.txt
