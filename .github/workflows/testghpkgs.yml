@@ -2,8 +2,6 @@ name: pxt-testghpkgs
 
 on:
   push:
-    branches: 
-      - master
     tags:        
       - v*
   schedule:
