@@ -171,7 +171,8 @@
             "CytronTechnologies/pxt-edubit",
             "MakeAndLearn/pxt-microshield",
             "4tronix/Orbit",
-            "elecfreaks/pxt-TPBot"
+            "elecfreaks/pxt-TPBot",
+            "https://github.com/eng-minnie/mn_dust"
         ],
         "preferredRepos": [
             "Microsoft/pxt-neopixel",

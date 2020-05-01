@@ -372,6 +372,11 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
 
 ```codecard
 [{
+  "name": "MN Dust measurement kit",
+  "url":"/pkg/eng-minnie/mn_dust",
+  "cardType": "package"
+},
+{
   "name": "MU Vision camera",
   "url":"/pkg/mu-opensource/pxt-muvision",
   "cardType": "package"
