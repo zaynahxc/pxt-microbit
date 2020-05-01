@@ -13,6 +13,20 @@ Live coding of tutorials for MakeCode for micro:bit on https://mixer.com/MakeCod
         "imageUrl": "/static/live-coding/live.png"
     },
     {
+        "name": "Temperature",
+        "description": "Measure temperature with the micro:bit",
+        "youTubeId": "uv4NtRzMwaA",
+        "youTubePlaylistId": "PLMMBk9hE-SepocOwueEtTDyOPI_TBE9yC",
+        "imageUrl": "/static/live-coding/uv4NtRzMwaA.jpg"
+    },
+    {
+        "name": "Binary Stopwatch",
+        "description": "Build a compass with your micro:bit",
+        "youTubeId": "Jm3yxMA1mDo",
+        "youTubePlaylistId": "PLMMBk9hE-SepocOwueEtTDyOPI_TBE9yC",
+        "imageUrl": "/static/live-coding/Jm3yxMA1mDo.jpg"
+    },
+    {
         "name": "Programmable LEDs",
         "description": "Use programmables LED strips in MakeCode for micro:bit.",
         "youTubeId": "bV8Co98AYkA",
