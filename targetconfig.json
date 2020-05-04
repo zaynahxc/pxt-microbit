@@ -172,7 +172,7 @@
             "MakeAndLearn/pxt-microshield",
             "4tronix/Orbit",
             "elecfreaks/pxt-TPBot",
-            "https://github.com/eng-minnie/mn_dust"
+            "eng-minnie/mn_dust"
         ],
         "preferredRepos": [
             "Microsoft/pxt-neopixel",
