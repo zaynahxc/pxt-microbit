@@ -533,5 +533,5 @@
             }
         }
     },
-    "disableDocsUpload": false
+    "uploadDocs": true
 }
