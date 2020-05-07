@@ -355,6 +355,14 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
    "name": "Freenove Starter Kit",
    "url": "/pkg/Freenove/Makecode-Extension-Starter-Kit",
    "cardType": "package"
+}, {
+  "name": "Adafruit Crickit",
+  "url": "/pkg/adafruit/pxt-crickit",
+  "cardType": "package"
+}, {
+  "name": "Adafruit Seesaw",
+  "url": "/pkg/adafruit/pxt-seesaw",
+  "cardType": "package"
 }]
 ```
 
@@ -406,10 +414,6 @@ Check out [microbit.org](http://microbit.org/resellers/) for more information on
 }, {
   "name": "ky040 rotary",
   "url":"/pkg/Tinkertanker/pxt-rotary-encoder-ky040",
-  "cardType": "package"
-}, {
-  "name": "Hitechnic IRSeeker",
-  "url":"/pkg/cgs-matthew-pham/pxt-hitechnic-irseeker-v2",
   "cardType": "package"
 }, {
   "name": "GY521",
