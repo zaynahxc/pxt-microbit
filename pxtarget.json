@@ -13,7 +13,8 @@
         "libs/servo",
         "libs/radio-broadcast",
         "libs/color",
-        "libs/light"
+        "libs/light",
+        "libs/microphone"
     ],
     "cloud": {
         "workspace": false,
@@ -114,6 +115,45 @@
         "webUSB": true,
         "useNewFunctions": true
     },
+    "compileService": {
+        "yottaTarget": "bbc-microbit-classic-gcc",
+        "yottaCorePackage": "microbit",
+        "githubCorePackage": "lancaster-university/microbit",
+        "gittag": "v2.2.0-rc5",
+        "serviceId": "microbit",
+        "dockerImage": "pext/yotta:latest"
+    },
+    "multiVariants": [
+        "mbdal",
+        "mbcodal"
+    ],
+    "variants": {
+        "mbdal": {
+            "compile": {},
+            "compileService": {}
+        },
+        "mbcodal": {
+            "compile": {
+                "flashUsableEnd": null,
+                "flashEnd": null
+            },
+            "compileService": {
+                "buildEngine": "codal",
+                "codalTarget": {
+                    "name": "codal-microbit",
+                    "url": "https://github.com/microbit-foundation/codal-microbit",
+                    "branch": "v0.1.1",
+                    "type": "git"
+                },
+                "codalBinary": "MICROBIT",
+                "githubCorePackage": "microbit-foundation/codal",
+                "gittag": "pxt-wip-build-v0.0.1",
+                "serviceId": "mbcodal",
+                "dockerImage": "pext/yotta:latest",
+                "yottaConfigCompatibility": true
+            }
+        }
+    },
     "runtime": {
         "mathBlocks": true,
         "loopsBlocks": true,
@@ -122,6 +162,8 @@
         "textBlocks": true,
         "listsBlocks": true,
         "functionBlocks": true,
+        "breakBlock": true,
+        "continueBlock": true,
         "functionsOptions": {
             "useNewFunctions": true,
             "extraFunctionEditorTypes": [
@@ -130,6 +172,12 @@
                     "label": "LedSprite",
                     "icon": "send",
                     "defaultName": "sprite"
+                },
+                {
+                    "typeName": "Image",
+                    "label": "Image",
+                    "icon": "image outline",
+                    "defaultName": "image"
                 }
             ]
         },
@@ -243,14 +291,6 @@
             ]
         }
     },
-    "compileService": {
-        "yottaTarget": "bbc-microbit-classic-gcc",
-        "yottaCorePackage": "microbit",
-        "githubCorePackage": "lancaster-university/microbit",
-        "gittag": "v2.2.0-rc3.1",
-        "serviceId": "microbit",
-        "dockerImage": "pext/yotta:latest"
-    },
     "serial": {
         "nameFilter": "^(mbed Serial Port|DAPLink CMSIS-DAP)",
         "log": true,
@@ -299,7 +339,7 @@
         "extendEditor": true,
         "extendFieldEditors": true,
         "enableTrace": true,
-        "ignoreDocsErrors": true,
+        "ignoreDocsErrors": false,
         "experiments": [
             "autoWebUSBDownload",
             "allowPackageExtensions",
@@ -309,7 +349,8 @@
             "bluetoothUartConsole",
             "bluetoothPartialFlashing",
             "simScreenshot",
-            "simGif"
+            "simGif",
+            "errorList"
         ],
         "bluetoothUartFilters": [
             {
@@ -398,6 +439,7 @@
                 "path": "/static/mb/device/usb-windows-sendto.jpg"
             }
         ],
+        "hideHomeDetailsVideo": true,
         "invertedMenu": true,
         "coloredToolbox": true,
         "monacoToolbox": true,
@@ -493,5 +535,5 @@
             }
         }
     },
-    "disableDocsUpload": true
+    "uploadDocs": true
 }

@@ -506,16 +506,17 @@ declare namespace led {
     function unplot(x: int32, y: int32): void;
 
     /**
-     * Get the on/off state of the specified LED using x, y coordinates. (0,0) is upper left.
+     * Get the brightness state of the specified LED using x, y coordinates. (0,0) is upper left.
      * @param x the horizontal coordinate of the LED
      * @param y the vertical coordinate of the LED
      */
-    //% help=led/point weight=76
-    //% blockId=device_point block="point|x %x|y %y"
+    //% help=led/point-brightness weight=76
+    //% blockId=device_point_brightness block="point|x %x|y %y brightness"
     //% parts="ledmatrix"
     //% x.min=0 x.max=4 y.min=0 y.max=4
-    //% x.fieldOptions.precision=1 y.fieldOptions.precision=1 shim=led::point
-    function point(x: int32, y: int32): boolean;
+    //% x.fieldOptions.precision=1 y.fieldOptions.precision=1
+    //% advanced=true shim=led::pointBrightness
+    function pointBrightness(x: int32, y: int32): int32;
 
     /**
      * Get the screen brightness from 0 (off) to 255 (full bright).
@@ -810,6 +811,12 @@ declare namespace pins {
     //% sck.fieldEditor="gridpicker" sck.fieldOptions.columns=4
     //% sck.fieldOptions.tooltips="false" sck.fieldOptions.width="250" shim=pins::spiPins
     function spiPins(mosi: DigitalPin, miso: DigitalPin, sck: DigitalPin): void;
+
+    /**
+    * Mounts a push button on the given pin
+    */
+    //% help=pins/push-button advanced=true shim=pins::pushButton
+    function pushButton(pin: DigitalPin): void;
 }
 
 
