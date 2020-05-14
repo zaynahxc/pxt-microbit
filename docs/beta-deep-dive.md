@@ -42,6 +42,20 @@ Deep dive of the upcoming features of the MakeCode for micro:bit editor. Try the
         "imageUrl": "/static/beta-deep-dive/BUNf_UiA_MY.jpg"
     },
     {
+        "name": "GitHub for Extensions",
+        "description": "Learn how to create MakeCode for micro:bit extensions using GitHub!",
+        "youTubeId": "ztrm4XehfGo",
+        "youTubePlaylistId": "PLMMBk9hE-SepwjCAK7cY-jvq6KeQKda8x",
+        "imageUrl": "/static/beta-deep-dive/ztrm4XehfGo.jpg"
+    },
+    {
+        "name": "Python!",
+        "description": "A deep dive on the MakeCode Python support for micro:bit.",
+        "youTubeId": "qBNU9qR3gXw",
+        "youTubePlaylistId": "PLMMBk9hE-SepwjCAK7cY-jvq6KeQKda8x",
+        "imageUrl": "/static/beta-deep-dive/qBNU9qR3gXw.jpg"
+    },
+    {
         "name": "PlayList",
         "description": "See entire playlist on YouTube",
         "url": "https://www.youtube.com/playlist?list=PLMMBk9hE-SepwjCAK7cY-jvq6KeQKda8x",
