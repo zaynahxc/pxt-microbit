@@ -7,6 +7,13 @@ Deep dive of the upcoming features of the MakeCode for micro:bit editor. Try the
 ```codecard
 [
     {
+        "name": "MakeCode for the micro:bit – 2020 Beta Release",
+        "description": "The MakeCode showcases the upcoming features in micro:bit 2020. Read more at https://makecode.com/blog/microbit/2020-beta",
+        "youTubeId": "RpK4Cg42eNk",
+        "youTubePlaylistId": "PLMMBk9hE-SepwjCAK7cY-jvq6KeQKda8x",
+        "imageUrl": "/static/beta-deep-dive/RpK4Cg42eNk.jpg"
+    },
+    {
         "name": "WebUSB",
         "description": "A deeper look at the upcoming WebUSB support in MakeCode for micro:bit 2020.",
         "youTubeId": "_-xtP2FH9B8",
