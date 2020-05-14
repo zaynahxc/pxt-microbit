@@ -81,7 +81,7 @@
     {
         "name": "Beta Deep Dive",
         "url": "/beta-deep-dive",
-        "imageUrl": "/static/beta-deep-dive/_-xtP2FH9B8.jpg"
+        "imageUrl": "/static/beta-deep-dive/RpK4Cg42eNk.jpg"
     }
 ]
 ```

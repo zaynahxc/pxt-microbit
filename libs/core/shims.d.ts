@@ -813,8 +813,8 @@ declare namespace pins {
     function spiPins(mosi: DigitalPin, miso: DigitalPin, sck: DigitalPin): void;
 
     /**
-    * Mounts a push button on the given pin
-    */
+     * Mounts a push button on the given pin
+     */
     //% help=pins/push-button advanced=true shim=pins::pushButton
     function pushButton(pin: DigitalPin): void;
 }
@@ -890,6 +890,16 @@ declare namespace serial {
     //% rx.fieldOptions.tooltips="false"
     //% blockGap=8 shim=serial::redirect
     function redirect(tx: SerialPin, rx: SerialPin, rate: BaudRate): void;
+
+    /**
+    Set the baud rate of the serial port
+     */
+    //% weight=10
+    //% blockId=serial_setbaudrate block="serial|set baud rate %rate"
+    //% blockGap=8 inlineInputMode=inline
+    //% help=serial/set-baud-rate
+    //% group="Configuration" advanced=true shim=serial::setBaudRate
+    function setBaudRate(rate: BaudRate): void;
 
     /**
      * Direct the serial input and output to use the USB connection.

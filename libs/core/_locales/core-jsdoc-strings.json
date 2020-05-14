@@ -602,6 +602,7 @@
   "serial.redirect|param|rate": "the new baud rate. eg: 115200",
   "serial.redirect|param|rx": "the new reception pin, eg: SerialPin.P1",
   "serial.redirect|param|tx": "the new transmission pin, eg: SerialPin.P0",
+  "serial.setBaudRate": "Set the baud rate of the serial port",
   "serial.setRxBufferSize": "Sets the size of the RX buffer in bytes",
   "serial.setRxBufferSize|param|size": "length of the rx buffer in bytes, eg: 32",
   "serial.setTxBufferSize": "Sets the size of the TX buffer in bytes",
