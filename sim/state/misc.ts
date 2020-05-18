@@ -245,3 +245,8 @@ namespace pxsim.bluetooth {
     export function setTransmitPower(power: number) { }
 }
 
+namespace pxsim.light {
+    export function sendWS2812Buffer(buffer: RefBuffer, pin: number) {
+        pxsim.sendBufferAsm(buffer, pin)
+    }
+}
