@@ -44,6 +44,9 @@
         "utf8": false,
         "gc": true,
         "imageRefTag": 9,
+        "shimRenames": {
+            "sendBufferAsm": "light::sendWS2812Buffer"
+        },
         "patches": {
             "0.0.0 - 1.0.0": [
                 {
@@ -140,7 +143,7 @@
                 "codalTarget": {
                     "name": "codal-microbit",
                     "url": "https://github.com/microbit-foundation/codal-microbit",
-                    "branch": "v0.1.0",
+                    "branch": "v0.1.1",
                     "type": "git"
                 },
                 "codalBinary": "MICROBIT",
@@ -170,6 +173,12 @@
                     "label": "LedSprite",
                     "icon": "send",
                     "defaultName": "sprite"
+                },
+                {
+                    "typeName": "Image",
+                    "label": "Image",
+                    "icon": "image outline",
+                    "defaultName": "image"
                 }
             ]
         },
@@ -331,7 +340,8 @@
         "extendEditor": true,
         "extendFieldEditors": true,
         "enableTrace": true,
-        "ignoreDocsErrors": true,
+        "ignoreDocsErrors": false,
+        "errorList": true,
         "experiments": [
             "autoWebUSBDownload",
             "allowPackageExtensions",
@@ -341,8 +351,7 @@
             "bluetoothUartConsole",
             "bluetoothPartialFlashing",
             "simScreenshot",
-            "simGif",
-            "errorList"
+            "simGif"
         ],
         "bluetoothUartFilters": [
             {
@@ -527,5 +536,5 @@
             }
         }
     },
-    "disableDocsUpload": true
+    "uploadDocs": true
 }

@@ -1,6 +1,6 @@
 {
     "name": "pxt-microbit",
-    "version": "2.3.38",
+    "version": "2.3.64",
     "description": "micro:bit target for Microsoft MakeCode (PXT)",
     "keywords": [
         "JavaScript",
@@ -44,7 +44,7 @@
         "typescript": "^3.7.5"
     },
     "dependencies": {
-        "pxt-common-packages": "6.22.10",
-        "pxt-core": "5.37.49"
+        "pxt-common-packages": "6.23.3",
+        "pxt-core": "5.37.77"
     }
 }

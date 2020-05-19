@@ -31,6 +31,8 @@
         "gestures.jres",
         "control.ts",
         "control.cpp",
+        "interval.ts",
+        "gcstats.ts",
         "console.ts",
         "game.ts",
         "led.cpp",
@@ -48,9 +50,12 @@
         "trig.cpp",
         "fixed.ts",
         "templates.ts",
+        "sendbuffer.s",
+        "light.cpp",
         "parts/speaker.svg",
         "parts/headphone.svg"
     ],
+    "testFiles": [],
     "public": true,
     "dependencies": {},
     "dalDTS": {
