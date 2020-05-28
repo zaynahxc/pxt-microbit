@@ -153,7 +153,10 @@ namespace pxsim.pins {
     }
 
     export function i2cReadBuffer(address: number, size: number, repeat?: boolean): RefBuffer {
-        // fake reading zeros
+        const state = pxsim.getI2cState();
+        if (state)
+            return state.read(address, size, repeat)
+        // not supported
         return createBuffer(size)
     }
 
