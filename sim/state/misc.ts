@@ -158,7 +158,9 @@ namespace pxsim.pins {
     }
 
     export function i2cWriteBuffer(address: number, buf: RefBuffer, repeat?: boolean): void {
-        // fake - noop
+        const state = pxsim.getI2cState();
+        if (state)
+            state.write(address, buf, repeat)
     }
 
     // this likely shouldn't be called
