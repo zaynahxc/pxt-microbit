@@ -4,7 +4,8 @@
 
 namespace pxsim {
     export class DalBoard extends CoreBoard
-        implements RadioBoard, LightBoard, MicrophoneBoard {
+        implements RadioBoard, LightBoard, MicrophoneBoard,
+        I2CBoard {
         // state & update logic for component services
         ledMatrixState: LedMatrixState;
         edgeConnectorState: EdgeConnectorState;
@@ -18,6 +19,7 @@ namespace pxsim {
         microphoneState: AnalogSensorState;
         lightState: pxt.Map<CommonNeoPixelState>;
         fileSystem: FileSystemState;
+        i2cState: I2CState;
 
         // visual
         viewHost: visuals.BoardHost;
@@ -28,6 +30,7 @@ namespace pxsim {
 
             // components
             this.lightState = {};
+            this.i2cState = new I2CState();
             this.fileSystem = new FileSystemState();
             this.builtinParts["ledmatrix"] = this.ledMatrixState = new LedMatrixState(runtime);
             this.builtinParts["buttonpair"] = this.buttonPairState = new ButtonPairState({
