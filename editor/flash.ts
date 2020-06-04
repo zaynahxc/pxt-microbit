@@ -157,6 +157,13 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         return this.stopSerialAsync()
             .then(() => this.io.reconnectAsync())
             .then(() => this.cortexM.init())
+            .then(() => this.cmsisdap.cmdNums(0x00, [0x04]))
+            .then((r: Uint8Array) => {
+                const length = r[1];
+                const version = length ? String.fromCharCode.apply(null, r.slice(2, length + 2)) : "error";
+                pxt.tickEvent('daplink.version', { version: version });
+                log(`version: ${version}`)
+            })
             .then(() => this.cmsisdap.cmdNums(0x80, []))
             .then(r => {
                 this.binName = (r[2] == 57 && r[3] == 57 && r[5] >= 51 ? "mbcodal-" : "") + pxtc.BINARY_HEX
