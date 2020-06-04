@@ -163,8 +163,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 const version = length ? String.fromCharCode.apply(null, r.slice(2, 1 + length)) : "error";
                 pxt.tickEvent('daplink.version', { version: version });
                 log(`version ${version}`)
+                return this.cmsisdap.cmdNums(0x80, []);
             })
-            .then(() => this.cmsisdap.cmdNums(0x80, []))
             .then(r => {
                 this.binName = (r[2] == 57 && r[3] == 57 && r[5] >= 51 ? "mbcodal-" : "") + pxtc.BINARY_HEX
             })
