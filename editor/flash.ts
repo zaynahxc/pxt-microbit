@@ -160,9 +160,9 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             .then(() => this.cmsisdap.cmdNums(0x00, [0x04])) /* DAP_ID_FW_VER */
             .then((r: Uint8Array) => {
                 const length = r[1];
-                const version = length ? String.fromCharCode.apply(null, r.slice(2, length + 2)) : "error";
+                const version = length ? String.fromCharCode.apply(null, r.slice(2, 1 + length)) : "error";
                 pxt.tickEvent('daplink.version', { version: version });
-                log(`version: ${version}`)
+                log(`version ${version}`)
             })
             .then(() => this.cmsisdap.cmdNums(0x80, []))
             .then(r => {
