@@ -91,11 +91,18 @@ Deep dive of the features of the MakeCode for micro:bit  2020 editor. Try them o
         "imageUrl": "/static/deep-dive/Ku_nHstZS64.jpg"
     },
     {
+        "name": "MakeCode for micro:bit 2020 release",
+        "description": "Jonny Austin and Hal Speed from the Micro:bit Education Foundation joined us to announce the MakeCode for micro:bit 2020 release. Going through a few of the new features in this release!",
+        "youTubeId": "jjTUjrlw8vQ",
+        "youTubePlaylistId": "PLMMBk9hE-SepwjCAK7cY-jvq6KeQKda8x",
+        "imageUrl": "/static/deep-dive/jjTUjrlw8vQ.jpg"
+    },
+    {
         "name": "PlayList",
         "description": "See entire playlist on YouTube",
         "url": "https://www.youtube.com/playlist?list=PLMMBk9hE-SepwjCAK7cY-jvq6KeQKda8x",
         "youTubePlaylistId": "PLMMBk9hE-SepwjCAK7cY-jvq6KeQKda8x",
-        "imageUrl": "/static/deep-dive/playlist.jpg"
+        "imageUrl": "/static/deep-dive/playlist.png"
     }
 ]
 ```

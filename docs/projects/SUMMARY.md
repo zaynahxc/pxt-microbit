@@ -167,4 +167,5 @@
   * [Creating Tutorials](https://youtu.be/R-kY-dQXZvA)
   * [GitHub Explorer](https://youtu.be/76fNLYOAyl4)
   * [Custom blocks](https://youtu.be/Ku_nHstZS64)
+  * [MakeCode for micro:bit 2020 release](https://youtu.be/jjTUjrlw8vQ)
   * [PlayList](https://www.youtube.com/playlist?list=PLMMBk9hE-SepwjCAK7cY-jvq6KeQKda8x)
