@@ -7,24 +7,21 @@ This activity is based on a very popular phone app invented by Ellen DeGeneres (
 
 ![Heads up game](/static/courses/csintro/arrays/headband-charades.png)
 
-* Create a new variable and give it a name like arrayWords.
-* Insert a 'set' variable block into the 'on start' block.
-* Change the default variable name to this new variable name.
-* From the Array Toolbox drawer, drag an 'array of' block to the coding workspace.
-* Attach this array block to the end of the 'set' variable block.
+* From the Arrays Toolbox drawer, drag a 'set text_list to array of' block into the 'on start' block.
+* You can use the variable name of text_list or rename it to something more meaningful like arrayWords.
 
 ```blocks
-let arrayWords = ["", ""]
+let arrayWords = ["a", "b", "c"]
 ```
 
 Notice that the array comes with 2 string blocks. We’ll want more for our charades game.
 
 * Click on the **(+)** symbol at the end of the 'array of' block.
 * Add as many values (elements) as you'd like to the array block by continuing to click on the **(+)**.
-* For now, we’ll add 4 more values for a total of 6 values.
+* For now, we’ll add 3 more values for a total of 6 values.
 
 ```blocks
-let arrayWords = ["", "", "", "", "", "", ""]
+let arrayWords = ["a", "b", "c", "", "", ""]
 ```
 * Fill each string with one word. Choose words that will be fun for a game of charades. Example:
 
@@ -86,6 +83,7 @@ input.onGesture(Gesture.ScreenDown, () => {
     index += 1
 })
 ```
+
 We have a limited number of elements in our array, so to avoid an error, we need to check and make sure we are not already at the end of the array before we change the index.
  
 * Under the Arrays Toolbox drawer, drag out a 'length of' block. The 'length of' block returns the number of items (elements) in an array. For our array, the length of block will return the value 6.
@@ -98,13 +96,15 @@ Some pseudocode for our algorithm logic:
 **Then:** change the value of the index by one,<br/>
 **Else:** indicate that it is the end of the game.
 
-## ~hint
-**Array bounds**
+### ~hint
+
+#### Array bounds
 
 Our array has a length 6, so this will mean that as long as the current value of the index is less than 5, we will change the array by one.
 
 Using ‘less than the length of the array minus one’ instead of the actual numbers for our array makes this code more flexible and easier to maintain. We can easily add more elements to our array and not have to worry about changing numbers elsewhere in the code.
-## ~ 
+
+### ~ 
 
 We can put this all together with an 'if...then...else' block and a 'less than' comparison block from the Logic Toolbox drawer, a subtraction block from the Math Toolbox drawer, and a 'game over' block from the Game Toolbox drawer (located under the Advanced menu).
 
@@ -139,6 +139,7 @@ input.onGesture(Gesture.ScreenDown, () => {
 ```
 
 ## Game Play
+
 There are different ways you can play charades with our program.  Here is one way you can play with a group of friends.
 
 * With the micro:bit on and held so Player A cannot see the screen, another player starts the program to see the first word.
@@ -147,6 +148,7 @@ There are different ways you can play charades with our program.  Here is one wa
 * When ready for the next word, a player turns the micro:bit screen up. Play continues until all the words in the array have been used.
  
 ## Mod this!
+
 * Add a headband to hold the micro:bit on the Players' foreheads (using cardboard, paper, rubber bands, etc.)
 * Add a way to keep score
 * Keep track of the number of correct guesses and passes
