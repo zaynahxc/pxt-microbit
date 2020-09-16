@@ -184,6 +184,7 @@
             "bsiever/microbit-pxt-timeanddate",
             "DFRobot/pxt-DFRobot-Maqueenplus",
             "joy-it/Joy-Car",
+            "AlexandreFrolov/DS3231",
             "elecfreaks/pxt-magicwand",
             "YFROBOT-TM/pxt-yfrobot-valon",
             "hardwario/pxt-microbit-hardwario"
