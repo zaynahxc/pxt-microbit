@@ -1,15 +1,14 @@
 # Measuring Stride
 
 In order to compute the distance travelled, we need to calibrate
-the relationship between speed and stride. In this experiment, the runner
-needs to run a distance at various speeds with a constant stride.
+the relationship between speed and stride. In this experiment, the runner needs to do multiple runs of the same a distance at various steady speeds.
 On each run, the @boardname@ will measure the running time and the number of foot strikes.
 
 https://youtu.be/hAyxRNvlzRE
 
 ## Find a running track!
 
-Find a location where you can run at least 20m at a constant pace. A good example would be a run between the free-throw areas on a basketball court. It is important that the runner is able to enter, run through, and leave the track at a constant speed.
+Find a location where you can run at least ``20m`` at a constant pace. A good example would be a run between the free-throw areas on a basketball court. It is important that the runner is able to enter, run through, and leave the track at a constant speed. If you are able to find a longer distance and run steadily over that distance, the results will be better. In the original Puma calibration, the runner had to run a full track!
 
 Measure the distance between the start and the end of the track and store this value as ``TD``.
 
