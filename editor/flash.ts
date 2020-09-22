@@ -160,11 +160,13 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             .then(() => this.cmsisdap.cmdNums(0x80, []))
             .then(r => {
                 this.binName = (r[2] == 57 && r[3] == 57 && r[5] >= 51 ? "mbcodal-" : "") + pxtc.BINARY_HEX
+                log(`bin name: ${this.binName}`)
             })
             .then(() => this.cortexM.memory.readBlock(0x10000010, 2, this.pageSize))
             .then(res => {
                 this.pageSize = pxt.HF2.read32(res, 0)
                 this.numPages = pxt.HF2.read32(res, 4)
+                log(`page size ${this.pageSize}, num pages ${this.numPages}`)
             })
             .then(() => this.cmsisdap.cmdNums(0x82, [0x00, 0xC2, 0x01, 0x00]))
             .then(() => this.startReadSerial());
@@ -207,7 +209,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 return this.cmsisdap.cmdNums(0x8A /* DAPLinkFlash.OPEN */, [1]);
             })
             .then((res) => {
-                const hexUint8 = pxt.U.stringToUint8Array(resp.outfiles[this.binName]);
+                const binFile = resp.outfiles[this.binName];
+                const hexUint8 = pxt.U.stringToUint8Array(binFile);
                 const hexArray: number[] = Array.prototype.slice.call(hexUint8);
 
                 const sendPages = (offset: number = 0): Promise<void> => {
@@ -226,10 +229,12 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 return sendPages();
             })
             .then((res) => {
+                log(`close`)
                 return this.cmsisdap.cmdNums(0x8B /* DAPLinkFlash.CLOSE */, []);
             })
             .timeout(60000, timeoutMessage)
             .catch((e) => {
+                log(`error: abort`)
                 aborted = true;
                 return this.cmsisdap.cmdNums(0x89 /* DAPLinkFlash.RESET */, [])
                     .catch((e2: any) => {
@@ -283,7 +288,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 log("convert");
                 // TODO this is seriously inefficient (130ms on a fast machine)
                 let uf2 = ts.pxtc.UF2.newBlockFile();
-                ts.pxtc.UF2.writeHex(uf2, resp.outfiles[this.binName].split(/\r?\n/));
+                const binFile = resp.outfiles[this.binName];
+                ts.pxtc.UF2.writeHex(uf2, binFile.split(/\r?\n/));
                 let bytes = pxt.U.stringToUint8Array(ts.pxtc.UF2.serializeFile(uf2));
                 let parsed = ts.pxtc.UF2.parseFile(bytes);
 
