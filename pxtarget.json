@@ -128,6 +128,7 @@
         "mbdal",
         "mbcodal"
     ],
+    "alwaysMultiVariant" : true,
     "variants": {
         "mbdal": {
             "compile": {},
