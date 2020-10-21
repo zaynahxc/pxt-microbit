@@ -23,6 +23,9 @@ namespace pxsim {
         viewHost: visuals.BoardHost;
         view: SVGElement;
 
+        // board hardware version
+        hardwareVersion = 1;
+
         constructor() {
             super()
 
@@ -149,6 +152,16 @@ namespace pxsim {
                 boardDef: boardDef,
                 highContrast: msg.highContrast
             }), opts);
+
+            if (opts.partsList) {
+                const v2 = opts.partsList.indexOf("microphone") > -1
+                    || opts.partsList.indexOf("logotouch") > -1
+                    || opts.partsList.indexOf("speaker") > -1;
+                if (v2) {
+                    console.log(`detected v2 feature`);
+                    this.hardwareVersion = 2;
+                }
+            }
 
             document.body.innerHTML = ""; // clear children
             document.body.appendChild(this.view = this.viewHost.getView());
