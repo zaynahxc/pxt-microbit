@@ -452,6 +452,13 @@ declare namespace control {
     function deviceSerialNumber(): int32;
 
     /**
+     * Derive a unique, consistent 64-bit serial number of this device from internal data.
+     */
+    //% help=control/device-long-serial-number
+    //% advanced=true shim=control::deviceLongSerialNumber
+    function deviceLongSerialNumber(): Buffer;
+
+    /**
      * Informs simulator/runtime of a MIDI message
      * Internal function to support the simulator.
      */
@@ -463,6 +470,20 @@ declare namespace control {
      */
     //% shim=control::__log
     function __log(text: string): void;
+
+    /**
+     * Allocates the next user notification event
+     */
+    //% help=control/allocate-notify-event shim=control::allocateNotifyEvent
+    function allocateNotifyEvent(): int32;
+
+    /** Write a message to DMESG debugging buffer. */
+    //% shim=control::dmesg
+    function dmesg(s: string): void;
+
+    /** Write a message and value (pointer) to DMESG debugging buffer. */
+    //% shim=control::dmesgPtr
+    function dmesgPtr(str: string, ptr: Object): void;
 }
 
 
