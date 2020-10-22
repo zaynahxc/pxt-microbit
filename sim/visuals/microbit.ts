@@ -82,6 +82,7 @@ namespace pxsim.visuals {
         .sim-thermometer {
             stroke:#aaa;
             stroke-width: 3px;
+            cursor: pointer;
         }
 
         /* animations */
@@ -291,6 +292,7 @@ path.sim-board {
         private pinTexts: SVGTextElement[];
         private ledsOuter: SVGElement[];
         private leds: SVGElement[];
+        private microphoneLed: SVGElement;
         private systemLed: SVGCircleElement;
         private antenna: SVGPolylineElement;
         private rssi: SVGTextElement;
@@ -300,6 +302,9 @@ path.sim-board {
         private thermometerGradient: SVGLinearGradientElement;
         private thermometer: SVGRectElement;
         private thermometerText: SVGTextElement;
+        private soundLevelGradient: SVGLinearGradientElement;
+        private soundLevel: SVGRectElement;
+        private soundLevelText: SVGTextElement;
         private shakeButton: SVGCircleElement;
         private shakeText: SVGTextElement;
         private accTextX: SVGTextElement;
@@ -364,6 +369,8 @@ path.sim-board {
             svg.fill(this.display, theme.display);
             svg.fills(this.leds, theme.ledOn);
             svg.fills(this.ledsOuter, theme.ledOff);
+            if (this.microphoneLed)
+                svg.fills([this.microphoneLed], theme.ledOn);
             svg.fills(this.buttonsOuter.slice(0, 2), theme.buttonOuter);
             svg.fills(this.buttons.slice(0, 2), theme.buttonUp);
             svg.fill(this.buttonsOuter[2], theme.virtualButtonOuter);
@@ -379,6 +386,7 @@ path.sim-board {
             svg.setGradientColors(this.lightLevelGradient, theme.lightLevelOn, theme.lightLevelOff);
 
             svg.setGradientColors(this.thermometerGradient, theme.ledOff, theme.ledOn);
+            svg.setGradientColors(this.soundLevelGradient, theme.ledOff, theme.ledOn);
             this.positionV2Elements();
         }
 
@@ -387,6 +395,7 @@ path.sim-board {
             if (!state) return;
 
             this.updateHardwareVersion();
+            this.updateMicrophone();
             this.updateButtonPairs();
             this.updateLEDMatrix();
             this.updatePins();
@@ -469,6 +478,26 @@ path.sim-board {
             }
         }
 
+        private updateMicrophone() {
+            const b = board();
+            if (!b 
+                || !b.microphoneState.sensorUsed)
+                return;
+
+            if (!this.microphoneLed) {
+                // microphone LED
+                const microphoneTitle = pxsim.localization.lf("microphone (microbit:v2 needed)")
+                this.microphoneLed = svg.child(this.g, "rect", { class: "sim-led", x: 350, y: 70, width: 14, height: 24, rx: 3, ry: 3, title: microphoneTitle });
+                svg.filter(this.microphoneLed, `url(#ledglow)`);
+                (this.microphoneLed.style as any).transformBox = 'fill-box';
+                this.microphoneLed.style.transformOrigin = '50% 50%';
+                this.microphoneLed.style.transform = `scale(0.7)`;
+
+                this.updateTheme();
+            }
+            this.updateSoundLevel();
+        }
+
         private updateButtonAB() {
             let state = this.board;
             if (state.buttonPairState.usesButtonAB && !this.buttonABText) {
@@ -477,6 +506,7 @@ path.sim-board {
                 this.buttonABText = svg.child(this.g, "text", { class: "sim-text", x: 370, y: 272 }) as SVGTextElement;
                 this.buttonABText.textContent = "A+B";
                 this.updateTheme();
+                this.positionV2Elements();
             }
         }
 
@@ -567,7 +597,7 @@ path.sim-board {
                     })
 
                 accessibility.makeFocusable(this.thermometer);
-                accessibility.setAria(this.thermometer, "slider", "Thermometer");
+                accessibility.setAria(this.thermometer, "slider", pxsim.localization.lf("Thermometer"));
                 this.thermometer.setAttribute("aria-valuemin", "-5");
                 this.thermometer.setAttribute("aria-valuemax", "50");
                 this.thermometer.setAttribute("aria-orientation", "vertical");
@@ -584,13 +614,81 @@ path.sim-board {
             accessibility.setLiveContent(t + "°C");
         }
 
+        private updateSoundLevel() {
+            let state = this.board;
+            if (!state || !state.microphoneState.sensorUsed) return;
+
+            let tmin = 52;
+            let tmax = 120;
+            if (!this.soundLevel) {
+                const level = state.microphoneState.getLevel();
+                let gid = "gradient-soundlevel";
+                this.soundLevelGradient = svg.linearGradient(this.defs, gid);
+                this.soundLevel = <SVGRectElement>svg.child(this.g, "rect", {
+                    class: "sim-thermometer no-drag",
+                    x: 360,
+                    y: 110,
+                    width: 20,
+                    height: 160,
+                    rx: 5, ry: 5,
+                    fill: `url(#${gid})`
+                });
+                this.soundLevelText = svg.child(this.g, "text", { class: 'sim-text', x: 370, y: 90 }) as SVGTextElement;
+                if (this.props.runtime)
+                    this.props.runtime.environmentGlobals[pxsim.localization.lf("sound level")] = state.microphoneState.getLevel();
+                this.updateTheme();
+
+                let pt = this.element.createSVGPoint();
+                svg.buttonEvents(this.soundLevel,
+                    // move
+                    (ev) => {
+                        let cur = svg.cursorPoint(pt, this.element, ev);
+                        let t = Math.max(0, Math.min(1, (260 - cur.y) / 140))
+                        state.microphoneState.setLevel(Math.floor(tmin + t * (tmax - tmin)));
+                        this.updateMicrophone();
+                    },
+                    // start
+                    ev => { },
+                    // stop
+                    ev => { },
+                    // keydown
+                    (ev) => {
+                        let charCode = (typeof ev.which == "number") ? ev.which : ev.keyCode
+                        if (charCode === 40 || charCode === 37) { // Down/Left arrow
+                            state.microphoneState.setLevel(state.microphoneState.getLevel() - 1);
+                            this.updateMicrophone();
+                        } else if (charCode === 38 || charCode === 39) { // Up/Right arrow
+                            state.microphoneState.setLevel(state.microphoneState.getLevel() + 1)
+                            this.updateMicrophone();
+                        }
+                    })
+
+                accessibility.makeFocusable(this.soundLevel);
+                accessibility.setAria(this.soundLevel, "slider", pxsim.localization.lf("Sound Level"));
+                this.soundLevel.setAttribute("aria-valuemin", tmin + "");
+                this.soundLevel.setAttribute("aria-valuemax", tmax + "");
+                this.soundLevel.setAttribute("aria-orientation", "vertical");
+                this.soundLevel.setAttribute("aria-valuenow", level + "");
+                this.soundLevel.setAttribute("aria-valuetext", level + "");
+            }
+
+            let t = Math.max(tmin, Math.min(tmax, state.microphoneState.getLevel()))
+            console.log(`sound level ${t}`)
+            let per = Math.floor((state.microphoneState.getLevel() - tmin) / (tmax - tmin) * 100)
+            svg.setGradientValue(this.soundLevelGradient, (100 - per) + "%");
+            this.soundLevelText.textContent = t + "";
+            this.soundLevel.setAttribute("aria-valuenow", t.toString());
+            this.soundLevel.setAttribute("aria-valuetext", t + "");
+            accessibility.setLiveContent(t + "");
+        }
+
         private updateHeading() {
             let xc = 258;
             let yc = 75;
             let state = this.board;
             if (!state || !state.compassState.usesHeading) return;
             if (!this.headInitialized) {
-                let p = this.heads[0];
+                let p = this.heads[1];
                 p.setAttribute("d", "m269.9,50.134647l0,0l-39.5,0l0,0c-14.1,0.1 -24.6,10.7 -24.6,24.8c0,13.9 10.4,24.4 24.3,24.7l0,0l39.6,0c14.2,0 40.36034,-22.97069 40.36034,-24.85394c0,-1.88326 -26.06034,-24.54606 -40.16034,-24.64606m-0.2,39l0,0l-39.3,0c-7.7,-0.1 -14,-6.4 -14,-14.2c0,-7.8 6.4,-14.2 14.2,-14.2l39.1,0c7.8,0 14.2,6.4 14.2,14.2c0,7.9 -6.4,14.2 -14.2,14.2l0,0l0,0z");
                 this.updateTheme();
                 let pt = this.element.createSVGPoint();
@@ -897,11 +995,13 @@ path.sim-board {
             svg.child(this.head, "circle", { cx: 258, cy: 75, r: 100, fill: "transparent" })
             this.headParts = <SVGGElement>svg.child(this.head, "g", { class: "sim-button-outer sim-button-group" });
             this.heads = []
+            // background
             this.heads.push(svg.path(this.headParts, "sim-button", "M 269.9 50.2 L 269.9 50.2 l -39.5 0 v 0 c -14.1 0.1 -24.6 10.7 -24.6 24.8 c 0 13.9 10.4 24.4 24.3 24.7 v 0 h 39.6 c 14.2 0 24.8 -10.6 24.8 -24.7 C 294.5 61 284 50.3 269.9 50.2 M 269.7 89.2"));
+            // shapes
             this.heads.push(svg.path(this.headParts, "sim-theme", "M269.9,50.2L269.9,50.2l-39.5,0v0c-14.1,0.1-24.6,10.7-24.6,24.8c0,13.9,10.4,24.4,24.3,24.7v0h39.6c14.2,0,24.8-10.6,24.8-24.7C294.5,61,284,50.3,269.9,50.2 M269.7,89.2L269.7,89.2l-39.3,0c-7.7-0.1-14-6.4-14-14.2c0-7.8,6.4-14.2,14.2-14.2h39.1c7.8,0,14.2,6.4,14.2,14.2C283.9,82.9,277.5,89.2,269.7,89.2"));
             this.heads.push(svg.path(this.headParts, "sim-theme", "M230.6,69.7c-2.9,0-5.3,2.4-5.3,5.3c0,2.9,2.4,5.3,5.3,5.3c2.9,0,5.3-2.4,5.3-5.3C235.9,72.1,233.5,69.7,230.6,69.7"));
             this.heads.push(svg.path(this.headParts, "sim-theme", "M269.7,80.3c2.9,0,5.3-2.4,5.3-5.3c0-2.9-2.4-5.3-5.3-5.3c-2.9,0-5.3,2.4-5.3,5.3C264.4,77.9,266.8,80.3,269.7,80.3"));
-            this.headText = <SVGTextElement>svg.child(this.g, "text", { x: 310, y: 100, class: "sim-text" })
+            this.headText = <SVGTextElement>svg.child(this.g, "text", { x: 310, y: 60, class: "sim-text" })
 
             // https://www.microbit.co.uk/device/pins
             // P0, P1, P2
@@ -975,6 +1075,13 @@ path.sim-board {
         }
 
         private updateHardwareVersion() {
+            // check if microphone has been used
+            const b = this.board;
+            if (!b) return;
+            if (b.microphoneState.sensorUsed)
+                b.ensureHardwareVersion(2);
+
+            // check current version
             const version = this.board.hardwareVersion;
             if (version === this.domHardwareVersion) return;
 
@@ -990,10 +1097,8 @@ path.sim-board {
             this.v2Text.style.fontWeight = "700";
 
             // golden head and position v2 symbol
-            const headTitle = pxsim.localization.lf("micro:bit v2 needed to use logo touch")
+            const headTitle = pxsim.localization.lf("logo touch (micro:bit v2 needed)")
             svg.title(this.headParts, headTitle);
-
-            this.updateTheme();
 
             // update pins
             // notch: 46.2 -> h 7 c 0 0 -1 -9 8 -8 l 18 0 c 0 0 9 -1 8 8 h 7
@@ -1007,6 +1112,9 @@ path.sim-board {
 
             // outline
             this.pkg.setAttribute("d", "M 498 31.9 C 498 14.3 483.7 0 466.1 0 H 31.9 C 14.3 0 0 14.3 0 31.9 v 342.2 C -1 399 21 405 23 406 c 0 0 -1 -9 8 -8 l 18 0 c 0 0 9 -1 8 8 h 7 h 50 h 7 c 0 0 -1 -9 8 -8 l 18 0 c 0 0 9 -1 8 8 h 7 h 63 h 7 c 0 0 -1 -9 8 -8 l 18 0 c 0 0 9 -1 8 8 h 7 h 64 h 7 c 0 0 -1 -9 8 -8 l 18 0 c 0 0 9 -1 8 8 h 7 h 51 h 5 c 0 0 -1 -9 8 -8 l 18 0 c 0 0 9 -1 8 8 h 0 c 9 0 23 -17 23 -31 V 31.9 z M 14.3 206.7 c -2.7 0 -4.8 -2.2 -4.8 -4.8 c 0 -2.7 2.2 -4.8 4.8 -4.8 c 2.7 0 4.8 2.2 4.8 4.8 C 19.2 204.6 17 206.7 14.3 206.7 z M 486.2 206.7 c -2.7 0 -4.8 -2.2 -4.8 -4.8 c 0 -2.72 0.2 -4.8 4.8 -4.8 c 2.7 0 4.8 2.2 4.8 4.8 C 491 204.6 488.8 206.7 486.2 206.7 z")
+
+            this.updateMicrophone();
+            this.updateTheme();
         }
 
         private positionV2Elements() {
@@ -1019,6 +1127,13 @@ path.sim-board {
                 this.v2Circle.setAttribute("cy", "" + y);
                 this.v2Text.setAttribute("x", `${x - 15}`);
                 this.v2Text.setAttribute("y", `${y + 8}`);
+            }
+
+            if (this.soundLevel && this.buttonABText) {
+                // hide A+B text
+                this.buttonABText.setAttribute("x", "386")
+                this.buttonABText.setAttribute("y", "274")
+                this.buttonABText.style.fontSize = "95%"
             }
         }
 
