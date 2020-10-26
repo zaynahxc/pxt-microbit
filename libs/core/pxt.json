@@ -58,6 +58,8 @@
         "light.cpp",
         "logo.cpp",
         "touchmode.cpp",
+        "soundexpressions.ts",
+        "soundexpressions.cpp",
         "parts/speaker.svg",
         "parts/headphone.svg"
     ],
