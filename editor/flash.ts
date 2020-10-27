@@ -4,8 +4,8 @@ const membase = 0x20000000;
 const loadAddr = membase;
 const dataAddr = 0x20002000;
 const stackAddr = 0x20001000;
-const FULL_FLASH_TIMEOUT = 180000;
-const PARTIAL_FLASH_TIMEOUT = 60000;
+const FULL_FLASH_TIMEOUT = 100000; // 100s
+const PARTIAL_FLASH_TIMEOUT = 60000; // 60s
 
 const flashPageBIN = new Uint32Array([
     0xbe00be00, // bkpt - LR is set to this
