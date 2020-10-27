@@ -101,10 +101,6 @@ if [ "${PACKAGES_ALREADY_INSTALLED}" != "true" ]; then
         sudo \
         ncdu \
         man-db \
-        gcc \
-        cmake \
-        gcc-arm-none-eabi \
-        binutils-arm-none-eabi \
         strace"
 
     # Install libssl1.1 if available
