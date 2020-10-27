@@ -13,6 +13,7 @@ serial.readBuffer(64);
 ## Returns
 
 * a [buffer](/types/buffer) containing input from the serial port. The length of the buffer may be smaller than the requested length.
+The length is 0 if any error occurs.
 
 ## ~hint
 **Pause for more data**
