@@ -4,7 +4,7 @@ const membase = 0x20000000;
 const loadAddr = membase;
 const dataAddr = 0x20002000;
 const stackAddr = 0x20001000;
-const FULL_FLASH_TIMEOUT = 60000;
+const FULL_FLASH_TIMEOUT = 180000;
 const PARTIAL_FLASH_TIMEOUT = 60000;
 
 const flashPageBIN = new Uint32Array([
@@ -69,7 +69,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     private pbuf = new pxt.U.PromiseBuffer<Uint8Array>();
     private pageSize = 1024;
     private numPages = 256;
-    private binName = pxtc.BINARY_HEX;
+    private usesCODAL = false;
+    private forceFullFlash = /webusbfullflash=1/.test(window.location.href);
 
     constructor(public readonly io: pxt.packetio.PacketIO) {
         this.familyID = 0x0D28; // this is the microbit vendor id, not quite UF2 family id
@@ -153,6 +154,10 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         }
     }
 
+    get binName() {
+        return (this.usesCODAL ? "mbcodal-" : "") + pxtc.BINARY_HEX;
+    }
+
     reconnectAsync(): Promise<void> {
         log(`reconnect`)
         // configure serial at 115200
@@ -161,7 +166,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             .then(() => this.cortexM.init())
             .then(() => this.cmsisdap.cmdNums(0x80, []))
             .then(r => {
-                this.binName = (r[2] == 57 && r[3] == 57 && r[5] >= 51 ? "mbcodal-" : "") + pxtc.BINARY_HEX
+                this.usesCODAL = r[2] == 57 && r[3] == 57 && r[5] >= 51;
                 log(`bin name: ${this.binName}`)
             })
             .then(() => this.cortexM.memory.readBlock(0x10000010, 2, this.pageSize))
@@ -190,7 +195,9 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             .then(() => this.cortexM.reset(true))
             .then(() => this.cortexM.memory.readBlock(0x10001014, 1, this.pageSize))
             .then(v => {
-                if ((pxt.HF2.read32(v, 0) & 0xff) != 0) {
+                const uicr = pxt.HF2.read32(v, 0) & 0xff;
+                log(`uicr: ${uicr.toString(16)}`);
+                if (uicr != 0 || this.forceFullFlash) {
                     pxt.tickEvent("hid.flash.uicrfail");
                     return this.fullVendorCommandFlashAsync(resp);
                 }
@@ -205,6 +212,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         log("full flash")
 
         const chunkSize = 62;
+        let sentPages = 0;
         let aborted = false;
         return Promise.resolve()
             .then(() => {
@@ -212,16 +220,21 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             })
             .then((res) => {
                 const binFile = resp.outfiles[this.binName];
+                log(`bin file ${this.binName} in ${Object.keys(resp.outfiles).join(', ')}, ${binFile?.length || -1}b`)
                 const hexUint8 = pxt.U.stringToUint8Array(binFile);
                 const hexArray: number[] = Array.prototype.slice.call(hexUint8);
+                log(`hex ${hexUint8?.byteLength || -1}b, ~${(hexUint8.byteLength / chunkSize) | 0} chunks of ${chunkSize}b`)
 
                 const sendPages = (offset: number = 0): Promise<void> => {
                     const end = Math.min(hexArray.length, offset + chunkSize);
                     const nextPage = hexArray.slice(offset, end);
                     nextPage.unshift(nextPage.length);
+                    if(sentPages % 32 == 0) // reduce logging
+                        log(`next page ${sentPages}: [${offset.toString(16)}, ${end.toString(16)}] (${Math.ceil((hexArray.length - end) / 1000)}kb left)`)
                     return this.cmsisdap.cmdNums(0x8C /* DAPLinkFlash.WRITE */, nextPage)
                         .then(() => {
                             if (!aborted && end < hexArray.length) {
+                                sentPages++;
                                 return sendPages(end);
                             }
                             return Promise.resolve();
@@ -312,10 +325,12 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                     i => {
                         if (aborted) return Promise.resolve();
                         let b = aligned[i];
-                        if (b.targetAddr >= 0x10000000)
+                        if (b.targetAddr >= 0x10000000) {
+                            log(`target address ${b.targetAddr.toString(16)} > 0x10000000`)
                             return Promise.resolve();
+                        }
 
-                        logV("about to write at 0x" + b.targetAddr.toString(16));
+                        log("about to write at 0x" + b.targetAddr.toString(16));
 
                         let writeBl = Promise.resolve();
 
