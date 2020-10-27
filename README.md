@@ -5,6 +5,7 @@
 pxt-microbit is a [Microsoft Programming Experience Toolkit (PXT)](https://github.com/Microsoft/pxt) target that allows you to program a [BBC micro:bit](https://microbit.org/). 
 
 * pxt-microbit **beta**, ``v3.0.*`` requires 
+  * [pxt-microbit#stable3.0](https://github.com/Microsoft/pxt-microbit/tree/stable3.0)
   * [pxt#stable6.0](https://github.com/Microsoft/pxt/tree/stable6.0).
   * [pxt-common-packages#stable6.0](https://github.com/Microsoft/pxt-common-packages/tree/stable7.0).
 * pxt-microbit ``v2.0.*``, branch ``stable2.0``, requires [pxt v5.15.\*](https://github.com/microsoft/pxt/tree/stable5.15). It is the servicing branch for live editor.
