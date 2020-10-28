@@ -37,7 +37,7 @@ function log(msg: string) {
     let ts = ("00000" + now).slice(-5)
     pxt.debug(`dap ${ts}: ${msg}`)
 }
-
+const logV = /webusbdbg=1/.test(window.location.href) ? log : (msg: string) => { }
 
 function murmur3_core(data: Uint8Array) {
     let h0 = 0x2F9BE6CC;
@@ -74,9 +74,11 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     constructor(public readonly io: pxt.packetio.PacketIO) {
         this.familyID = 0x0D28; // this is the microbit vendor id, not quite UF2 family id
-        this.io.onDeviceConnectionChanged = (connect) =>
+        this.io.onDeviceConnectionChanged = (connect) => {
+            log(`device connection changed`);
             this.disconnectAsync()
                 .then(() => connect && this.reconnectAsync());
+        }
         this.io.onData = buf => {
             // console.log("RD: " + pxt.Util.toHex(buf))
             this.pbuf.push(buf);
@@ -88,11 +90,11 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     icon = "usb";
 
     private startReadSerial() {
-        log(`start read serial`)
         const rid = this.readSerialId;
+        log(`start read serial ${rid}`)
         const readSerial = () => {
             if (rid != this.readSerialId) {
-                log(`stopped read serial ${rid}`)
+                log(`stopped serial reader ${rid}`)
                 return;
             }
             if (this.flashing) {
@@ -124,7 +126,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     }
 
     private stopSerialAsync() {
-        log(`stopping serial reader`)
+        log(`cancelling serial reader ${this.readSerialId}`)
         this.readSerialId++;
         return Promise.delay(200);
     }
@@ -175,7 +177,9 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 this.numPages = pxt.HF2.read32(res, 4)
                 log(`page size ${this.pageSize}, num pages ${this.numPages}`)
             })
+            // setting the baud rate on serial resets the cortex, so delay after
             .then(() => this.cmsisdap.cmdNums(0x82, [0x00, 0xC2, 0x01, 0x00]))
+            .delay(200)
             .then(() => this.startReadSerial());
     }
 
@@ -196,7 +200,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             .then(() => this.cortexM.memory.readBlock(0x10001014, 1, this.pageSize))
             .then(v => {
                 const uicr = pxt.HF2.read32(v, 0) & 0xff;
-                log(`uicr: ${uicr.toString(16)}`);
+                log(`uicr: ${uicr.toString(16)} (${pxt.U.toHex(v)})`);
                 if (uicr != 0 || this.forceFullFlash) {
                     pxt.tickEvent("hid.flash.uicrfail");
                     return this.fullVendorCommandFlashAsync(resp);
@@ -204,8 +208,9 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 return this.quickHidFlashAsync(resp);
             })
             .finally(() => { this.flashing = false })
-            .then(() => Promise.delay(100))
-            .then(() => this.disconnectAsync())
+            // don't disconnect here
+            // the micro:bit will automatically disconnect and reconnect
+            // via the webusb events
     }
 
     private fullVendorCommandFlashAsync(resp: pxtc.CompileResult): Promise<void> {
@@ -247,6 +252,9 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 log(`close`)
                 return this.cmsisdap.cmdNums(0x8B /* DAPLinkFlash.CLOSE */, []);
             })
+            .then(() => {
+                log(`full flash done`);
+            })
             .timeout(FULL_FLASH_TIMEOUT, timeoutMessage)
             .catch((e) => {
                 log(`error: abort`)
@@ -269,8 +277,6 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     private quickHidFlashAsync(resp: pxtc.CompileResult): Promise<void> {
         log("quick flash")
-        let logV = (msg: string) => { }
-        //let logV = log
         let aborted = false;
 
         const runFlash = (b: ts.pxtc.UF2.Block, dataAddr: number) => {
@@ -292,8 +298,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                     return cmd.go()
                 })
                 .then(() => {
-                    logV("dbg en")
                     // starts the program
+                    logV(`cortex.debug.enable`)
                     return this.cortexM.debug.enable()
                 })
         }
@@ -311,10 +317,10 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 if (!binFile)
                     throw new Error(`unable to find ${this.binName} in outfiles ${Object.keys(resp.outfiles).join(', ')}`);
                 // TODO this is seriously inefficient (130ms on a fast machine)
-                let uf2 = ts.pxtc.UF2.newBlockFile();
+                const uf2 = ts.pxtc.UF2.newBlockFile();
                 ts.pxtc.UF2.writeHex(uf2, binFile.split(/\r?\n/));
-                let bytes = pxt.U.stringToUint8Array(ts.pxtc.UF2.serializeFile(uf2));
-                let parsed = ts.pxtc.UF2.parseFile(bytes);
+                const bytes = pxt.U.stringToUint8Array(ts.pxtc.UF2.serializeFile(uf2));
+                const parsed = ts.pxtc.UF2.parseFile(bytes);
 
                 let aligned = DAPWrapper.pageAlignBlocks(parsed, this.pageSize);
                 log(`initial: ${aligned.length} pages`);
@@ -363,7 +369,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                             });
                     })
                     .then(() => {
-                        log("flash done");
+                        log("quick flash done");
                         pxt.tickEvent("hid.flash.done");
                         return this.cortexM.reset(false);
                     });
