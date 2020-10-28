@@ -313,7 +313,6 @@
   "control.reset": "Resets the BBC micro:bit.",
   "control.runInParallel": "Run other code in the parallel.",
   "control.runtimeWarning": "Display warning in the simulator.",
-  "control.simmessages.onReceived": "Registers the handler for a message on a given channel",
   "control.waitForEvent": "Blocks the calling thread until the specified event is raised.",
   "control.waitMicros": "Blocks the current fiber for the given microseconds",
   "control.waitMicros|param|micros": "number of micro-seconds to wait. eg: 4",

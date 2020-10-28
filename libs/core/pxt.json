@@ -50,7 +50,6 @@
         "buffer.ts",
         "json.ts",
         "poll.ts",
-        "controlmessage.ts",
         "pxtparts.json",
         "advmath.cpp",
         "trig.cpp",
