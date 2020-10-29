@@ -95,6 +95,10 @@ Buffer _pull() {
 #endif
 }
 
+} // namespace microphone
+
+namespace input {
+
 /**
  * Return microphone sampling period in microseconds.
  */
@@ -108,4 +112,16 @@ int soundSamplingPeriod() {
 #endif
 }
 
-} // namespace microphone
+/**
+ * Set microphone sampling period in microseconds. Typical range 20-200.
+ */
+//%
+void setSoundSamplingPeriod(int us) {
+#if MICROBIT_CODAL
+    uBit.adc.setSamplePeriod(us);
+#else
+    target_panic(PANIC_VARIANT_NOT_SUPPORTED);
+#endif
+}
+
+} // namespace input
