@@ -10,7 +10,7 @@ namespace input {
     }
 
     export function onSoundData(cb: (data: Buffer) => void) {
-        control.internalOnEvent(DAL.DEVICE_ID_NOTIFY, _readyEvent(), () => {
+        control.onEvent(DAL.DEVICE_ID_NOTIFY, _readyEvent(), () => {
             const buf = _pull()
             if (buf)
                 cb(buf)

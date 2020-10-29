@@ -95,4 +95,17 @@ Buffer _pull() {
 #endif
 }
 
+/**
+ * Return microphone sampling period in microseconds.
+ */
+//%
+int soundSamplingPeriod() {
+#if MICROBIT_CODAL
+    return uBit.adc.getSamplePeriod();
+#else
+    target_panic(PANIC_VARIANT_NOT_SUPPORTED);
+    return 0;
+#endif
+}
+
 } // namespace microphone
