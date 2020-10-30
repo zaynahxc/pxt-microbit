@@ -80,6 +80,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             this.disconnectAsync()
                 .then(() => connect && this.reconnectAsync());
         }
+
         this.io.onData = buf => {
             // console.log("RD: " + pxt.Util.toHex(buf))
             this.pbuf.push(buf);
@@ -103,8 +104,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 return;
             }
             // done
-            this.cmsisdap.cmdNums(0x83, [])
-                .then((r: number[]) => {
+            this.dapCmdNums(0x83)
+                .then((r: Uint8Array) => {
                     if (rid != this.readSerialId) {
                         log(`stopped serial reader ${rid}`)
                         return;
@@ -144,25 +145,15 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     private allocDAP() {
         log(`alloc dap`);
+        const h = this.io;
         this.dap = new DapJS.DAP({
-            write: writeAsync,
+            write: data => h.sendPacketAsync(new Uint8Array(data)),
             close: this.disconnectAsync,
-            read: readAsync,
+            read: () => this.recvPacketAsync(),
             //sendMany: sendMany
         });
         this.cmsisdap = (this.dap as any).dap;
         this.cortexM = new DapJS.CortexM(this.dap);
-
-        const h = this.io;
-        const pbuf = this.pbuf;
-        function writeAsync(data: ArrayBuffer) {
-            //console.log("WR: " + pxt.Util.toHex(new Uint8Array(data)));
-            return h.sendPacketAsync(new Uint8Array(data));
-        }
-
-        function readAsync() {
-            return pbuf.shiftAsync();
-        }
     }
 
     get binName() {
@@ -177,7 +168,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         return this.stopSerialAsync()
             .then(() => this.io.reconnectAsync())
             .then(() => this.cortexM.init())
-            .then(() => this.cmsisdap.cmdNums(0x80, []))
+            .then(() => this.dapCmdNums(0x80))
             .then((r: Uint8Array) => {
                 this.usesCODAL = r[2] == 57 && r[3] == 57 && r[5] >= 51;
                 log(`bin name: ${this.binName} ${pxt.U.toHex(r)}`)
@@ -189,7 +180,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 log(`page size ${this.pageSize}, num pages ${this.numPages}`)
             })
             // setting the baud rate on serial resets the cortex, so delay after
-            .then(() => this.cmsisdap.cmdNums(0x82, [0x00, 0xC2, 0x01, 0x00]))
+            .then(() => this.dapCmdNums(0x82, 0x00, 0xC2, 0x01, 0x00))
             .delay(200)
             .then(() => this.checkStateAsync(true))
             .then(() => this.startReadSerial());
@@ -254,13 +245,34 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         // via the webusb events
     }
 
+    private recvPacketAsync() {
+        if (this.io.recvPacketAsync)
+            return this.io.recvPacketAsync()
+        else
+            return this.pbuf.shiftAsync()
+    }
+
+    private dapCmd(buf: Uint8Array) {
+        return this.io.sendPacketAsync(buf)
+            .then(() => this.recvPacketAsync())
+            .then(resp => {
+                if (resp[0] != buf[0])
+                    throw new Error(`bad dapCmd response: ${buf[0]} -> ${resp[0]}`)
+                return resp
+            })
+    }
+
+    private dapCmdNums(...nums: number[]) {
+        return this.dapCmd(new Uint8Array(nums))
+    }
+
     private fullVendorCommandFlashAsync(resp: pxtc.CompileResult): Promise<void> {
         log("full flash")
 
         const chunkSize = 62;
         let sentPages = 0;
         return Promise.resolve()
-            .then(() => this.cmsisdap.cmdNums(0x8A /* DAPLinkFlash.OPEN */, [1]))
+            .then(() => this.dapCmdNums(0x8A /* DAPLinkFlash.OPEN */, 1))
             .then((res) => {
                 log(`daplinkflash open: ${pxt.U.toHex(res)}`)
                 if (res[1] !== 0)
@@ -268,24 +280,25 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 const binFile = resp.outfiles[this.binName];
                 log(`bin file ${this.binName} in ${Object.keys(resp.outfiles).join(', ')}, ${binFile?.length || -1}b`)
                 const hexUint8 = pxt.U.stringToUint8Array(binFile);
-                const hexArray: number[] = Array.prototype.slice.call(hexUint8);
                 log(`hex ${hexUint8?.byteLength || -1}b, ~${(hexUint8.byteLength / chunkSize) | 0} chunks of ${chunkSize}b`)
 
                 const sendPages = (offset: number = 0): Promise<void> => {
-                    this.checkAborted()
-                    const end = Math.min(hexArray.length, offset + chunkSize);
-                    const nextPage = hexArray.slice(offset, end);
-                    nextPage.unshift(nextPage.length);
-                    if (sentPages % 32 == 0) // reduce logging
-                        log(`next page ${sentPages}: [${offset.toString(16)}, ${end.toString(16)}] (${Math.ceil((hexArray.length - end) / 1000)}kb left)`)
-                    return this.cmsisdap.cmdNums(0x8C /* DAPLinkFlash.WRITE */, nextPage)
+                    const end = Math.min(hexUint8.length, offset + chunkSize);
+                    const nextPageData = hexUint8.slice(offset, end);
+                    const cmdData = new Uint8Array(2 + nextPageData.length)
+                    cmdData[0] = 0x8C /* DAPLinkFlash.WRITE */
+                    cmdData[1] = nextPageData.length
+                    cmdData.set(nextPageData, 2)
+                    if (sentPages % 128 == 0) // reduce logging
+                        log(`next page ${sentPages}: [${offset.toString(16)}, ${end.toString(16)}] (${Math.ceil((hexUint8.length - end) / 1000)}kb left)`)
+                    return this.dapCmd(cmdData)
                         .then(() => {
                             this.checkAborted()
-                            if (end < hexArray.length) {
+                            if (end < hexUint8.length) {
                                 sentPages++;
                                 return sendPages(end);
                             }
-                            return Promise.resolve();
+                            return Promise.resolve()
                         });
                 }
 
@@ -293,11 +306,11 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             })
             .then(() => {
                 log(`close`)
-                return this.cmsisdap.cmdNums(0x8B /* DAPLinkFlash.CLOSE */, []);
+                return this.dapCmdNums(0x8B /* DAPLinkFlash.CLOSE */);
             })
             .then(res => {
                 log(`daplinkclose: ${pxt.U.toHex(res)}`)
-                return this.cmsisdap.cmdNums(0x89 /* DAPLinkFlash.RESET */, []);
+                return this.dapCmdNums(0x89 /* DAPLinkFlash.RESET */);
             })
             .then((res) => {
                 log(`daplinkreset: ${pxt.U.toHex(res)}`)
@@ -315,7 +328,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         log(`reset on error`)
         console.debug(e)
         // reset any pending daplink
-        return this.cmsisdap.cmdNums(0x89 /* DAPLinkFlash.RESET */, [])
+        return this.dapCmdNums(0x89 /* DAPLinkFlash.RESET */)
             .catch((e2: any) => {
                 // Best effort reset, no-op if there's an error
             })
