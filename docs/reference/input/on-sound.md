@@ -12,7 +12,7 @@ two sound ranges you can detect for: `loud` or `quiet`.
 
 ### ~ reminder
 
-#### micro:bit v2 required
+![works with micro:bit v2 only image](/static/v2/v2-only.png)
 
 This block requires the [micro:bit v2](/device/v2) hardware. If you use this block with a micro:bit v1 board, you will see the **927** error code on the screen.
 
