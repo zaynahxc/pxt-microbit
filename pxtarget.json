@@ -152,7 +152,7 @@
                 "codalTarget": {
                     "name": "codal-microbit-v2",
                     "url": "https://github.com/lancaster-university/codal-microbit-v2",
-                    "branch": "v0.2.13",
+                    "branch": "v0.2.15",
                     "type": "git"
                 },
                 "codalBinary": "MICROBIT",
