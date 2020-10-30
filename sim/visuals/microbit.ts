@@ -673,7 +673,6 @@ path.sim-board {
             }
 
             let t = Math.max(tmin, Math.min(tmax, state.microphoneState.getLevel()))
-            console.log(`sound level ${t}`)
             let per = Math.floor((state.microphoneState.getLevel() - tmin) / (tmax - tmin) * 100)
             svg.setGradientValue(this.soundLevelGradient, (100 - per) + "%");
             this.soundLevelText.textContent = t + "";
