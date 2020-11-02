@@ -100,7 +100,7 @@ Buffer _pull() {
 namespace input {
 
 /**
- * Return microphone sampling period in microseconds.
+ * (beta) Return microphone sampling period in microseconds.
  */
 //%
 int soundSamplingPeriod() {
@@ -113,7 +113,7 @@ int soundSamplingPeriod() {
 }
 
 /**
- * Set microphone sampling period in microseconds. Typical range 20-200.
+ * (beta) Set microphone sampling period in microseconds. Typical range 20-200.
  */
 //%
 void setSoundSamplingPeriod(int us) {

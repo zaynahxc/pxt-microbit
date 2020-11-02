@@ -9,6 +9,9 @@ namespace input {
         return null
     }
 
+    /**
+     * (beta) Run callback whenever new raw data from microphone is available.
+     */
     export function onSoundData(cb: (data: Buffer) => void) {
         control.onEvent(DAL.DEVICE_ID_NOTIFY, _readyEvent(), () => {
             const buf = _pull()
