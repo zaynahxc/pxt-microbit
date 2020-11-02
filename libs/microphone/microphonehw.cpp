@@ -118,7 +118,8 @@ int soundSamplingPeriod() {
 //%
 void setSoundSamplingPeriod(int us) {
 #if MICROBIT_CODAL
-    uBit.adc.setSamplePeriod(us);
+    if (us != uBit.adc.getSamplePeriod())
+        uBit.adc.setSamplePeriod(us);
 #else
     target_panic(PANIC_VARIANT_NOT_SUPPORTED);
 #endif
