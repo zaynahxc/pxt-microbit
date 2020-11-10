@@ -3,7 +3,7 @@
 
     declare const enum DetectedSound {
     //% block="loud"
-    Loud = 0,
+    Loud = 2,
     //% block="quiet"
     Quiet = 1,
     }
@@ -11,7 +11,7 @@
 
     declare const enum SoundThreshold {
     //% block="loud"
-    Loud = 0,
+    Loud = 2,
     //% block="quiet"
     Quiet = 1,
     }
