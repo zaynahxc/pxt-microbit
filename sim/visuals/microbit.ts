@@ -72,6 +72,7 @@ namespace pxsim.visuals {
         pointer-events: none;
         }
 
+        .sim-text-small,
         .sim-text-pin {
         font-family:"Lucida Console", Monaco, monospace;
         font-size:20px;
@@ -146,7 +147,8 @@ namespace pxsim.visuals {
             stroke: #4D90FE;
             stroke-width: 5px !important;
         }
-        .no-drag, .sim-text, .sim-text-pin {
+        .no-drag, .sim-text, .sim-text-small,
+        .sim-text-pin {
             user-drag: none;
             user-select: none;
             -moz-user-select: none;
@@ -455,7 +457,7 @@ path.sim-board {
         private updateGestures() {
             let state = this.board;
             if (state.accelerometerState.useShake && !this.shakeButton) {
-                this.shakeButton = svg.child(this.g, "circle", { cx: 380, cy: 100, r: 16.5, class: "sim-shake" }) as SVGCircleElement;
+                this.shakeButton = svg.child(this.g, "circle", { cx: 404, cy: 115, r: 12, class: "sim-shake" }) as SVGCircleElement;
                 accessibility.makeFocusable(this.shakeButton);
                 svg.fill(this.shakeButton, this.props.theme.virtualButtonUp)
                 pointerEvents.down.forEach(evid => this.shakeButton.addEventListener(evid, ev => {
@@ -475,8 +477,8 @@ path.sim-board {
                     this.board.accelerometerState.shake();
                 });
                 accessibility.setAria(this.shakeButton, "button", "Shake the board");
-                this.shakeText = svg.child(this.g, "text", { x: 400, y: 110, class: "sim-text" }) as SVGTextElement;
-                this.shakeText.textContent = "SHAKE"
+                this.shakeText = svg.child(this.g, "text", { x: 420, y: 122, class: "sim-text-small" }) as SVGTextElement;
+                this.shakeText.textContent = "SHAKE";
             }
         }
 
@@ -1119,7 +1121,7 @@ path.sim-board {
             // ring
             const microhole = svg.child(this.g, "circle", { cx: 336, cy: 86, r: 3, stroke: "gold", strokeWidth: "1px" })
             svg.title(microhole, pxsim.localization.lf("microphone (microbit:v2 needed)"))
-            
+
             this.updateMicrophone();
             this.updateTheme();
         }
