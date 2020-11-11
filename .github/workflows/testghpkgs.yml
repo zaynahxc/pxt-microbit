@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         node-version: [8.x]
-        branch: [master, stable3.0]
+        branch: [stable3.0, master]
 
     steps:
       - uses: actions/checkout@v2
