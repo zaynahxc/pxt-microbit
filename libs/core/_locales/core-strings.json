@@ -368,6 +368,7 @@
   "music.setTempo|block": "set tempo to (bpm)|%value",
   "music.setVolume|block": "set volume %volume",
   "music.startMelody|block": "start melody %melody=device_builtin_melody| repeating %options",
+  "music.stopAllSounds|block": "stop all sounds",
   "music.stopMelody|block": "stop melody $options",
   "music.tempo|block": "tempo (bpm)",
   "music.volume|block": "volume",

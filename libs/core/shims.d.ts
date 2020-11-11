@@ -611,7 +611,8 @@ declare namespace music {
     //%
     //% help=music/set-volume
     //% weight=70
-    //% group="Volume" volume.defl=127 shim=music::setVolume
+    //% group="Volume"
+    //% blockGap=8 volume.defl=127 shim=music::setVolume
     function setVolume(volume?: int32): void;
 
     /**
@@ -1174,6 +1175,12 @@ declare namespace music {
      **/
     //% async shim=music::__playSoundExpression
     function __playSoundExpression(nodes: string, waitTillDone: boolean): void;
+
+    /**
+     * Internal use only
+     */
+    //% shim=music::__stopSoundExpressions
+    function __stopSoundExpressions(): void;
 }
 
 // Auto-generated. Do not edit. Really.
