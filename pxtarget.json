@@ -294,7 +294,7 @@
                 "thermometer",
                 "compass",
 
-                "onboardspeaker",
+                "builtinspeaker",
                 "microphone",
                 "logotouch"
             ],
