@@ -191,6 +191,7 @@
             "hardwario/pxt-microbit-hardwario",
             "Schoumi/ssd1306-with-reset",
             "keble6/pxt-DS3231",
+            "microsoft/ExpressivePixelsMakeCode",
             "MUSELAB/pxt-muselab-oled-v2"
         ],
         "preferredRepos": [
@@ -205,7 +206,7 @@
             "Tinkertanker/pxt-ringbitcar"
         ],
         "upgrades": {
-            "tinkertanker/pxt-iot-environment-kit": "dv:mbcodal",
+            "tinkertanker/pxt-iot-environment-kit": "min:v4.2.1",
             "microsoft/pxt-bluetooth-midi": "dv:mbcodal",
             "laboratoryforplayfulcomputation/pxt-blockytalkyble": "dv:mbcodal",
             "microsoft/pxt-bluetooth-temperature-sensor": "dv:mbcodal",
@@ -216,7 +217,7 @@
             "pauldfoster/pxt-microbit-gy521": "dv:mbcodal",
             "pizayanz/pxt-linebeacon": "dv:mbcodal",
             "sparkfun/pxt-gator-environment": "dv:mbcodal",
-            "muselab/pxt-wifi-shield": "dv:mbcodal",
+            "muselab/pxt-wifi-shield": "min:v1.8.82",
             "tinkertanker/pxt-alphanumeric-ht16k33": "dv:mbcodal",
             "tinkertanker/microdriver_sht2x": "dv:mbcodal",
             "alsrobot-microbit-makecode-packages/cruisebit": "dv:mbcodal",
