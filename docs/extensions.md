@@ -81,6 +81,10 @@ Check out [the accessories pages on microbit.org](https://microbit.org/buy/acces
   "name": "I2C LCD 1602 Display",
   "url": "/pkg/1010Technologies/pxt-makerbit-ir-lcd1602",
   "cardType": "package"
+}, {
+  "name": "Android DumbDisplay",
+  "url": "/pkg/trevorwslee/mcextension-dumbdisplay",
+  "cardType": "package"
 }]
 ```
 
