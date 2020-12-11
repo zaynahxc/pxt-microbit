@@ -191,7 +191,8 @@
             "hardwario/pxt-microbit-hardwario",
             "Schoumi/ssd1306-with-reset",
             "keble6/pxt-DS3231",
-            "microsoft/ExpressivePixelsMakeCode"
+            "microsoft/ExpressivePixelsMakeCode",
+            "MUSELAB/pxt-muselab-oled-v2"
         ],
         "preferredRepos": [
             "Microsoft/pxt-neopixel",
