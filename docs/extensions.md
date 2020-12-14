@@ -79,7 +79,7 @@ Check out [the accessories pages on microbit.org](https://microbit.org/buy/acces
   "cardType": "package"
 }, {
   "name": "Muselab ssd1306 OLED",
-  "url":"/pkg/MUSELAB/pxt-muselab-oled-v2",
+  "url":"/pkg/MUSELAB/pxt-oled-ssd1306",
   "cardType": "package"
 }, {
   "name": "I2C LCD 1602 Display",
