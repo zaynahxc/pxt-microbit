@@ -240,7 +240,7 @@
             "elecfreaks/pxt-PlanetX": "min:v0.13.1",
             "bsiever/microbit-pxt-timeanddate": "min:v2.0.11"
         },
-        "approvedEditorExtensionUrls": [
+        "trustedEditorExtensionUrls": [
             "https://microsoft.github.io/jacdac-ts/tools/makecode-editor-extension"
         ]
     },
