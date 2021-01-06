@@ -837,6 +837,19 @@ declare namespace pins {
     function createBuffer(size: int32): Buffer;
 
     /**
+     * Set the matrix width for Neopixel strip (already assigned to a pin).
+     * Should be used in conjunction with `set matrix width` from Neopixel package.
+     * @param name pin of Neopixel strip, eg: DigitalPin.P1
+     * @param value width of matrix (at least ``2``)
+     */
+    //% help=pins/neopixel-matrix-width weight=3 advanced=true
+    //% blockId=pin_neopixel_matrix_width block="neopixel matrix width|pin %pin %width" blockGap=8
+    //% pin.fieldEditor="gridpicker" pin.fieldOptions.columns=4
+    //% pin.fieldOptions.tooltips="false" pin.fieldOptions.width="250"
+    //% width.min=2 width.defl=5 shim=pins::setMatrixWidth
+    function setMatrixWidth(pin: DigitalPin, width?: int32): void;
+
+    /**
      * Read `size` bytes from a 7-bit I2C `address`.
      */
     //% repeat.defl=0 shim=pins::i2cReadBuffer
@@ -1152,13 +1165,6 @@ declare namespace light {
     //% advanced=true
     //% shim=light::setMode
     function setMode(pin: int32, mode: int32): void;
-
-    /**
-     * Sets the width of neopixel matrix
-     **/
-    //% advanced=true
-    //% shim=light::setMatrixWidth
-    function setMatrixWidth(pin: int32, width: int32): void;
 }
 declare namespace input {
 
