@@ -213,7 +213,8 @@
         "messageSimulators": {
             "jacdac": {
                 "url": "https://microsoft.github.io/jacdac-ts/tools/makecode-sim?webusb=0&parentOrigin=$PARENT_ORIGIN$",
-                "localHostUrl": "http://localhost:8000/tools/makecode-sim?webusb=0&parentOrigin=$PARENT_ORIGIN$"
+                "localHostUrl": "http://localhost:8000/tools/makecode-sim?webusb=0&parentOrigin=$PARENT_ORIGIN$",
+                "extensionUrl": "https://github.com/microsoft/pxt-jacdac"
             }
         },
         "boardDefinition": {
