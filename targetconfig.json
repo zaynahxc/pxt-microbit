@@ -194,6 +194,7 @@
             "microsoft/ExpressivePixelsMakeCode",
             "MUSELAB/pxt-muselab-oled-v2",
             "microsoft/pxt-jacdac",
+            "microsoft/pxt-jacdac/button",
             "CoolGuy-official/pxt-coolguy",
             "Bouw-je-BEP/Bouw-je-BEP",
             "BirdBrainTechnologies/pxt-finch"
