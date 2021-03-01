@@ -192,6 +192,7 @@
             "Schoumi/ssd1306-with-reset",
             "keble6/pxt-DS3231",
             "microsoft/ExpressivePixelsMakeCode",
+            "pimoroni/pxt-inkybit",
             "MUSELAB/pxt-muselab-oled-v2",
             "microsoft/pxt-jacdac",
             "CoolGuy-official/pxt-coolguy",
