@@ -375,14 +375,13 @@
         "errorList": true,
         "allowPackageExtensions": true,
         "experiments": [
-            "autoWebUSBDownload",
-            "instructions",
             "accessibleBlocks",
             "debugExtensionCode",
             "bluetoothUartConsole",
             "bluetoothPartialFlashing",
             "simScreenshot",
-            "simGif"
+            "simGif",
+            "blocksErrorList"
         ],
         "bluetoothUartFilters": [
             {
@@ -562,7 +561,8 @@
         "chooseLanguageRestrictionOnNewProject": true,
         "openProjectNewTab": true,
         "python": true,
-        "appFlashingTroubleshoot": "/device/windows-app/troubleshoot"
+        "appFlashingTroubleshoot": "/device/windows-app/troubleshoot",
+        "immersiveReader": true
     },
     "queryVariants": {
         "hidemenu": {
