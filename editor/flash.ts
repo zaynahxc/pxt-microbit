@@ -59,6 +59,13 @@ function murmur3_core(data: Uint8Array) {
     return [h0, h1]
 }
 
+function bufferConcat(a: Uint8Array, b: Uint8Array) {
+    const r = new Uint8Array(a.length + b.length)
+    r.set(a, 0)
+    r.set(b, a.length)
+    return r
+}
+
 class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     familyID: number;
     private dap: DapJS.DAP;
@@ -72,7 +79,9 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     private numPages = 256;
     private usesCODAL = false;
     private forceFullFlash = /webusbfullflash=1/.test(window.location.href);
-    private useJACDAC = true;
+    private get useJACDAC() {
+        return this.usesCODAL;
+    }
 
     onSerial = (buf: Uint8Array, isStderr: boolean) => { };
     onCustomEvent = (type: string, payload: Uint8Array) => { };
@@ -95,32 +104,83 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     icon = "usb";
 
+    private pendingSerial: Uint8Array
+    private lastPendingSerial: number
+
+    private processSerialLine(line: Uint8Array) {
+        if (this.onSerial) {
+            try {
+                // catch encoding bugs
+                this.onSerial(line, false)
+            }
+            catch (err) {
+                log(`serial decoding error: ${err.message}`);
+                pxt.tickEvent("hid.flash.serial.decode.error");
+                console.error({ err, line })
+            }
+        }
+    }
+
+    private async readSerial(): Promise<number> {
+        let buf = await this.dapCmdNums(0x83)
+        const len = buf[1]
+        // concat received data with previous data
+        if (len) {
+            buf = buf.slice(2, 2 + len)
+            if (this.pendingSerial) buf = bufferConcat(this.pendingSerial, buf)
+            let ptr = 0
+            let beg = 0
+            while (ptr < buf.length) {
+                if (buf[ptr] == 10 || buf[ptr] == 13) {
+                    ptr++;
+                    // eat \r\n
+                    while (ptr < buf.length && (buf[ptr] == 10 || buf[ptr] == 13))
+                        ptr++;
+                    const line = buf.slice(beg, ptr)
+                    if (line.length)
+                        this.processSerialLine(line);
+                    beg = ptr
+                }
+                else
+                    ptr++
+            }
+            buf = buf.slice(beg)
+            this.pendingSerial = buf.length ? buf : null
+            if (this.pendingSerial) {
+                this.lastPendingSerial = Date.now()
+                //logV(`pending serial ${this.pendingSerial.length}`)
+            }
+        } else if (this.pendingSerial) {
+            const d = Date.now() - this.lastPendingSerial
+            if (d > 500) {
+                this.processSerialLine(this.pendingSerial)
+                this.pendingSerial = null
+            }
+        }
+        return len
+    }
+
     private startReadSerial() {
         const rid = this.readSerialId;
         const startTime = Date.now();
         log(`start read serial ${rid}`)
-        const readSerial = async () => {
+        const readSerialLoop = async () => {
             try {
-                while (true) {
-                    if (rid != this.readSerialId) break
-
-                    const r = await this.dapCmdNums(0x83)
-                    if (rid != this.readSerialId) break
-
-                    const len = r[1]
+                while (rid === this.readSerialId) {
+                    const len = await this.readSerial()
                     const hasData = len > 0
-                    if (hasData && this.onSerial)
-                        this.onSerial(r.slice(2, len + 2), false)
-
+                    //if (hasData)
+                    //    logV(`serial read ${len} bytes`)
                     await this.jacdacProcess(hasData)
                 }
-
                 log(`stopped serial reader ${rid}`)
             } catch (err) {
-                log(`read error: ${err.message}`);
+                log(`serial error ${rid}: ${err.message}`);
+                console.error(err)
                 if (rid != this.readSerialId) {
                     log(`stopped serial reader ${rid}`)
                 } else {
+                    pxt.tickEvent("hid.flash.serial.error");
                     const timeRunning = Date.now() - startTime
                     await this.disconnectAsync(); // force disconnect
                     // if we've been running for a while, try reconnecting
@@ -132,7 +192,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             }
         }
 
-        readSerial();
+        readSerialLoop();
     }
 
     private stopSerialAsync() {
@@ -175,13 +235,15 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         // before calling into dapjs, we use our dapCmdNums() a few times, which which will make sure the responses
         // to commends from previous sessions (if any) are flushed
         const info = await this.dapCmdNums(0x00, 0x04) // info
-        log(`daplink version: ${stringResponse(info)}`)
+        const daplinkVersion = stringResponse(info)
+        log(`daplink version: ${daplinkVersion}`)
 
         const r = await this.dapCmdNums(0x80)
         this.usesCODAL = r[2] == 57 && r[3] == 57 && r[5] >= 51;
-        if (!this.usesCODAL)
-            this.useJACDAC = false;
-        log(`bin name: ${this.binName} v:${stringResponse(r)}`);
+        const binVersion = stringResponse(r);
+        log(`bin name: ${this.binName} v:${binVersion}`);
+
+        pxt.tickEvent("hid.flash.connect", { codal: this.usesCODAL ? 1 : 0, daplink: daplinkVersion, bin: binVersion });
 
         const baud = new Uint8Array(5)
         baud[0] = 0x82 // set baud
@@ -213,6 +275,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 await this.cortexM.resume();
         } catch (e) {
             log(`cortex state failed`)
+            pxt.tickEvent("hid.checkstate.error")
             console.debug(e)
         }
     }
@@ -242,6 +305,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             .then(() => this.checkStateAsync())
             .then(() => this.readUICR())
             .then(uicr => {
+                pxt.tickEvent("hid.flash.uicr", { uicr });
                 // shortcut, do a full flash
                 if (uicr != 0 || this.forceFullFlash) {
                     pxt.tickEvent("hid.flash.uicrfail");
@@ -250,6 +314,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 // check flash checksums
                 return this.computeFlashChecksum(resp)
                     .then(chk => {
+                        pxt.tickEvent("hid.flash.checksum", { quick: chk.quick ? 1 : 0, changed: chk.changed ? chk.changed.length : 0 });
                         // let's do a quick flash!
                         if (chk.quick)
                             return this.quickHidFlashAsync(chk.changed);
@@ -258,6 +323,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                     });
             })
             .then(() => this.checkStateAsync(true))
+            .then(() => pxt.tickEvent("hid.flash.success"))
             .finally(() => { this.flashing = false })
         // don't disconnect here
         // the micro:bit will automatically disconnect and reconnect
@@ -276,7 +342,9 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             .then(() => this.recvPacketAsync())
             .then(resp => {
                 if (resp[0] != buf[0]) {
+                    pxt.tickEvent('hid.flash.cmderror', { req: buf[0], resp: resp[0] })
                     const msg = `bad dapCmd response: ${buf[0]} -> ${resp[0]}`
+
                     // in case we got an invalid response, try to get another response, in case the current
                     // response is a left-over from previous communications
                     log(msg + "; retrying")
@@ -299,6 +367,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     private fullVendorCommandFlashAsync(resp: pxtc.CompileResult): Promise<void> {
         log("full flash")
+        pxt.tickEvent("hid.flash.full.start");
 
         const chunkSize = 62;
         let sentPages = 0;
@@ -308,8 +377,10 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 .then(() => this.dapCmdNums(0x8A /* DAPLinkFlash.OPEN */, 1))
                 .then((res) => {
                     log(`daplinkflash open: ${pxt.U.toHex(res)}`)
-                    if (res[1] !== 0)
+                    if (res[1] !== 0) {
+                        pxt.tickEvent('hid.flash.full.error.open', { res: res[1] })
                         throw new Error(lf("Download failed, please try again"));
+                    }
                     const binFile = resp.outfiles[this.binName];
                     log(`bin file ${this.binName} in ${Object.keys(resp.outfiles).join(', ')}, ${binFile?.length || -1}b`)
                     const hexUint8 = pxt.U.stringToUint8Array(binFile);
@@ -348,10 +419,12 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 .then((res) => {
                     log(`daplinkreset: ${pxt.U.toHex(res)}`)
                     log(`full flash done`);
+                    pxt.tickEvent("hid.flash.full.success");
                 }),
             timeoutMessage
         ).catch((e) => {
             log(`error: abort`)
+            pxt.tickEvent("hid.flash.full.error");
             this.flashAborted = true;
             return this.resetAndThrowAsync(e);
         });
@@ -359,6 +432,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     private resetAndThrowAsync(e: any) {
         log(`reset on error`)
+        pxt.tickEvent("hid.flash.reset");
         console.debug(e)
         // reset any pending daplink
         return this.dapCmdNums(0x89 /* DAPLinkFlash.RESET */)
@@ -410,6 +484,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     private quickHidFlashAsync(changed: ts.pxtc.UF2.Block[]): Promise<void> {
         log("quick flash")
+        pxt.tickEvent("hid.flash.quick.start");
+
         const runFlash = (b: ts.pxtc.UF2.Block, dataAddr: number) => {
             const cmd = this.cortexM.prepareCommand();
 
@@ -444,11 +520,11 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                         this.checkAborted();
                         let b = changed[i];
                         if (b.targetAddr >= 0x10000000) {
-                            log(`target address ${b.targetAddr.toString(16)} > 0x10000000`)
-                            return Promise.resolve();
+                            log(`target address 0x${b.targetAddr.toString(16)} > 0x10000000`)
+                            //return Promise.resolve();
                         }
 
-                        log("about to write at 0x" + b.targetAddr.toString(16));
+                        log(`about to write at 0x${b.targetAddr.toString(16)}`);
 
                         let writeBl = Promise.resolve();
 
@@ -482,12 +558,15 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                     }))
                 .then(() => {
                     log("quick flash done");
-                    pxt.tickEvent("hid.flash.done");
                     return this.cortexM.reset(false);
                 })
-                .then(() => this.checkStateAsync(true)),
+                .then(() => {
+                    pxt.tickEvent("hid.flash.quick.success");
+                    return this.checkStateAsync(true)
+                }),
             timeoutMessage
         ).catch((e) => {
+            pxt.tickEvent("hid.flash.quick.error");
             this.flashAborted = true;
             return this.resetAndThrowAsync(e);
         });
@@ -626,22 +705,30 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     private async jacdacSetup() {
         this.xchgAddr = null
-        if (!this.useJACDAC)
+        if (!this.useJACDAC) {
+            log(`jacdac: disabled`)
             return
+        }
         await pxt.Util.delay(700); // wait for the program to start and setup memory correctly
         const xchg = await this.findJacdacXchgAddr()
-        if (xchg == null)
+        if (xchg == null) {
+            log("jacdac: xchg address not found")
+            pxt.tickEvent("hid.flash.jacdac.error.missingxchg");
             return
+        }
         const info = await this.readBytes(xchg, 16)
         this.irqn = info[8]
         if (info[12 + 2] != 0xff) {
-            console.error("invalid memory; try power-cycling the micro:bit")
+            log("jacdac: invalid memory; try power-cycling the micro:bit")
+            pxt.tickEvent("hid.flash.jacdac.error.invalidmemory");
+            console.debug({ info, xchg })
             return
         }
         this.xchgAddr = xchg
         // clear initial lock
         await this.writeWord(xchg + 12, 0)
-        log(`jacdac exchange address: 0x${xchg.toString(16)}; irqn=${this.irqn}`)
+        log(`jacdac: exchange address 0x${xchg.toString(16)}; irqn=${this.irqn}`)
+        pxt.tickEvent("hid.flash.jacdac.connected");
     }
 
     private async triggerIRQ(irqn: number) {
