@@ -66,6 +66,10 @@ function bufferConcat(a: Uint8Array, b: Uint8Array) {
     return r
 }
 
+function stringResponse(buf: Uint8Array) {
+    return pxt.U.uint8ArrayToString(buf.slice(2, 2 + buf[1]))
+}
+
 class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     familyID: number;
     private dap: DapJS.DAP;
@@ -223,9 +227,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         this.flashAborted = false
         this.numPages = undefined
 
-        function stringResponse(buf: Uint8Array) {
-            return pxt.U.uint8ArrayToString(buf.slice(2, 2 + buf[1]))
-        }
+        this.xchgAddr = null
+        this.lastXchg = null
 
         await this.stopSerialAsync()
 
@@ -713,6 +716,10 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     private async jacdacSetup() {
         this.xchgAddr = null
+        this.lastXchg = null
+        this.sendQ = []
+        this.currSend = undefined
+
         if (!this.useJACDAC) {
             log(`jacdac: disabled`)
             return
