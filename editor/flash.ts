@@ -76,7 +76,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     private readSerialId = 0;
     private pbuf = new pxt.U.PromiseBuffer<Uint8Array>();
     private pageSize = 1024;
-    private numPages = 256;
+    private numPages: number;
     private usesCODAL = false;
     private forceFullFlash = /webusbfullflash=1/.test(window.location.href);
     private get useJACDAC() {
@@ -220,7 +220,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
     async reconnectAsync(): Promise<void> {
         log(`reconnect`)
-        this.flashAborted = false;
+        this.flashAborted = false
+        this.numPages = undefined
 
         function stringResponse(buf: Uint8Array) {
             return pxt.U.uint8ArrayToString(buf.slice(2, 2 + buf[1]))
@@ -254,6 +255,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
         // only init after setting baud rate, in case we got reset
         await this.cortexM.init()
+        await this.checkStateAsync();
 
         const res = await this.readWords(0x10000010, 2);
         this.pageSize = res[0]
@@ -452,7 +454,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         return this.readWords(0x10001014, 1)
             .then(v => {
                 const uicr = v[0] & 0xff;
-                log(`uicr: ${uicr.toString(16)} (${v[0].toString(16)})`);
+                log(`uicr: ${uicr?.toString(16)} (${v[0]?.toString(16)})`);
                 return uicr;
             });
     }
@@ -471,6 +473,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 const bytes = pxt.U.stringToUint8Array(ts.pxtc.UF2.serializeFile(uf2));
                 const parsed = ts.pxtc.UF2.parseFile(bytes);
 
+                pxt.U.assert(this.pageSize !== undefined)
+                pxt.U.assert(this.numPages !== undefined)
                 const aligned = DAPWrapper.pageAlignBlocks(parsed, this.pageSize);
                 const changed = DAPWrapper.onlyChanged(aligned, checksums, this.pageSize);
                 const quick = changed.length < aligned.length / 2;
@@ -573,7 +577,9 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     }
 
     private getFlashChecksumsAsync() {
-        log("flash checksums")
+        log(`flash checksums (${this.numPages} pages)`)
+        pxt.U.assert(this.pageSize !== undefined);
+        pxt.U.assert(this.numPages !== undefined);
         let pages = this.numPages
         return this.cortexM.runCode(computeChecksums2, loadAddr, loadAddr + 1, 0xffffffff, stackAddr, true,
             dataAddr, 0, this.pageSize, pages)
@@ -581,6 +587,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     }
 
     private readWords(addr: number, numWords: number) {
+        pxt.U.assert(this.pageSize !== undefined)
         return this.cortexM.memory.readBlock(addr, numWords, this.pageSize)
             // assume browser is little-endian
             .then(u8 => new Uint32Array(u8.buffer))
@@ -591,6 +598,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
     }
 
     private readBytes(addr: number, numBytes: number) {
+        pxt.U.assert(this.pageSize !== undefined)
         return this.cortexM.memory.readBlock(addr, (numBytes + 3) >> 2, this.pageSize)
             .then(u8 => u8.length == numBytes ? u8 : u8.slice(0, numBytes))
     }
@@ -719,10 +727,10 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         const info = await this.readBytes(xchg, 16)
         this.irqn = info[8]
         if (info[12 + 2] != 0xff) {
-            log("jacdac: invalid memory; try power-cycling the micro:bit")
+            console.error("jacdac: invalid memory; try power-cycling the micro:bit")
             pxt.tickEvent("hid.flash.jacdac.error.invalidmemory");
             console.debug({ info, xchg })
-            return
+            throw new Error(lf("Invalid memory; try power-cycling the micro:bit"))
         }
         this.xchgAddr = xchg
         // clear initial lock
