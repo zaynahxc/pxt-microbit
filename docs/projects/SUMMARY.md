@@ -82,6 +82,7 @@
   * [Milk Carton Robot](/projects/milk-carton-robot)
   * [Robot Unicorn](/projects/robot-unicorn)
   * [Ticklebot](https://www.jasmineflorentine.com/ticklebot)
+  * [Two Player Maze](https://tinker-club.blogspot.com/p/two-player-maze-game-for-microbit.html)
   * [Milky Monster](/projects/milky-monster)
   * [Railway Crossing](/projects/railway-crossing)
   * [Kitronik RC Car Hack](/projects/rc-car)
