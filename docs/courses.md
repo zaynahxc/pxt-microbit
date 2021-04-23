@@ -73,6 +73,11 @@ Tutorials, lessons, and mini-courses about programming and computing.
   "description": "Learn the basics of logic and conditional expressions.",
   "url":"/courses/logic-lab",
   "imageUrl":"/static/courses/logic-lab.png"
+}, {
+  "name": "CodeJoy Remote Robotics",
+  "description": "Interactive remote robotics and& coding classes for students and educators",
+  "url": "https://www.codejoyeducation.com",
+  "imageUrl": "/static/courses/codejoy.png"
 }]
 ```
 
