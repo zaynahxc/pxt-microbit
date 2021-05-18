@@ -1,0 +1,20 @@
+{
+    "name": "flashlog",
+    "description": "Data logging to flash.",
+    "files": [
+        "README.md",
+        "flashlog.cpp",
+        "shims.d.ts",
+        "enums.d.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true,
+    "disablesVariants": [
+        "mbdal"
+    ],    
+    "dependencies": {
+        "core": "file:../core"
+    }
+}
