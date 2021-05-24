@@ -359,8 +359,14 @@
         "organizationUrl": "https://makecode.com/",
         "organizationLogo": "./static/Microsoft-logo_rgb_c-gray-square.png",
         "organizationWideLogo": "./static/Microsoft-logo_rgb_c-white.png",
-        "homeScreenHero": "./static/hero.png",
-        "homeScreenHeroGallery": "/tutorials",
+        "homeScreenHero": {
+            "imageUrl": "/static/hero.png",
+            "name": "Flashing Heart",
+            "url": "/projects/flashing-heart",
+            "description": "New? Start here!",
+            "cardType": "tutorial"
+        },
+        "homeScreenHeroGallery": "/hero-banner",
         "homeUrl": "https://makecode.microbit.org/",
         "embedUrl": "https://makecode.microbit.org/",
         "shareUrl": "https://makecode.microbit.org/",
