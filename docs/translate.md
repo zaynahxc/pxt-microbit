@@ -4,7 +4,7 @@
 
 ### ~ hint
 
-Looking to help translate the site for **[microbit.org](http://microbit.org)**? Try http://translate.microbit.org/ to help the Microbit Foundation!
+Looking to help translate the site for **[microbit.org](http://microbit.org)**? Try http://translate.microbit.org/ to help the Micro:bit Educational Foundation!
  
 ### ~
 
