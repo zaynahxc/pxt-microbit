@@ -444,6 +444,12 @@ declare namespace control {
     function deviceName(): string;
 
     /**
+     * Returns the major version of the microbit
+     */
+    //% help=control/hardware-version shim=control::_hardwareVersion
+    function _hardwareVersion(): int32;
+
+    /**
      * Derive a unique, consistent serial number of this device from internal data.
      */
     //% blockId="control_device_serial_number" block="device serial number" weight=9
