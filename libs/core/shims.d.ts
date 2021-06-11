@@ -397,7 +397,8 @@ declare namespace control {
      * @param micros number of micro-seconds to wait. eg: 4
      */
     //% help=control/wait-micros weight=29 async
-    //% blockId="control_wait_us" block="wait (µs)%micros" shim=control::waitMicros
+    //% blockId="control_wait_us" block="wait (µs)%micros"
+    //% micros.min=0 micros.max=6000 shim=control::waitMicros
     function waitMicros(micros: int32): void;
 
     /**
