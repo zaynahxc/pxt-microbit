@@ -5,6 +5,13 @@
 //% icon="\uf0ce"
 //% color="#378273"
 namespace datalogger {
+    export enum DeleteType {
+        //% block="fast"
+        Fast,
+        //% block="full"
+        Full
+    }
+
     let onLogFullHandler: () => void;
     let _mirrorToSerial = true;
     let _timestampFormat = FlashLogTimeStampFormat.Seconds;
@@ -16,18 +23,27 @@ namespace datalogger {
             return;
         initialized = true;
 
-        includeTimestamp(true, _timestampFormat);
+        includeTimestamp(_timestampFormat);
 
         control.onEvent(DAL.MICROBIT_ID_LOG, DAL.MICROBIT_LOG_EVT_LOG_FULL, () => {
             _disabled = true;
             if (onLogFullHandler) {
                 onLogFullHandler();
             } else {
-                basic.showString("Log Full");
+                basic.showLeds(`
+                    # . . . #
+                    # # . # #
+                    . . . . .
+                    . # # # .
+                    # . . . #
+                `);
+                basic.pause(1000);
+                basic.clearScreen();
+                basic.showString("928");
             }
         });
-
     }
+
     export class ColumnValue {
         public value: string;
         constructor(
@@ -47,6 +63,7 @@ namespace datalogger {
     //% block="column $column value $value"
     //% value.shadow=math_number
     //% blockId=dataloggercreatecolumnvalue
+    //% group="micro:bit (v2)"
     //% weight=80
     export function createCV(column: string, value: any): ColumnValue {
         return new ColumnValue(column, value);
@@ -60,6 +77,7 @@ namespace datalogger {
     //% blockId=dataloggerlogdata
     //% data.shadow=lists_create_with
     //% data.defl=dataloggercreatecolumnvalue
+    //% group="micro:bit (v2)"
     //% weight=100
     export function logData(data: ColumnValue[]): void {
         if (!data || !data.length)
@@ -120,24 +138,30 @@ namespace datalogger {
     //% block="set columns $cols"
     //% blockId=dataloggersetcolumns
     //% data.shadow=list_create_with
+    //% group="micro:bit (v2)"
     //% weight=70
     export function setColumns(cols: string[]): void {
         if (!cols)
             return;
+        init();
+        const fmt = _timestampFormat;
+        includeTimestamp(FlashLogTimeStampFormat.None);
         logData(cols.map(col => createCV(col, "")));
+        includeTimestamp(fmt);
     }
 
     /**
      * Delete all existing logs, including column headers. By default this only marks the log as
      * overwriteable / deletable in the future.
-     * @param fullErase optional if set on (true), fully erase log instead of marking as empty. This will take longer but makes sure data will not persist on device.
+     * @param deleteType optional set whether a deletion will be fast or full
      */
-    //% block="delete log||wipe $fullErase"
-    //% fullErase.shadow=toggleOnOff
+    //% block="delete log||$deleteType"
     //% blockId=dataloggerdeletelog
+    //% group="micro:bit (v2)"
     //% weight=60
-    export function deleteLog(fullErase?: boolean): void {
-        flashlog.clear(fullErase);
+    export function deleteLog(deleteType?: DeleteType): void {
+        init();
+        flashlog.clear(deleteType === DeleteType.Full);
         _disabled = false;
     }
 
@@ -147,24 +171,25 @@ namespace datalogger {
      */
     //% block="on log full"
     //% blockId="on log full"
+    //% group="micro:bit (v2)"
     //% weight=40
     export function onLogFull(handler: () => void): void {
+        init();
         onLogFullHandler = handler;
     }
 
     /**
-     * Set whether timestamp is included in included when logging data or not.
-     * @param on if true timestamp will be included
-     * @param format optional Format in which to show the timestamp. Setting FlashLogTimeStampFormat.None is equivalent to setting 'on' to false
+     * Set the format for timestamps
+     * @param format Format in which to show the timestamp. Setting FlashLogTimeStampFormat.None will disable the timestamp.
      */
-    //% block="include timestamp $on||format $format"
+    //% block="set timestamp $format"
     //% blockId=dataloggertoggleincludetimestamp
-    //% on.shadow=toggleOnOff
-    //% on.defl=true
-    //% format.defl=FlashLogTimeStampFormat.Seconds
+    //% format.defl=FlashLogTimeStampFormat.None
+    //% group="micro:bit (v2)"
     //% weight=30
-    export function includeTimestamp(on: boolean, format: FlashLogTimeStampFormat = FlashLogTimeStampFormat.Seconds): void {
-        _timestampFormat = !on ? FlashLogTimeStampFormat.None : format;
+    export function includeTimestamp(format: FlashLogTimeStampFormat): void {
+        init();
+        _timestampFormat = format;
         flashlog.setTimeStamp(_timestampFormat);
     }
 
@@ -178,6 +203,9 @@ namespace datalogger {
     //% on.defl=true
     //% weight=25
     export function mirrorToSerial(on: boolean): void {
+        // TODO:/note intentionally does not have group, as having the same group for all
+        // blocks in a category causes the group to be elided.
+        init();
         _mirrorToSerial = !!on;
     }
 }

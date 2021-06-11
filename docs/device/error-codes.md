@@ -1,6 +1,6 @@
 # Error codes
 
-Your @boardname@ may encounter a situation that prevents it from running your code. When this happens, a frowny face will appear on your @boardname@ screen (see picture) followed by an error number. These are called _panic_ codes. 
+Your @boardname@ may encounter a situation that prevents it from running your code. When this happens, a frowny face will appear on your @boardname@ screen (see picture) followed by an error number. These are called _panic_ codes.
 
 ```sim
 basic.forever(function() {
@@ -67,6 +67,7 @@ Error codes generated from the garbage collector.
 * **907** (`PANIC_NO_SUCH_CONFIG`): the specified device resource is not present
 * **909** (`PANIC_INVALID_ARGUMENT`): the argument value is out of range or the type or format is invalid
 * **927** (`PANIC_VARIANT_NOT_SUPPORTED`): using a v2 feature on a v1 board
+* **928** (`MICROBIT_LOG_FULL`): The @boardname@ failed to write to datalogger as the log was full
 
 
 ## JavaScript runtime codes
