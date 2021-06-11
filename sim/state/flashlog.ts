@@ -8,6 +8,9 @@ namespace pxsim.flashlog {
     let currentRow: string[] = undefined
     let SEPARATOR = ","
     let timestampFormat: number = undefined
+    let logSize = 0;
+    /** Estimate for flash size; TODO: get exact size, correctly count unicode character > 1 byte **/
+    const logEnd = 60000;
 
     function ensureV2() {
         const b = board();
@@ -23,12 +26,18 @@ namespace pxsim.flashlog {
         // TODO: maybe do something better here
         // send data to simulator
         const data = `${text}${timestampFormat ? `${SEPARATOR}${(timestamp / timestampFormat)}` : ""}\n`;
-        Runtime.postMessage(<SimulatorSerialMessage>{
-            type: 'serial',
-            data,
-            id: runtime.id,
-            sim: true
-        })
+        logSize += data.length;
+
+        if (logSize >= logEnd) {
+            board().bus.queue(DAL.MICROBIT_ID_LOG, DAL.MICROBIT_LOG_EVT_LOG_FULL);
+            clear(false);
+        }
+        // Runtime.postMessage(<SimulatorSerialMessage>{
+        //     type: 'serial',
+        //     data,
+        //     id: runtime.id,
+        //     sim: true
+        // })
     }
 
     export function beginRow(): number {
@@ -49,6 +58,7 @@ namespace pxsim.flashlog {
         if (index < 0) {
             headers.push(key)
             index = headers.length - 1
+            logSize += key.length;
         }
 
         // store
@@ -74,10 +84,11 @@ namespace pxsim.flashlog {
         commitRow(s)
     }
 
-    export function clear() {
+    export function clear(fullErase: boolean) {
         ensureV2()
         rows = []
         headers = []
+        logSize = 0;
         currentRow = undefined;
     }
 
