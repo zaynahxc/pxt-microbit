@@ -1,33 +1,37 @@
 namespace pxsim.flashlog {
+    enum FlashLogTimeStampFormat {
+        None = 0,
+        Milliseconds = 1,
+        Seconds = 10,
+        Minutes = 600,
+        Hours = 36000,
+        Days = 864000,
+    }
     // we don't store the flash log in the runtime object, since it's persistent
     let headers: string[] = []
-    let rows: {
-        text: string,
-        timestamp: number
-    }[] = []
     let currentRow: string[] = undefined
     let SEPARATOR = ","
-    let timestampFormat: number = undefined
+    let timestampFormat: FlashLogTimeStampFormat = undefined
+    let mirrorToSerial = false;
     let logSize = 0;
+    let committedCols = 0;
     /** allocated flash size **/
     const logEnd = 121852;
 
-    function ensureV2() {
+    let lastRunId: string;
+    function init() {
         const b = board();
         if (!b) return;
+        if (b.runOptions.id !== lastRunId) {
+            lastRunId = b.runOptions.id;
+            erase();
+        }
         b.ensureHardwareVersion(2);
     }
 
-    function commitRow(text: string) {
+    function commitRow(data: string) {
         if (!runtime) return;
-
-        const timestamp = runtime.runningTime()
-        rows.push({ text, timestamp })
-        // TODO: maybe do something better here
-        // send data to simulator
-
-        const timeUnit = timestampFormat > 1 ? timestampFormat * 100 : timestampFormat;
-        const data = `${text}${timeUnit ? `${SEPARATOR}${(timestamp / timeUnit)}` : ""}\n`;
+        data += "\n";
 
         /** edge 18 does not support text encoder, so fall back to length **/
         logSize += TextEncoder ? (new TextEncoder().encode(data)).length : data.length;
@@ -35,33 +39,36 @@ namespace pxsim.flashlog {
             board().bus.queue(DAL.MICROBIT_ID_LOG, DAL.MICROBIT_LOG_EVT_LOG_FULL);
             clear(false);
         }
-        // Runtime.postMessage(<SimulatorSerialMessage>{
-        //     type: 'serial',
-        //     data,
-        //     id: runtime.id,
-        //     sim: true
-        // })
+        if (mirrorToSerial) {
+            board().serialState.writeSerial(data);
+        }
     }
 
     export function beginRow(): number {
-        ensureV2()
+        init()
         if (currentRow)
             return DAL.DEVICE_INVALID_STATE
         currentRow = []
         return DAL.DEVICE_OK
     }
 
-    export function logData(key: string, value: string) {
-        ensureV2()
+    export function logData(key: string, value: string, prepend = false) {
+        init()
         if (!currentRow)
             return DAL.DEVICE_INVALID_STATE
 
         // find header index
         let index = headers.indexOf(key)
         if (index < 0) {
-            headers.push(key)
-            index = headers.length - 1
-            logSize += key.length;
+            if (prepend) {
+                /** push timestamps up to front of uncommitted rows **/
+                headers.splice(committedCols, 0, key);
+                currentRow.splice(committedCols, 0, value);
+                index = committedCols;
+            } else {
+                headers.push(key)
+                index = headers.length - 1
+            }
         }
 
         // store
@@ -71,33 +78,82 @@ namespace pxsim.flashlog {
     }
 
     export function endRow(): number {
-        ensureV2()
+        init()
         if (!currentRow)
             return DAL.DEVICE_INVALID_STATE
-        const line = currentRow.join(SEPARATOR)
-        currentRow = undefined
-        commitRow(line)
-        return DAL.DEVICE_OK
+        if (!currentRow.some(el => el !== "" && el != undefined))
+            return DAL.DEVICE_OK;
+
+        if (timestampFormat !== FlashLogTimeStampFormat.None && mirrorToSerial) {
+            let unit = "";
+            switch(timestampFormat) {
+                case FlashLogTimeStampFormat.Milliseconds:
+                    unit = "milliseconds"
+                    break;
+                case FlashLogTimeStampFormat.Minutes:
+                    unit = "minutes";
+                    break;
+                case FlashLogTimeStampFormat.Hours:
+                    unit = "hours";
+                    break;
+                case FlashLogTimeStampFormat.Days:
+                    unit = "days";
+                    break;
+                case FlashLogTimeStampFormat.Seconds:
+                default:
+                    unit = "seconds";
+                    break;
+            }
+
+            const timestamp = runtime.runningTime();
+
+            const timeUnit = timestampFormat > 1 ? timestampFormat * 100 : timestampFormat;
+            const timeValue = timestamp / timeUnit;
+            // TODO: there's a semi complicated format conversion
+            // over in MicroBitLog::endRow that we might want to replicate.
+            // https://github.com/lancaster-university/codal-microbit-v2/blob/master/source/MicroBitLog.cpp#L405
+            logData(`time (${unit})`, "" + timeValue, true /** Prepend before new headers */);
+        }
+
+        currentRow.length = headers.length;
+        const line = currentRow.join(SEPARATOR);
+        if (headers.length !== committedCols) {
+            commitRow(headers.join(SEPARATOR))
+            committedCols = headers.length;
+        }
+        currentRow = undefined;
+
+        commitRow(line);
+        return DAL.DEVICE_OK;
     }
 
     export function logString(s: string) {
-        ensureV2()
+        init()
         if (!s) return
 
         commitRow(s)
     }
 
     export function clear(fullErase: boolean) {
-        ensureV2()
-        rows = []
+        init()
+        erase();
+    }
+
+    function erase() {
         headers = []
         logSize = 0;
+        committedCols = 0;
         currentRow = undefined;
     }
 
-    export function setTimeStamp(format: number) {
-        ensureV2()
+    export function setTimeStamp(format: FlashLogTimeStampFormat) {
+        init()
         // this option is probably not serialized, needs to move in state
         timestampFormat = format
+    }
+
+    export function setSerialMirroring(enabled: boolean) {
+        init();
+        mirrorToSerial = !!enabled;
     }
 }
