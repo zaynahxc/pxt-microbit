@@ -62,6 +62,11 @@ Check out [the accessories pages on microbit.org](https://microbit.org/buy/acces
 
 ```codecard
 [{
+    "name": "Kitronik 128x64 Display",
+    "url": "/pkg/KitronikLtd/pxt-kitronik-128x64Display",
+    "cardType": "package"
+}, {
+{
     "name": "Monk Makes 7-Segment",
     "url": "/pkg/monkmakes/monkmakes-7-segment",
     "cardType": "package"
