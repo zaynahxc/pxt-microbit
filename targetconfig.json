@@ -209,6 +209,7 @@
             "joy-it/SEN-MPU6050",
             "gomakekit/Hoverbit_V2",
             "Matrix-Robotics/pxt-MatrixMicro",
+            "elecfreaks/pxt-PlanetX-AI",
             "joy-it/pxt-SEN-Color",
             "KitronikLtd/pxt-kitronik-lab-bit",
             "KitronikLtd/pxt-kitronik-128x64Display",
