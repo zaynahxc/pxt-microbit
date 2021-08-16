@@ -329,6 +329,10 @@ Check out [the accessories pages on microbit.org](https://microbit.org/buy/acces
 
 ```codecard
 [{
+   "name": "Kitronik LAB:bit",
+   "url": "/pkg/KitronikLtd/pxt-kitronik-lab-bit",
+   "cardType": "package"
+}, {
    "name": "PT-BOT PTKidsBIT",
    "url": "/pkg/iBuilds/pxt-PTKidsBIT",
    "cardType": "package"
