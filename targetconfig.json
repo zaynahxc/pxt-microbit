@@ -206,18 +206,34 @@
             "microsoft/pxt-data-streamer",
             "iBuilds/pxt-PTKidsBIT-Robot",
             "4tronix/EggBit",
-            "joy-it/SEN-MPU6050"
+            "joy-it/SEN-MPU6050",
+            "gomakekit/Hoverbit_V2",
+            "Matrix-Robotics/pxt-MatrixMicro",
+            "elecfreaks/pxt-PlanetX-AI",
+            "joy-it/pxt-SEN-Color",
+            "stemhub/pxt-Stemhubbit",
+            "KitronikLtd/pxt-kitronik-lab-bit",
+            "KitronikLtd/pxt-kitronik-128x64Display",
+            "monkmakes/monkmakes-7-segment",
+            "stemhub/pxt-StemhubCity",
+            "KittenBot/pxt-powerbrick"
         ],
         "preferredRepos": [
             "Microsoft/pxt-neopixel",
-            "Microsoft/pxt-microturtle",
-            "Tinkertanker/pxt-tinkercademy-tinker-kit",
+            "4tronix/BitBot",
+            "dfrobot/pxt-maqueen",
             "kittenbot/pxt-robotbit",
             "Microsoft/pxt-sonar",
-            "4tronix/BitBot",
+            "Microsoft/pxt-microturtle",
+            "Tinkertanker/pxt-tinkercademy-tinker-kit",
+            "seeed-studio/pxt-grove",
+            "elecfreaks/pxt-cutebot",
+            "dfrobot/pxt-dfrobot-maqueenplus",
+            "tinkertanker/pxt-iot-environment-kit",
+            "tinkertanker/pxt-ringbitcar",
             "kitronikltd/pxt-kitronik-servo-lite",
             "kitronikltd/pxt-kitronik-motor-driver",
-            "Tinkertanker/pxt-ringbitcar"
+            "tinkertanker/pxt-smarthome"
         ],
         "upgrades": {
             "tinkertanker/pxt-iot-environment-kit": "min:v4.2.1",
@@ -259,6 +275,7 @@
     },
     "galleries": {
         "Tutorials": "tutorials",
+        "Tutorials for the new micro:bit (V2)": "v2tutorials",
         "Live Coding": {
             "url": "live-coding",
             "shuffle": "daily",
@@ -272,7 +289,7 @@
         "Science": "projects/science",
         "Tools": "projects/tools",
         "Turtle": "projects/turtle",
-        "Blocks To JavaScript": "courses/blocks-to-javascript",
+        "Blocks to JavaScript": "courses/blocks-to-javascript",
         "Courses": "courses",
         "Behind the MakeCode Hardware": {
             "url": "behind-the-makecode-hardware",
