@@ -437,6 +437,10 @@ Check out [the accessories pages on microbit.org](https://microbit.org/buy/acces
 
 ```codecard
 [{
+  "name": "BPI TriodeCar",
+  "url":"/pkg/BPI-STEAM/pxt-triodecar",
+  "cardType": "package"
+}, {
   "name": "Artec Robokit",
   "url":"/pkg/artec-kk/pxt-artecrobo-kit",
   "cardType": "package"
