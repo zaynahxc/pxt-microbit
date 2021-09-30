@@ -229,6 +229,7 @@
             "BPI-STEAM/pxt-triodecar",
             "KitronikLtd/pxt-kitronik-air-quality",
             "artec-kk/pxt-artecrobo-kit",
+            "TeacherPinky/Wait-Until-Blocks",
             "KittenBot/pxt-kittenwifi"
         ],
         "preferredRepos": [
