@@ -284,7 +284,7 @@
             "sparkfun/pxt-gator-particle": "dv:mbcodal",
             "sparkfun/pxt-gator-microphone": "dv:mbcodal",
             "rebeccaclavier/pxt-bmp280": "dv:mbcodal",
-            "mu-opensource/pxt-muvision": "min:v1.2.21",
+            "mu-opensource/pxt-muvision": "min:v1.2.23",
             "elecfreaks/pxt-PlanetX": "min:v0.13.1",
             "bsiever/microbit-pxt-timeanddate": "min:v2.0.11"
         },
