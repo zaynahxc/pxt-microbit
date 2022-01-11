@@ -2,8 +2,8 @@
 name: Design Request
 about: 'Describe a design or art need '
 title: ''
-labels: ''
-assignees: ''
+labels: design
+assignees: soniakandah, unthinkmedia, BeckHaru
 
 ---
 
