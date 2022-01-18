@@ -242,6 +242,7 @@
             "iBuilds/pxt-PTKidsBIT-IoT",
             "KelieLeung/pxt-iClassIoT",
             "aorczyk/lego-pf-receiver",
+            "aorczyk/soroban",
             "aorczyk/pf-recorder"
         ],
         "preferredRepos": [
