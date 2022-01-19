@@ -473,6 +473,10 @@ Check out [the accessories pages on microbit.org](https://microbit.org/buy/acces
 
 ```codecard
 [{
+  "name": "Kitronik :CREATE Simple Servo Control Board",
+  "url":"/pkg/KitronikLtd/pxt-kitronik-simple-servo",
+  "cardType": "package"
+}, {
   "name": "Kittenbot miniLFR",
   "url":"/pkg/KittenBot/pxt-minilfr",
   "cardType": "package"
