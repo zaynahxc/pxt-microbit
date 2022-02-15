@@ -487,6 +487,13 @@ namespace music {
         _playTone = f;
     }
 
+
+    //% shim=__startAudioStream
+    export function streamAudio(pull: (buff: Buffer) => void, sampleRate: number) {
+
+    }
+
+
     function playNextNote(melody: Melody): void {
         // cache elements
         let currNote = melody.nextNote();
