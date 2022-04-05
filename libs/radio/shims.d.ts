@@ -6,6 +6,20 @@
 declare namespace radio {
 
     /**
+     * Disables the radio for use as a multipoint sender/receiver.
+     * Disabling radio will help conserve battery power when it is not in use.
+     */
+    //% help=radio/off shim=radio::off
+    function off(): void;
+
+    /**
+     * Initialises the radio for use as a multipoint sender/receiver
+     * Only useful when the radio.off() is used beforehand.
+     */
+    //% help=radio/on shim=radio::on
+    function on(): void;
+
+    /**
      * Sends an event over radio to neigboring devices
      */
     //% blockId=radioRaiseEvent block="radio raise event|from source %src=control_event_source_id|with value %value=control_event_value_id"
