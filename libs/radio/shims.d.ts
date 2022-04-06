@@ -58,7 +58,8 @@ declare namespace radio {
     //% help=radio/set-group
     //% weight=100
     //% blockId=radio_set_group block="radio set group %ID"
-    //% id.min=0 id.max=255 shim=radio::setGroup
+    //% id.min=0 id.max=255
+    //% group="Group" shim=radio::setGroup
     function setGroup(id: int32): void;
 
     /**
