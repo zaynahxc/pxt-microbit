@@ -304,7 +304,7 @@ namespace music {
     //% block="play sound $sound until done"
     //% sound.shadow=soundExpression_createSoundEffect
     //% weight=100
-    //% group="Sound Effects"
+    //% group="micro:bit (V2)"
     export function playSoundEffectUntilDone(sound: string) {
         new SoundExpression(sound).playUntilDone();
     }
