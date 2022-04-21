@@ -62,6 +62,13 @@ enum SoundExpressionEffect {
     Warble = 3
 }
 
+enum SoundExpressionPlayMode {
+    //% block="until done"
+    UntilDone,
+    //% block="in background"
+    InBackground
+}
+
 namespace soundExpression {
     //% fixedInstance whenUsed block="{id:soundexpression}giggle"
     export const giggle = new SoundExpression("giggle");
@@ -291,22 +298,18 @@ namespace soundExpression {
 
 namespace music {
     //% blockId=soundExpression_playSoundEffect
-    //% block="play sound $sound"
-    //% sound.shadow=soundExpression_createSoundEffect
-    //% weight=101
-    //% blockGap=8
-    //% group="micro:bit (V2)"
-    export function playSoundEffect(sound: string) {
-        new SoundExpression(sound).play();
-    }
-
-    //% blockId=soundExpression_playSoundEffectUntilDone
-    //% block="play sound $sound until done"
+    //% block="play sound $sound $mode"
     //% sound.shadow=soundExpression_createSoundEffect
     //% weight=100
+    //% blockGap=8
     //% group="micro:bit (V2)"
-    export function playSoundEffectUntilDone(sound: string) {
-        new SoundExpression(sound).playUntilDone();
+    export function playSoundEffect(sound: string, mode: SoundExpressionPlayMode) {
+        if (mode === SoundExpressionPlayMode.InBackground) {
+            new SoundExpression(sound).play();
+        }
+        else {
+            new SoundExpression(sound).playUntilDone();
+        }
     }
 
     //% blockId=soundExpression_createSoundEffect
@@ -370,6 +373,9 @@ namespace music {
     //% block="$soundExpression"
     //% blockGap=8
     //% group="micro:bit (V2)"
+    //% toolboxParent=soundExpression_playSoundEffect
+    //% toolboxParentArgument=sound
+    //% weight=102
     export function builtinSoundEffect(soundExpression: SoundExpression) {
         return soundExpression.getNotes();
     }
