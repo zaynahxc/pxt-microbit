@@ -297,7 +297,7 @@
             {
                 "slug": "Microsoft/pxt-sonar",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -370,13 +370,13 @@
             {
                 "slug": "microsoft/pxt-sonar",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
                 "slug": "microsoft/pxt-bluetooth-temperature-sensor",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -388,7 +388,7 @@
             {
                 "slug": "microsoft/pxt-max6675",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -404,7 +404,7 @@
             {
                 "slug": "microsoft/pxt-bluetooth-max6675",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -536,7 +536,7 @@
             {
                 "slug": "Tinkertanker/pxt-rotary-encoder-ky040",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -601,7 +601,7 @@
             {
                 "slug": "PaulDFoster/pxt-microbit-GY521",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -739,7 +739,7 @@
             {
                 "slug": "1010Technologies/pxt-makerbit-ultrasonic",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -749,13 +749,13 @@
             {
                 "slug": "1010Technologies/pxt-makerbit-ir-receiver",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
                 "slug": "1010Technologies/pxt-makerbit-touch",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -795,13 +795,13 @@
             {
                 "slug": "sparkfun/pxt-gator-light",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
                 "slug": "sparkfun/pxt-gator-temp",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -825,7 +825,7 @@
             {
                 "slug": "alsrobot-microbit-makecode-packages/ALSRobotElectromagnet",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -1016,7 +1016,7 @@
             {
                 "slug": "alankrantas/pxt-DHT11_DHT22",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -1028,7 +1028,7 @@
             {
                 "slug": "letstalkscience/pxt-cozir",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -1040,7 +1040,7 @@
             {
                 "slug": "monkmakes/pxt-sensor",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -1106,25 +1106,25 @@
             {
                 "slug": "sparkfun/pxt-gator-particle",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
                 "slug": "sparkfun/pxt-gator-soil",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
                 "slug": "sparkfun/pxt-gator-microphone",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
                 "slug": "rebeccaclavier/pxt-bmp280",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -1148,37 +1148,37 @@
             {
                 "slug": "makecode-extensions/STTS751",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
                 "slug": "makecode-extensions/LSM6DSO",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
                 "slug": "makecode-extensions/LPS22",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
                 "slug": "makecode-extensions/LIS2DW12",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
                 "slug": "makecode-extensions/LIS2MDL",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
                 "slug": "makecode-extensions/HTS221",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -1287,7 +1287,7 @@
             {
                 "slug": "daferdur/pxt-myHX711",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -1413,7 +1413,7 @@
             {
                 "slug": "keble6/pxt-DS3231",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -1481,13 +1481,13 @@
             {
                 "slug": "bsiever/microbit-dstemp",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
                 "slug": "bsiever/microbit-dstemp-2wire",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -1509,7 +1509,7 @@
             {
                 "slug": "joy-it/SEN-MPU6050",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -1547,7 +1547,7 @@
             {
                 "slug": "joy-it/pxt-SEN-Color",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
@@ -1653,7 +1653,7 @@
             {
                 "slug": "SGBotic/pxt-SGBotic-Ultimate-SR04-RGB",
                 "tags": [
-                    "Individual"
+                    "Individual Sensors"
                 ]
             },
             {
