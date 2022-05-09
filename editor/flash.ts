@@ -262,8 +262,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         // setting the baud rate on serial may reset NRF (depending on daplink version), so delay after
         await pxt.Util.delay(200);
         // only init after setting baud rate, in case we got reset
-        await this.cortexM.init()
-        await this.cortexM.reset(true)
+        await this.resetCortexAsync()
+        await this.checkStateAsync()
 
         const res = await this.readWords(0x10000010, 2);
         this.pageSize = res[0]
@@ -276,6 +276,12 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         this.startReadSerial();
     }
 
+    private async resetCortexAsync(): Promise<void> {
+        log(`reset cortex`)
+        await this.cortexM.init()
+        await this.cortexM.reset(true)
+    }
+
     private async checkStateAsync(resume?: boolean): Promise<void> {
         const states = ["reset", "lockup", "sleeping", "halted", "running"]
         try {
@@ -284,7 +290,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             if (resume && state == DapJS.CoreState.TARGET_HALTED)
                 await this.cortexM.resume();
         } catch (e) {
-            log(`cortex state failed`)
+            log(`cortex state: failed to read`)
             pxt.tickEvent("hid.checkstate.error")
             console.debug(e)
         }
@@ -295,14 +301,14 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             throw new Error(lf("Download cancelled"));
     }
 
-    disconnectAsync() {
+    async disconnectAsync(): Promise<void> {
         log(`disconnect`)
         this.flashAborted = true;
-        return this.stopSerialAsync()
-            .then(() => this.io.disconnectAsync());
+        await this.stopSerialAsync()
+        await this.io.disconnectAsync();
     }
 
-    reflashAsync(resp: pxtc.CompileResult): Promise<void> {
+    async reflashAsync(resp: pxtc.CompileResult): Promise<void> {
         pxt.tickEvent("hid.flash.start");
 
         log("reflash")
@@ -312,36 +318,38 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         this.jacdacInHex = codalJson && !!pxt.Util.jsonTryParse(codalJson)?.definitions?.JACDAC_WEBUSB
         this.flashAborted = false;
         this.flashing = true;
-        return (this.io.isConnected() ? Promise.resolve() : this.io.reconnectAsync())
-            .then(() => this.stopSerialAsync())
-            .then(() => this.cortexM.init())
-            .then(() => this.cortexM.reset(true))
-            .then(() => this.checkStateAsync())
-            .then(() => this.readUICR())
-            .then(uicr => {
-                pxt.tickEvent("hid.flash.uicr", { uicr });
-                // shortcut, do a full flash
-                if (uicr != 0 || this.forceFullFlash) {
-                    pxt.tickEvent("hid.flash.uicrfail");
-                    return this.fullVendorCommandFlashAsync(resp);
-                }
-                // check flash checksums
-                return this.computeFlashChecksum(resp)
-                    .then(chk => {
-                        pxt.tickEvent("hid.flash.checksum", { quick: chk.quick ? 1 : 0, changed: chk.changed ? chk.changed.length : 0 });
-                        // let's do a quick flash!
-                        if (chk.quick)
-                            return this.quickHidFlashAsync(chk.changed);
-                        else
-                            return this.fullVendorCommandFlashAsync(resp);
-                    });
-            })
-            .then(() => this.checkStateAsync(true))
-            .then(() => pxt.tickEvent("hid.flash.success"))
-            .finally(() => { this.flashing = false })
-        // don't disconnect here
-        // the micro:bit will automatically disconnect and reconnect
-        // via the webusb events
+        try {
+            if (!this.io.isConnected())
+                await this.io.reconnectAsync()
+            await this.stopSerialAsync()
+            await this.resetCortexAsync()
+            await this.checkStateAsync()
+            const uicr = await this.readUICRAsync()
+            pxt.tickEvent("hid.flash.uicr", { uicr });
+            // shortcut, do a full flash
+            if (uicr != 0 || this.forceFullFlash) {
+                pxt.tickEvent("hid.flash.uicrfail");
+                await this.fullVendorCommandFlashAsync(resp);
+            }
+            // check flash checksums
+            else {
+                const chk = await this.computeFlashChecksum(resp)
+                pxt.tickEvent("hid.flash.checksum", { quick: chk.quick ? 1 : 0, changed: chk.changed ? chk.changed.length : 0 });
+                // let's do a quick flash!
+                if (chk.quick)
+                    await this.quickHidFlashAsync(chk.changed);
+                else
+                    await this.fullVendorCommandFlashAsync(resp);
+            }
+            await this.checkStateAsync(true)
+            await pxt.tickEvent("hid.flash.success")
+        }
+        finally {
+            this.flashing = false
+            // don't disconnect here
+            // the micro:bit will automatically disconnect and reconnect
+            // via the webusb events
+        }
     }
 
     private recvPacketAsync() {
@@ -462,13 +470,11 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             });
     }
 
-    private readUICR() {
-        return this.readWords(0x10001014, 1)
-            .then(v => {
-                const uicr = v[0] & 0xff;
-                log(`uicr: ${uicr.toString(16)} (${v[0].toString(16)})`);
-                return uicr;
-            });
+    private async readUICRAsync(): Promise<number> {
+        const v = await this.readWords(0x10001014, 1)
+        const uicr = v[0] & 0xff;
+        log(`uicr: ${uicr.toString(16)} (${v[0].toString(16)})`);
+        return uicr;
     }
 
     private computeFlashChecksum(resp: pxtc.CompileResult) {
