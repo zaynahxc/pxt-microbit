@@ -317,11 +317,21 @@ namespace music {
     //% block="$waveShape|| start frequency $startFrequency end frequency $endFrequency duration $duration start volume $startVolume end volume $endVolume effect $effect interpolation $interpolation"
     //% waveShape.defl=WaveShape.Sine
     //% waveShape.fieldEditor=soundeffect
-    //% startFrequency.defl=2000
+    //% startFrequency.defl=5000
+    //% startFrequency.min=0
+    //% startFrequency.max=5000
     //% endFrequency.defl=0
-    //% startVolume.defl=1023
+    //% endFrequency.min=0
+    //% endFrequency.max=5000
+    //% startVolume.defl=255
+    //% startVolume.min=0
+    //% startVolume.max=255
     //% endVolume.defl=0
+    //% endVolume.min=0
+    //% endVolume.max=255
     //% duration.defl=500
+    //% duration.min=1
+    //% duration.max=9999
     //% effect.defl=SoundExpressionEffect.None
     //% interpolation.defl=InterpolationCurve.Linear
     //% compileHiddenArguments=true
@@ -331,9 +341,9 @@ namespace music {
         const sound = new soundExpression.Sound();
         sound.wave = waveShape;
         sound.frequency = startFrequency;
-        sound.volume = startVolume;
+        sound.volume = ((startVolume / 255) * 1023) | 0;
         sound.endFrequency = endFrequency;
-        sound.endVolume = endVolume;
+        sound.endVolume = ((endVolume / 255) * 1023) | 0;
         sound.duration = duration;
         sound.fx = effect;
 
