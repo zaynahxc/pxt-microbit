@@ -747,8 +747,6 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         }
 
         try {
-            // avoid interferring with data logging
-            await this.cortexM.halt()
             // allow jacdac to boot
             const now = pxt.U.now()
             await pxt.Util.delay(1000)
