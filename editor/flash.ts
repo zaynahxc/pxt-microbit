@@ -278,8 +278,6 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         // start jacdac then start serial async, don't await
         const cid = this.connectionId
         this.startJacdacSetup(cid)
-            // make sure the cortx is running
-            .then(() => this.checkStateAsync(true))
             .then(() => this.startReadSerial(cid))
     }
 
