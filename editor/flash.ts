@@ -741,8 +741,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
             log(`jacdac: CODAL disabled`)
             return
         }
-        if (this.jacdacInHex === false) {
-            log(`jacdac: jacdac not compiled in`)
+        if (!this.jacdacInHex) {
+            log(`jacdac: jacdac not compiled in (once at least)`)
             return
         }
 
