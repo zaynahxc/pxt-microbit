@@ -278,6 +278,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         // start jacdac then start serial async, don't await
         const cid = this.connectionId
         this.startJacdacSetup(cid)
+            // make sure the cortx is running
+            .then(() => this.checkStateAsync(true))
             .then(() => this.startReadSerial(cid))
     }
 
@@ -677,7 +679,6 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 this.sendQ.push({
                     buf,
                     resolve,
-                    reject
                 })
             })
         }
@@ -731,7 +732,7 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         this.lastXchg = null
         this.xchgAddr = null
         while(this.sendQ.length)
-            this.sendQ.shift().reject(new Error("connection changed"))
+            this.sendQ.shift().resolve()
         this.lastSend = null
         this.irqn = undefined
 
@@ -746,6 +747,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
         }
 
         try {
+            // avoid interferring with data logging
+            await this.cortexM.halt()
             // allow jacdac to boot
             const now = pxt.U.now()
             await pxt.Util.delay(1000)
@@ -880,7 +883,6 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 interface SendItem {
     buf: Uint8Array
     resolve: () => void
-    reject: (err: any) => void
 }
 
 export function mkDAPLinkPacketIOWrapper(io: pxt.packetio.PacketIO): pxt.packetio.PacketIOWrapper {
