@@ -673,10 +673,11 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 tmp.set(buf)
                 buf = tmp
             }
-            return new Promise<void>(resolve => {
+            return new Promise<void>((resolve, reject) => {
                 this.sendQ.push({
                     buf,
-                    cb: resolve
+                    resolve,
+                    reject
                 })
             })
         }
@@ -726,8 +727,14 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
      * @returns 
      */
     private async startJacdacSetup(connectionId: number) {
+        log(`start jacdac`)
+        this.lastXchg = null
         this.xchgAddr = null
+        while(this.sendQ.length)
+            this.sendQ.shift().reject(new Error("connection changed"))
+        this.lastSend = null
         this.irqn = undefined
+
         if (connectionId != this.connectionId) return; // outdated connetion
         if (!this.usesCODAL) {
             log(`jacdac: CODAL disabled`)
@@ -795,63 +802,70 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                 await this.dapDelay(5000)
             return
         }
-
+        const connectionId = this.connectionId
         const now = Date.now()
         if (this.lastXchg && now - this.lastXchg > 50) {
             logV("slow xchg: " + (now - this.lastXchg) + "ms")
         }
         this.lastXchg = now
 
-        let numev = 0
-        // TODO only read say 32 bytes first, and more if needed
-        let inp = await this.readBytes(this.xchgAddr + 12, 256)
-        if (inp[2]) {
-            await this.writeWord(this.xchgAddr + 12, 0)
-            await this.triggerIRQ()
-            inp = inp.slice(0, inp[2] + 12)
-            this.onCustomEvent("jacdac", inp)
-            numev++
-        }
-
-        let sendFree = false
-        if (this.currSend) {
-            const send = await this.readBytes(this.xchgAddr + 12 + 256, 4)
-            if (!send[2]) {
-                this.currSend.cb()
-                this.currSend = null
-                sendFree = true
-                numev++
-            }
-        }
-
-        if (!this.currSend && this.sendQ.length) {
-            if (!sendFree) {
-                const send = await this.readBytes(this.xchgAddr + 12 + 256, 4)
-                if (!send[2])
-                    sendFree = true
-            }
-            if (sendFree) {
-                this.currSend = this.sendQ.shift()
-                const bbody = this.currSend.buf.slice(4)
-                await this.writeWords(this.xchgAddr + 12 + 256 + 4, new Uint32Array(bbody.buffer))
-                const bhead = this.currSend.buf.slice(0, 4)
-                await this.writeWords(this.xchgAddr + 12 + 256, new Uint32Array(bhead.buffer))
+        try {
+            let numev = 0
+            // TODO only read say 32 bytes first, and more if needed
+            let inp = await this.readBytes(this.xchgAddr + 12, 256)
+            if (inp[2]) {
+                await this.writeWord(this.xchgAddr + 12, 0)
                 await this.triggerIRQ()
-                this.lastSend = Date.now()
+                inp = inp.slice(0, inp[2] + 12)
+                this.onCustomEvent("jacdac", inp)
                 numev++
-            } else {
-                if (this.lastSend) {
-                    const d = Date.now() - this.lastSend
-                    if (d > 50) {
-                        this.lastSend = 0
-                        console.error("failed to send packet fast enough")
+            }
+
+            let sendFree = false
+            if (this.currSend) {
+                const send = await this.readBytes(this.xchgAddr + 12 + 256, 4)
+                if (!send[2]) {
+                    this.currSend.resolve()
+                    this.currSend = null
+                    sendFree = true
+                    numev++
+                }
+            }
+
+            if (!this.currSend && this.sendQ.length) {
+                if (!sendFree) {
+                    const send = await this.readBytes(this.xchgAddr + 12 + 256, 4)
+                    if (!send[2])
+                        sendFree = true
+                }
+                if (sendFree) {
+                    this.currSend = this.sendQ.shift()
+                    const bbody = this.currSend.buf.slice(4)
+                    await this.writeWords(this.xchgAddr + 12 + 256 + 4, new Uint32Array(bbody.buffer))
+                    const bhead = this.currSend.buf.slice(0, 4)
+                    await this.writeWords(this.xchgAddr + 12 + 256, new Uint32Array(bhead.buffer))
+                    await this.triggerIRQ()
+                    this.lastSend = Date.now()
+                    numev++
+                } else {
+                    if (this.lastSend) {
+                        const d = Date.now() - this.lastSend
+                        if (d > 50) {
+                            this.lastSend = 0
+                            console.error("failed to send packet fast enough")
+                        }
                     }
                 }
             }
-        }
 
-        if (numev == 0 && !hadSerial)
-            await this.dapDelay(5000)
+            if (numev == 0 && !hadSerial)
+                await this.dapDelay(5000)
+        } catch(e) {
+            // connection change
+            if (connectionId != this.connectionId)
+                return
+            throw e
+        }
     }
 
     private dapDelay(micros: number) {
@@ -865,7 +879,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
 
 interface SendItem {
     buf: Uint8Array
-    cb: () => void
+    resolve: () => void
+    reject: (err: any) => void
 }
 
 export function mkDAPLinkPacketIOWrapper(io: pxt.packetio.PacketIO): pxt.packetio.PacketIOWrapper {
