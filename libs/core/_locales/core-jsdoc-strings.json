@@ -524,7 +524,7 @@
   "music.changeTempoBy": "Change the tempo by the specified amount",
   "music.changeTempoBy|param|bpm": "The change in beats per minute to the tempo, eg: 20",
   "music.createSoundEffect": "Create a sound expression from a set of sound effect parameters.",
-  "music.createSoundEffect|param|duration": "in milleseconds (ms) that sound will play for",
+  "music.createSoundEffect|param|duration": "in milliseconds (ms) that sound will play for",
   "music.createSoundEffect|param|effect": "to apply to the waveform or volume",
   "music.createSoundEffect|param|endFrequency": "for the sound effect waveform",
   "music.createSoundEffect|param|endVolume": "of the sound, or ending amplitude",
