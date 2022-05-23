@@ -96,6 +96,8 @@ class DAPWrapper implements pxt.packetio.PacketIOWrapper {
                     if (!connect) return;
 
                     // we don't know what's being connected
+                    // note that makecode disconnect when swapping tabs
+                    // so we tend to also forget that information
                     this.usesCODAL = undefined
                     this.jacdacInHex = undefined
                     this.reconnectAsync()
