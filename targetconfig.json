@@ -249,7 +249,7 @@
             "bsiever/microbit-pxt-blehid",
             "DFRobot/pxt-DFRobot_Environment_Science",
             "ekkai/aicococam",
-
+            "elecfreaks/pxt-xgo",
             "microsoft/pxt-jacdac",
             "microsoft/pxt-jacdac/accelerometer",
             "microsoft/pxt-jacdac/acidity",
@@ -759,7 +759,11 @@
             "smarthon/pxt-smartcity": { "tags": [ "Kits" ] },
             "aorczyk/soroban": { "tags": [ "Utilities" ] },
             "aorczyk/pf-recorder": { "tags": [ "Utilities" ] },
-            "4tronix/theta": { "tags": [ "Robotics" ] }
+            "4tronix/theta": { "tags": [ "Robotics" ] },
+            "bsiever/microbit-pxt-blehid": {},
+            "dfrobot/pxt-dfrobot_environment_science": {},
+            "ekkai/aicococam": {},
+            "elecfreaks/pxt-xgo": {}
         },
         "upgrades": {
             "tinkertanker/pxt-iot-environment-kit": "min:v4.2.1",
