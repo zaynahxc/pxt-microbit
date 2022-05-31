@@ -147,6 +147,10 @@ namespace pxsim.visuals {
             stroke: #4D90FE;
             stroke-width: 5px !important;
         }
+        .sim-button-outer.sim-button-group:focus > .sim-button {
+            stroke: #4D90FE;
+            stroke-width: 10px !important;
+        }
         .no-drag, .sim-text, .sim-text-small,
         .sim-text-pin {
             user-drag: none;
