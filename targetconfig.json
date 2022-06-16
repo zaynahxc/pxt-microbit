@@ -374,7 +374,7 @@
                 "preferred": true
             },
             "kitronikltd/pxt-kitronik-i2c-16-servo": { "tags": [ "Robotics" ] },
-            "kitronikltd/pxt-kitronik-stopbit": { "tags": [ "Electronics" ] },
+            "kitronikltd/pxt-kitronik-stopbit": { "tags": [ "Robotics" ] },
             "kitronikltd/pxt-kitronik-lampbit": { "tags": [ "Lights and Display" ] },
             "kitronikltd/pxt-kitronik-klimate": { "tags": [ "Science" ] },
             "kitronikltd/pxt-kitronik-zip-64": {
@@ -444,7 +444,7 @@
                 "upgrades": [ "dv:mbcodal" ]
             },
             "mbitfun/pxt-katakana": { "tags": [ "Software" ] },
-            "jdarling/pxt-pca9685": { "tags": [ "Electronics" ] },
+            "jdarling/pxt-pca9685": { "tags": [ "Robotics" ] },
             "muselab/pxt-wifi-shield": {
                 "tags": [ "Networking" ],
                 "upgrades": [ "min:v1.8.82" ]
