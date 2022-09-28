@@ -766,6 +766,7 @@
             "dfrobot/pxt-dfrobot_environment_science": {},
             "ekkai/aicococam": {},
             "elecfreaks/pxt-xgo": {},
+            "joy-it/pxt-rfid-mfrc522": { "tags": [ "Individual sensors" ] },
             "dfrobot/pxt-dfrobot_iot_cloud_kit": { "tags": [ "Networking" ] },
             "plenprojectcompany/pxt-plenbit_full": { "tags": [ "Robotics" ] }
         },
