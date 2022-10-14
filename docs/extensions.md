@@ -876,6 +876,10 @@ Check out [the accessories pages on microbit.org](https://microbit.org/buy/acces
 ## Utilities
 ```codecard
 [{
+  "name": "Button clicks",
+  "url": "/pkg/bsiever/microbit-pxt-clicks",
+  "cardType": "package"
+}, {
   "name": "Rotate Display",
   "url":"/pkg/bsiever/microbit-pxt-rotate",
   "cardType": "package"

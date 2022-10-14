@@ -769,6 +769,7 @@
             "joy-it/pxt-rfid-mfrc522": { "tags": [ "Individual sensors" ] },
             "dfrobot/pxt-dfrobot_iot_cloud_kit": { "tags": [ "Networking" ] },
             "plenprojectcompany/pxt-plenbit_full": { "tags": [ "Robotics" ] },
+            "bsiever/microbit-pxt-clicks": { "tags": [ "Software" ] },
             "joy-it/pxt-ads1115": { "tags": [ "Individual sensors" ] },
             "bsiever/microbit-pxt-rotate": { "tags": [ "Software" ] }
         },
