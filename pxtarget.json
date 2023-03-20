@@ -1,7 +1,7 @@
 {
     "id": "microbit",
     "nickname": "microbit",
-    "name": "makecode.microbit.org",
+    "name": "makecode.microbit.org - CODAL-v0.2.49-feature/ejs.0",
     "title": "Microsoft MakeCode for micro:bit",
     "description": "A Blocks / JavaScript code editor for the micro:bit powered by Microsoft MakeCode.",
     "corepkg": "core",
@@ -165,7 +165,7 @@
                 "codalTarget": {
                     "name": "codal-microbit-v2",
                     "url": "https://github.com/lancaster-university/codal-microbit-v2",
-                    "branch": "v0.2.46",
+                    "branch": "v0.2.49-feature/ejs.0",
                     "type": "git"
                 },
                 "codalBinary": "MICROBIT",
