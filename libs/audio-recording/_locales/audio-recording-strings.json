@@ -1,0 +1,17 @@
+{
+  "record.AudioEvent.StartedPlaying|block": "Starts Playing",
+  "record.AudioEvent.StartedRecording|block": "Starts Recording",
+  "record.AudioEvent.StoppedPlaying|block": "Stops Playing",
+  "record.AudioEvent.StoppedRecording|block": "Stops Recording",
+  "record.AudioStatus.BufferFull|block": "out of space",
+  "record.AudioStatus.Playing|block": "playing",
+  "record.AudioStatus.Recording|block": "recording",
+  "record.AudioStatus.Stopped|block": "stopped",
+  "record.audioEvent|block": "on audio $eventType",
+  "record.audioStatus|block": "audio is $status",
+  "record.playAudio|block": "play recording",
+  "record.setMicGain|block": "set microphone sensitivity to $gain",
+  "record.startRecording|block": "record audio for 3(s)",
+  "record|block": "Record",
+  "{id:category}Record": "Record"
+}
