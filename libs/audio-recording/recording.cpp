@@ -29,6 +29,8 @@ using namespace pxt;
 namespace record {
 
 static StreamRecording *recording = NULL;
+static SplitterChannel *splitterChannel = NULL;
+static MixerChannel *channel = NULL;
 
 void enableMic() {
     uBit.audio.activateMic();
@@ -40,20 +42,27 @@ void disableMic() {
     uBit.audio.deactivateMic();
 }
 
-void checkEnv() {
+
+void checkEnv(int sampleRate = -1) {
     if (recording == NULL) {
+        if (sampleRate == -1)
+            sampleRate = 11000;
         MicroBitAudio::requestActivation();
 
-        recording = new StreamRecording(*uBit.audio.splitter);
+        splitterChannel = uBit.audio.splitter->createChannel();
 
-        MixerChannel *channel = uBit.audio.mixer.addChannel(*recording, 22000);
+        recording = new StreamRecording(*splitterChannel);
 
-        // By connecting to the mic channel, we activate it automatically, so shut it down again.
-        disableMic();
+        channel = uBit.audio.mixer.addChannel(*recording, sampleRate);
 
-        channel->setVolume(100.0);
+        channel->setVolume(75.0);
         uBit.audio.mixer.setVolume(1000);
         uBit.audio.setSpeakerEnabled(true);
+    }
+
+    if (recording != NULL && sampleRate != -1) {
+        channel = uBit.audio.mixer.addChannel(*recording, sampleRate);
+        channel->setVolume(75.0);
     }
 }
 
@@ -104,13 +113,13 @@ void erase() {
 void setMicrophoneGain(int gain) {
     switch (gain) {
     case 1:
-        uBit.audio.processor->setGain(0.1);
+        uBit.audio.processor->setGain(0.079f);
         break;
     case 2:
-        uBit.audio.processor->setGain(0.5);
+        uBit.audio.processor->setGain(0.2f);
         break;
     case 3:
-        uBit.audio.processor->setGain(1);
+        uBit.audio.processor->setGain(0.4f);
         break;
     }
 }
@@ -146,4 +155,32 @@ bool audioIsRecording() {
 bool audioIsStopped() {
     return recording->isStopped();
 }
+
+/**
+ * Change the sample rate of the splitter channel (audio input)
+ */
+//%
+void setInputSampleRate(int sampleRate) {
+    checkEnv();
+    splitterChannel->requestSampleRate(sampleRate);
+}
+
+
+/**
+ * Change the sample rate of the mixer channel (audio output)
+ */
+//%
+void setOutputSampleRate(int sampleRate) {
+    checkEnv(sampleRate);
+}
+
+/**
+ * Set the sample rate for both input and output
+*/
+//%
+void setBothSamples(int sampleRate) {
+    checkEnv(sampleRate);
+    splitterChannel->requestSampleRate(sampleRate);
+}
+
 } // namespace record
