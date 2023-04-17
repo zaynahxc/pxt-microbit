@@ -31,17 +31,7 @@ namespace record {
 static StreamRecording *recording = NULL;
 static SplitterChannel *splitterChannel = NULL;
 static MixerChannel *channel = NULL;
-
-void enableMic() {
-    uBit.audio.activateMic();
-    uBit.audio.mic->enable();
-}
-
-void disableMic() {
-    uBit.audio.mic->disable();
-    uBit.audio.deactivateMic();
-}
-
+static StreamNormalizer *localProcessor = NULL;
 
 void checkEnv(int sampleRate = -1) {
     if (recording == NULL) {
@@ -50,8 +40,8 @@ void checkEnv(int sampleRate = -1) {
         MicroBitAudio::requestActivation();
 
         splitterChannel = uBit.audio.splitter->createChannel();
-
-        recording = new StreamRecording(*splitterChannel);
+        localProcessor = new StreamNormalizer(*splitterChannel);
+        recording = new StreamRecording(localProcessor->output);
 
         channel = uBit.audio.mixer.addChannel(*recording, sampleRate);
 
@@ -72,7 +62,6 @@ void checkEnv(int sampleRate = -1) {
 //% promise
 void record() {
     checkEnv();
-    enableMic();
     recording->record();
 }
 
@@ -82,7 +71,6 @@ void record() {
 //%
 void play() {
     checkEnv();
-    disableMic();
     recording->play();
 }
 
@@ -92,7 +80,6 @@ void play() {
 //%
 void stop() {
     checkEnv();
-    disableMic();
     recording->stop();
 }
 
@@ -102,7 +89,6 @@ void stop() {
 //%
 void erase() {
     checkEnv();
-    disableMic();
     recording->erase();
 }
 
@@ -111,15 +97,16 @@ void erase() {
  */
 //%
 void setMicrophoneGain(int gain) {
+    checkEnv();
     switch (gain) {
     case 1:
-        uBit.audio.processor->setGain(0.079f);
+        localProcessor->setGain(0.5f);
         break;
     case 2:
-        uBit.audio.processor->setGain(0.2f);
+        localProcessor->setGain(1.0f);
         break;
     case 3:
-        uBit.audio.processor->setGain(0.4f);
+        localProcessor->setGain(2.0f);
         break;
     }
 }
