@@ -649,6 +649,20 @@
             "appTheme": {
                 "disableBlobObjectDownload": true
             }
+        },
+        "clever=1": {
+            "cloud": {
+                "cloudProviders": {
+                    "clever": {
+                        "id": "clever",
+                        "name": "Clever",
+                        "icon": "/static/providers/clever-logo.png",
+                        "identity": true,
+                        "redirect": true,
+                        "order": 3
+                    }
+                }
+            }
         }
     },
     "uploadDocs": true
