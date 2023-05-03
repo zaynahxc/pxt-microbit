@@ -116,10 +116,10 @@ void setMicrophoneGain(int gain) {
         uBit.audio.processor->setGain(0.079f);
         break;
     case 2:
-        uBit.audio.processor->setGain(0.2f);
+        uBit.audio.processor->setGain(0.3f);
         break;
     case 3:
-        uBit.audio.processor->setGain(0.4f);
+        uBit.audio.processor->setGain(0.8f);
         break;
     }
 }
