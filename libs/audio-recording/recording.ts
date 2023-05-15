@@ -76,31 +76,48 @@ namespace record {
         BufferFull,
     }
 
+    export enum BlockingState {
+        //% block="until done"
+        Blocking,
+        //% block="in background"
+        Nonblocking
+    }
+
     let _recordingPresent: boolean = false;
+
+    function audioNotRecording(): boolean {
+        return !audioIsRecording();
+    }
+
+    function audioNotPlaying(): boolean {
+        return !audioIsPlaying();
+    }
 
     /**
      * Record an audio clip for a maximum of 3 seconds
      */
-    //% block="record audio clip"
+    //% block="record audio clip $mode"
     //% blockId="record_startRecording"
     //% weight=70
     //% parts="microphone"
-    export function startRecording(): void {
+    export function startRecording(mode: BlockingState): void {
         music._onStopSound(stopPlayback);
         eraseRecording();
         record();
+        if (mode === BlockingState.Blocking) pauseUntil(audioNotRecording);
         _recordingPresent = true;
     }
 
     /**
      * Play recorded audio
      */
-    //% block="play audio clip"
+    //% block="play audio clip $mode"
     //% blockId="record_playAudio"
     //% weight=60
-    //% shim=record::play
     //% parts="microphone"
-    export function playAudio(): void {
+    export function playAudio(mode: BlockingState): void {
+        play();
+        if (mode === BlockingState.Blocking) pauseUntil(audioNotPlaying);
     }
 
     function stopPlayback(): void {
@@ -166,7 +183,6 @@ namespace record {
             case AudioSampleRateScope.Playback:
                 setOutputSampleRate(hz);
                 break;
-
             case AudioSampleRateScope.Recording:
                 setInputSampleRate(hz);
                 break;
