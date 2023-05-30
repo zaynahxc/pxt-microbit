@@ -117,6 +117,7 @@ int audioDuration(int sampleRate) {
  */
 //%
 bool audioIsPlaying() {
+    uBit.sleep(0);
     return recording->isPlaying();
 }
 
@@ -125,6 +126,7 @@ bool audioIsPlaying() {
  */
 //%
 bool audioIsRecording() {
+    uBit.sleep(0);
     return recording->isRecording();
 }
 
