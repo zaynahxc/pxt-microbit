@@ -338,8 +338,9 @@ namespace music {
      */
     //% weight=60 help=music/builtin-melody
     //% blockId=device_builtin_melody_playable block="melody $melody"
-    //% toolboxParent=music_playable_play_default_bkg
+    //% toolboxParent=music_playable_play
     //% toolboxParentArgument=toPlay
+    //% toolboxParent.playbackMode.defl=music.PlaybackMode.InBackground
     //% duplicateShadowOnDrag
     //% group="Melody Advanced"
     export function builtInPlayableMelody(melody: Melodies): StringArrayPlayable {

@@ -79,22 +79,12 @@ namespace music {
     //% blockId="music_playable_play"
     //% block="play $toPlay $playbackMode"
     //% toPlay.shadow=music_string_playable
+    //% playbackMode.defl=music.PlaybackMode.LoopingInBackground
     //% group="Melody"
     //% help="music/play"
     //% blockHidden
     export function play(toPlay: Playable, playbackMode: PlaybackMode) {
         toPlay._play(playbackMode);
-    }
-
-    //% blockId="music_playable_play_default_bkg"
-    //% block="play $toPlay $playbackMode"
-    //% toPlay.shadow=music_string_playable
-    //% playbackMode.defl=music.PlaybackMode.InBackground
-    //% group="Melody"
-    //% help="music/play"
-    //% blockHidden
-    export function _playDefaultBackground(toPlay: Playable, playbackMode: PlaybackMode) {
-        return play(toPlay, playbackMode);
     }
 
     //% blockId="music_string_playable"
