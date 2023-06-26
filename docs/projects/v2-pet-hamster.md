@@ -12,6 +12,7 @@ Cyrus is a very sleepy hamster. In fact, Cyrus is almost always sleeping.
 💡 In the ``show icon`` dropdown menu options, you can hover to see what each design is called!
 
 ```blocks
+//@highlight
 basic.showIcon(IconNames.Asleep)
 ```
 
@@ -23,7 +24,9 @@ Pressing Cyrus's logo tickles them!
 ► Go to ``||basic:Basic||`` and grab **another** ``||basic:show icon [ ]||``. Snap it into your **empty** ``||input:on logo [pressed]||`` container. Set the icon (Cyrus's face) to happy ``:)``.
 
 ```blocks
+//@highlight
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+    //@highlight
     basic.showIcon(IconNames.Happy)
 })
 ```
@@ -35,7 +38,7 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
 ```blocks
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     basic.showIcon(IconNames.Happy)
-    // @highlight
+    //@highlight
     soundExpression.giggle.playUntilDone()
 })
 ```
@@ -48,7 +51,9 @@ Whenever Cyrus is shaken, they get sad 🙁
 ► From the ``||basic:Basic||`` category, grab ``||basic:show icon [ ]||`` and snap it into your **new** ``||input:on [shake]||`` container. Set the icon (Cyrus's face) to sad ``:(``.
 
 ```blocks
+//@highlight
 input.onGesture(Gesture.Shake, function () {
+    //@highlight
     basic.showIcon(IconNames.Sad)
 })
 ```
@@ -61,7 +66,7 @@ input.onGesture(Gesture.Shake, function () {
 ```blocks
 input.onGesture(Gesture.Shake, function () {
     basic.showIcon(IconNames.Sad)
-    // @highlight
+    //@highlight
     soundExpression.sad.playUntilDone()
 })
 ```
@@ -77,7 +82,7 @@ Let's ensure that Cyrus will always go back to sleep after being shaken or tickl
 input.onGesture(Gesture.Shake, function () {
     basic.showIcon(IconNames.Sad)
     soundExpression.sad.playUntilDone()
-    // @highlight
+    //@highlight
     basic.showIcon(IconNames.Asleep)
 })
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
@@ -100,7 +105,7 @@ input.onGesture(Gesture.Shake, function () {
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     basic.showIcon(IconNames.Happy)
     soundExpression.giggle.playUntilDone()
-    // @highlight
+    //@highlight
     basic.showIcon(IconNames.Asleep)
 })
 basic.showIcon(IconNames.Asleep)
@@ -128,4 +133,12 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     basic.showIcon(IconNames.Asleep)
 })
 basic.showIcon(IconNames.Asleep)
+```
+
+```validation.global
+# BlocksExistValidator
+```
+
+```template
+//
 ```
