@@ -336,7 +336,8 @@
             "tinkertanker/pxt-ringbitcar",
             "kitronikltd/pxt-kitronik-servo-lite",
             "kitronikltd/pxt-kitronik-motor-driver",
-            "tinkertanker/pxt-smarthome"
+            "tinkertanker/pxt-smarthome",
+            "microsoft/microcode/robot"
         ],
         "approvedRepoLib": {
             "microsoft/pxt-neopixel": {
