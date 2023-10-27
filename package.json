@@ -1,6 +1,6 @@
 {
     "name": "pxt-microbit",
-    "version": "6.0.19",
+    "version": "6.0.20",
     "description": "micro:bit target for Microsoft MakeCode (PXT)",
     "keywords": [
         "JavaScript",
