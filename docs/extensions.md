@@ -936,6 +936,10 @@ Check out [the accessories pages on microbit.org](https://microbit.org/buy/acces
 ## Utilities
 ```codecard
 [{
+  "name": "Faces",
+  "url": "/pkg/GrandpaBond/pxt-faces",
+  "cardType": "package"
+}, {
   "name": "Makey Makey Code-a-Key",
   "url": "/pkg/joylabz/code-a-key-extension",
   "cardType": "package"
