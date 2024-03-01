@@ -57,7 +57,7 @@
             "use": "variable_declared_called_hand",
             "template": "Declares a variable called 'hand'",
             "description": "The project includes a variable called 'hand'",
-            "hideInCatalog": false,
+            "hideInCatalog": true,
             "docPath": "/teachertool"
         },
         {
@@ -79,7 +79,7 @@
             "use": "hand_equal_to_number",
             "template": "Checks the value of the variable 'hand'",
             "description": "The project checks the value of the variable 'hand'",
-            "hideInCatalog": false,
+            "hideInCatalog": true,
             "docPath": "/teachertool"
         },
         {
