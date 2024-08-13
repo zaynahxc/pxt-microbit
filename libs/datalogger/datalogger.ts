@@ -293,7 +293,7 @@ namespace datalogger {
      * @param fromRowIndex 0-based index of start
      * @returns header + rows
      */
-    export function getNumberOfRows(fromRowIndex: number): number {
+    export function getNumberOfRows(fromRowIndex: number = 0): number {
         return flashlog.getNumberOfRows(fromRowIndex);
     }
 
