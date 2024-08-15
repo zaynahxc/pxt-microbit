@@ -35,7 +35,7 @@ Add an event on ``||input:button A pressed||`` to change the ``||variables:rope|
 
 ```blocks
 let rope = 2
-input.onButtonPressed(Button.A, function () {
+input.onButtonPressed(Button.A, function() {
     rope += -0.1
 })
 ```
@@ -46,7 +46,7 @@ Add an event on ``||input:button B pressed||`` to change the ``||variables:rope|
 
 ```blocks
 let rope = 2
-input.onButtonPressed(Button.B, function () {
+input.onButtonPressed(Button.B, function() {
     rope += 0.1
 })
 ```

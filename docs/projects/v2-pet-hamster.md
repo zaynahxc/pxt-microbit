@@ -25,7 +25,7 @@ Pressing Cyrus's logo tickles them!
 
 ```blocks
 //@highlight
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+input.onLogoEvent(TouchButtonEvent.Pressed, function() {
     //@highlight
     basic.showIcon(IconNames.Happy)
 })
@@ -36,7 +36,7 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
 ► From the ``||music:Music||`` category, get a ``||music:play sound [giggle] until done||`` and add it to the **bottom** of your ``||input:on logo [pressed]||`` container.
 
 ```blocks
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+input.onLogoEvent(TouchButtonEvent.Pressed, function() {
     basic.showIcon(IconNames.Happy)
     //@highlight
     soundExpression.giggle.playUntilDone()
@@ -52,7 +52,7 @@ Whenever Cyrus is shaken, they get sad 🙁
 
 ```blocks
 //@highlight
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function() {
     //@highlight
     basic.showIcon(IconNames.Sad)
 })
@@ -64,7 +64,7 @@ input.onGesture(Gesture.Shake, function () {
 ► Click on the **dropdown** and set it so Cyrus plays a ``||music:sad||`` sound until done.
 
 ```blocks
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function() {
     basic.showIcon(IconNames.Sad)
     //@highlight
     soundExpression.sad.playUntilDone()
@@ -79,13 +79,13 @@ Let's ensure that Cyrus will always go back to sleep after being shaken or tickl
 ► Snap your copied block in at the **very bottom** of your ``||input:on [shake]||`` container.
 
 ```blocks
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function() {
     basic.showIcon(IconNames.Sad)
     soundExpression.sad.playUntilDone()
     //@highlight
     basic.showIcon(IconNames.Asleep)
 })
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+input.onLogoEvent(TouchButtonEvent.Pressed, function() {
     basic.showIcon(IconNames.Happy)
     soundExpression.giggle.playUntilDone()
 })
@@ -97,12 +97,12 @@ basic.showIcon(IconNames.Asleep)
 ► Duplicate the ``||basic:show icon[-_-]||`` block again and this time snap it in at the **very bottom** of your ``||input:on logo [pressed]||`` container.
 
 ```blocks
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function() {
     basic.showIcon(IconNames.Sad)
     soundExpression.sad.playUntilDone()
     basic.showIcon(IconNames.Asleep)
 })
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+input.onLogoEvent(TouchButtonEvent.Pressed, function() {
     basic.showIcon(IconNames.Happy)
     soundExpression.giggle.playUntilDone()
     //@highlight
@@ -122,12 +122,12 @@ Play with Cyrus to see how they react 🐹
 If you have a new @boardname@ (the one with the **shiny gold** logo at the top), download this code and try it out!
 
 ```blocks
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function() {
     basic.showIcon(IconNames.Sad)
     soundExpression.sad.playUntilDone()
     basic.showIcon(IconNames.Asleep)
 })
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+input.onLogoEvent(TouchButtonEvent.Pressed, function() {
     basic.showIcon(IconNames.Happy)
     soundExpression.giggle.playUntilDone()
     basic.showIcon(IconNames.Asleep)

@@ -14,7 +14,7 @@ Luckily, you can use your @boardname@ with sound to talk to Sky 👋
 ► From the ``||radio:Radio||`` category, get ``||radio:radio send number [0]||`` and snap it into your empty ``||input:on logo [pressed]||`` container.
 
 ```blocks
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+input.onLogoEvent(TouchButtonEvent.Pressed, function() {
     radio.sendNumber(0)
 })
 ```
@@ -27,9 +27,9 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
 
 ```blocks
 // @highlight
-input.onLogoEvent(TouchButtonEvent.LongPressed, function () {
+input.onLogoEvent(TouchButtonEvent.LongPressed, function() {
 })
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+input.onLogoEvent(TouchButtonEvent.Pressed, function() {
     radio.sendNumber(0)
 })
 ```
@@ -40,11 +40,11 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
 ► Set the number to be ``1``.
 
 ```blocks
-input.onLogoEvent(TouchButtonEvent.LongPressed, function () {
+input.onLogoEvent(TouchButtonEvent.LongPressed, function() {
     // @highlight
     radio.sendNumber(1)
 })
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+input.onLogoEvent(TouchButtonEvent.Pressed, function() {
     radio.sendNumber(0)
 })
 ```
@@ -245,10 +245,10 @@ radio.onReceivedNumber(function (receivedNumber) {
     }
     basic.clearScreen()
 })
-input.onLogoEvent(TouchButtonEvent.LongPressed, function () {
+input.onLogoEvent(TouchButtonEvent.LongPressed, function() {
     radio.sendNumber(1)
 })
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+input.onLogoEvent(TouchButtonEvent.Pressed, function() {
     radio.sendNumber(0)
 })
 ```
@@ -283,10 +283,10 @@ radio.onReceivedNumber(function (receivedNumber) {
     }
     basic.clearScreen()
 })
-input.onLogoEvent(TouchButtonEvent.LongPressed, function () {
+input.onLogoEvent(TouchButtonEvent.LongPressed, function() {
     radio.sendNumber(1)
 })
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+input.onLogoEvent(TouchButtonEvent.Pressed, function() {
     radio.sendNumber(0)
 })
 ```

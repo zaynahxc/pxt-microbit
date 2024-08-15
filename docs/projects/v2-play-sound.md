@@ -133,7 +133,7 @@ Congratulations, you are your own DJ!
 
 
 ```blocks
-basic.forever(function () {
+basic.forever(function() {
     music.playSoundEffect(music.createSoundEffect(
     WaveShape.Sine,
     input.acceleration(Dimension.X),
@@ -149,7 +149,7 @@ basic.forever(function () {
 
 ```ghost
 
-basic.forever(function () {
+basic.forever(function() {
     serial.writeValue("Accel", input.acceleration(Dimension.X))
     serial.writeValue("Rotation", input.rotation(Rotation.Pitch),)
     music.playSoundEffect(music.createSoundEffect(

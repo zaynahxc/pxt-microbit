@@ -30,7 +30,7 @@ Let's give Lychee some control over when she wants to start and stop logging dat
 
 ```blocks
 let logging = false
-input.onButtonPressed(Button.A, function () {
+input.onButtonPressed(Button.A, function() {
     logging = !(logging)
 })
 ```
@@ -44,7 +44,7 @@ It would help to know when the @boardname@ is logging data and when it isn't. Fo
 
 ```blocks
 let logging = false
-input.onButtonPressed(Button.A, function () {
+input.onButtonPressed(Button.A, function() {
     logging = !(logging)
     if (logging) {
     } else {
@@ -60,7 +60,7 @@ input.onButtonPressed(Button.A, function () {
 
 ```blocks
 let logging = false
-input.onButtonPressed(Button.A, function () {
+input.onButtonPressed(Button.A, function() {
     logging = !(logging)
     if (logging) {
         basic.showIcon(IconNames.Target)
@@ -78,7 +78,7 @@ Let's now add an auditory indicator that your @boardname@ is logging data!
 
 ```blocks
 let logging = false
-input.onButtonPressed(Button.A, function () {
+input.onButtonPressed(Button.A, function() {
     logging = !(logging)
     if (logging) {
         basic.showIcon(IconNames.Target)
@@ -94,7 +94,7 @@ input.onButtonPressed(Button.A, function () {
 
 ```blocks
 let logging = false
-input.onButtonPressed(Button.A, function () {
+input.onButtonPressed(Button.A, function() {
     logging = !(logging)
     if (logging) {
         basic.showIcon(IconNames.Target)
@@ -114,7 +114,7 @@ Let's set up the data logging for Lychee! In order to get Lychee a good amount o
 💡 1 minute is equivalent to 60000ms, which is what the number will automatically change to.
 
 ```blocks
-loops.everyInterval(60000, function () {
+loops.everyInterval(60000, function() {
 })
 ```
 
@@ -127,7 +127,7 @@ Now, let's use an [__*if then*__](#ifthen "runs some code if a boolean condition
 
 ```blocks
 let logging = false
-loops.everyInterval(60000, function () {
+loops.everyInterval(60000, function() {
     if (logging) {
     }
 })
@@ -143,7 +143,7 @@ Lychee loves her sun spots because they provide a nice, sunny and warm place to 
 
 ```blocks
 let logging = false
-loops.everyInterval(60000, function () {
+loops.everyInterval(60000, function() {
     if (logging) {
         //@highlight
         datalogger.log(
@@ -161,7 +161,7 @@ loops.everyInterval(60000, function () {
 
 ```blocks
 let logging = false
-loops.everyInterval(60000, function () {
+loops.everyInterval(60000, function() {
     if (logging) {
         //@highlight
         datalogger.log(

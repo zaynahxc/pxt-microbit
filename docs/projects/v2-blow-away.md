@@ -29,7 +29,7 @@ basic.showIcon(IconNames.Ghost)
 💡 Why do we need a [__*repeat loop*__](#repeatLoop "repeat code for a given number of times") when we already have a ``forever`` container? Because ``forever`` has an embedded delay that we want to avoid!
 
 ```blocks
-basic.forever(function () {
+basic.forever(function() {
     // @highlight
     for (let index = 0; index < 4; index++) {
             
@@ -46,7 +46,7 @@ Haven hates noise and will blow away if things get too loud. Let's use an [__*if
 ► Snap ``||logic:<[0] [=] [0]>||`` in to **replace** the ``||logic:<true>||`` condition for your ``||logic:if then||`` statement.
 
 ```blocks
-basic.forever(function () {
+basic.forever(function() {
     // @highlight
     for (let index = 0; index < 4; index++) {
         // @highlight
@@ -67,7 +67,7 @@ We'll be using a [__*sound threshold*__](#soundThreshold "a number for how loud 
 💡 This means Haven will hear any sound above ``128``.
 
 ```blocks
-basic.forever(function () {
+basic.forever(function() {
     for (let index = 0; index < 4; index++) {
         // @highlight
         if (input.soundLevel() > 128) {
@@ -96,7 +96,7 @@ To show Haven is blowing away, we want to move a random set of lights sideways.
 
 ```blocks
 let row = 0
-basic.forever(function () {
+basic.forever(function() {
     for (let index = 0; index < 4; index++) {
         if (input.soundLevel() > 128) {
             // @highlight
@@ -116,7 +116,7 @@ basic.forever(function () {
 ```blocks
 let col = 0
 let row = 0
-basic.forever(function () {
+basic.forever(function() {
     for (let index = 0; index < 4; index++) {
         if (input.soundLevel() > 128) {
             row = randint(0, 4)   
@@ -138,7 +138,7 @@ Time to move some lights around!
 ```blocks
 let col = 0
 let row = 0
-basic.forever(function () {
+basic.forever(function() {
     for (let index = 0; index < 4; index++) {
         if (input.soundLevel() > 128) {
             row = randint(0, 4)
@@ -160,7 +160,7 @@ To create the animation effect of Haven blowing away, we will turn off (or ``unp
 ```blocks
 let col = 0
 let row = 0
-basic.forever(function () {
+basic.forever(function() {
     for (let index = 0; index < 4; index++) {
         if (input.soundLevel() > 128) {
             row = randint(0, 4)
@@ -187,7 +187,7 @@ Notice how you have **three** blocks from the ``||led:Led||`` category. All thre
 ```blocks
 let col = 0
 let row = 0
-basic.forever(function () {
+basic.forever(function() {
     for (let index = 0; index < 4; index++) {
         if (input.soundLevel() > 128) {
             row = randint(0, 4)
@@ -214,7 +214,7 @@ Right now, we are unplotting and replotting in the same spot. What we want to do
 ```blocks
 let col = 0
 let row = 0
-basic.forever(function () {
+basic.forever(function() {
     for (let index = 0; index < 4; index++) {
         if (input.soundLevel() > 128) {
             row = randint(0, 4)
@@ -242,7 +242,7 @@ Check out the simulator!
 let col = 0
 let row = 0
 basic.showIcon(IconNames.Ghost)
-basic.forever(function () {
+basic.forever(function() {
     for (let index = 0; index < 4; index++) {
         if (input.soundLevel() > 128) {
             row = randint(0, 4)

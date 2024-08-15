@@ -32,7 +32,7 @@ Ok, now we'll count and show all of your movements.
 
 ```blocks
 let motions = 0
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function() {
     motions += 1
     basic.showNumber(motions)
 })
@@ -47,7 +47,7 @@ If we want to start over from zero, then we need to have a way to reset the moti
 
 ```blocks
 let motions = 0
-input.onButtonPressed(Button.A, function () {
+input.onButtonPressed(Button.A, function() {
     motions = 0
     basic.showNumber(motions)
 })

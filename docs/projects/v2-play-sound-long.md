@@ -23,7 +23,7 @@ block into the ``||basic:forever||`` loop container.
 
 
 ```blocks
-basic.forever(function(){
+basic.forever(function() {
     serial.writeValue("x", 0)
 })
 ```
@@ -60,7 +60,7 @@ block.
 
 
 ```blocks
-basic.forever(function(){
+basic.forever(function() {
     serial.writeValue("a", input.acceleration(Dimension.X))
 })
 ```
@@ -94,7 +94,7 @@ block.
 
 
 ```blocks
-basic.forever(function(){
+basic.forever(function() {
     serial.writeValue("a", input.acceleration(Dimension.X))
 })
 ```
@@ -108,7 +108,7 @@ Don't forget to test your code in the simulator!
 If you have a new @boardname@ (the one with the **shiny gold** logo at the top), download this code and try it out!
 
 ```blocks
-basic.forever(function () {
+basic.forever(function() {
     serial.writeValue("Accel", input.acceleration(Dimension.X))
     serial.writeValue("Compass", input.compassHeading())
     music.playSoundEffect(music.createSoundEffect(
@@ -126,7 +126,7 @@ basic.forever(function () {
 
 ```ghost
 
-basic.forever(function () {
+basic.forever(function() {
     serial.writeValue("Accel", input.acceleration(Dimension.X))
     serial.writeValue("Compass", input.compassHeading())
     music.playSoundEffect(music.createSoundEffect(

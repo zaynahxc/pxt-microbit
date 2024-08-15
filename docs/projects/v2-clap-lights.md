@@ -14,7 +14,7 @@ Let's learn how to use a clap 👏 to switch your @boardname@'s lights on and of
 
 ```blocks
 // @highlight
-input.onSound(DetectedSound.Loud, function () {
+input.onSound(DetectedSound.Loud, function() {
 
 })
 ```
@@ -34,7 +34,7 @@ In this step, we'll be using an [__*if then / else*__](#ifthenelse "runs some co
 
 ```blocks
 let lightsOn = 0
-input.onSound(DetectedSound.Loud, function () {
+input.onSound(DetectedSound.Loud, function() {
     // @highlight
     if (lightsOn) {
     	
@@ -52,7 +52,7 @@ input.onSound(DetectedSound.Loud, function () {
 
 ```blocks
 let lightsOn = 0
-input.onSound(DetectedSound.Loud, function () {
+input.onSound(DetectedSound.Loud, function() {
     if (lightsOn) {
         // @highlight
     	basic.showLeds(`
@@ -74,7 +74,7 @@ input.onSound(DetectedSound.Loud, function () {
 
 ```blocks
 let lightsOn = 0
-input.onSound(DetectedSound.Loud, function () {
+input.onSound(DetectedSound.Loud, function() {
     if (lightsOn) {
     	basic.showLeds(`
             # # # # #
@@ -100,7 +100,7 @@ Just like we'd toggle a light switch, each time we clap, we want to **flip** the
 
 ```blocks
 let lightsOn = false
-input.onSound(DetectedSound.Loud, function () {
+input.onSound(DetectedSound.Loud, function() {
     // @highlight
     lightsOn = !(lightsOn)
     if (lightsOn) {
@@ -144,7 +144,7 @@ If you have a new @boardname@ (the one with the **shiny gold** logo at the top),
 
 ```blocks
 let lightsOn = false
-input.onSound(DetectedSound.Loud, function () {
+input.onSound(DetectedSound.Loud, function() {
     lightsOn = !(lightsOn)
     if (lightsOn) {
     	basic.showLeds(`

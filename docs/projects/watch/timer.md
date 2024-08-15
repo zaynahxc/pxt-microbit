@@ -35,7 +35,7 @@ We'll use button `A` to add `10` seconds to our time count. The time count of `s
 
 ```blocks
 let seconds = 0;
-input.onButtonPressed(Button.A, function () {
+input.onButtonPressed(Button.A, function() {
     if (seconds < 50) {
         seconds += 10;
         basic.showNumber(seconds)
@@ -57,7 +57,7 @@ Now, we'll use the `B` button to add just `1` second the time count. The time co
 
 ```blocks
 let seconds = 0;
-input.onButtonPressed(Button.B, function () {
+input.onButtonPressed(Button.B, function() {
     if (seconds < 60) {
         seconds += 1
         basic.showNumber(seconds)
@@ -77,7 +77,7 @@ Ok, now we'll get the timer going and show how many seconds are left. This will 
 
 ```blocks
 let seconds = 0;
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function() {
     while (seconds > 0) {
         basic.showNumber(seconds);
         basic.pause(1000);
@@ -91,7 +91,7 @@ Add a few ``||basic:show icon||`` blocks at the bottom of the ``||loops:while||`
 
 ```blocks
 let seconds = 0;
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function() {
     while (seconds > 0) {
         basic.showNumber(seconds)
         basic.pause(1000)

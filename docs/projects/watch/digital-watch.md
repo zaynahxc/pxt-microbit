@@ -39,7 +39,7 @@ So, let's try showing the time on the display. We aren't keeping time yet but we
 let time = ""
 let minutes = 0
 let hours = 0
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function() {
     time = hours + (":" + minutes)
     basic.showString(time)
 })
@@ -59,7 +59,7 @@ Let's make a way to set the hours for the watch.
 
 ```blocks
 let hours = 0
-input.onButtonPressed(Button.A, function () {
+input.onButtonPressed(Button.A, function() {
     if (hours < 23) {
         hours += 1
     } else {
@@ -77,7 +77,7 @@ Setting minutes is almost the same as setting hours but with just a few changes.
 
 ```blocks
 let minutes = 0
-input.onButtonPressed(Button.B, function () {
+input.onButtonPressed(Button.B, function() {
     if (minutes < 59) {
         minutes += 1
     } else {
@@ -96,7 +96,7 @@ Time is shown in either 24 hour or 12 hour format. We'll use one more button to 
 
 ```blocks
 let ampm = false
-input.onButtonPressed(Button.AB, function () {
+input.onButtonPressed(Button.AB, function() {
     ampm = !(ampm)
 })
 ```
@@ -114,7 +114,7 @@ A watch really has three parts: the display, settings, and timer. We need a way 
 
 ```blocks
 let minutes = 0;
-basic.forever(function () {
+basic.forever(function() {
     basic.pause(60000)
     if (minutes < 59) {
         minutes += 1
@@ -134,7 +134,7 @@ basic.forever(function () {
 ```blocks
 let minutes = 0
 let hours = 0
-basic.forever(function () {
+basic.forever(function() {
     basic.pause(60000)
     if (minutes < 59) {
         minutes += 1
@@ -167,7 +167,7 @@ First, we have to code an adjustment for the hours number when we're using the 1
 let hours = 0;
 let adjust = 0;
 let ampm = false;
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function() {
     adjust = hours;
     if (ampm) {
         if (hours > 12) {
@@ -199,7 +199,7 @@ let hours = 0
 let adjust = 0
 let time = ""
 let ampm = false
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function() {
     adjust = hours
     if (ampm) {
         if (hours > 12) {
@@ -235,7 +235,7 @@ let hours = 0
 let adjust = 0
 let time = ""
 let ampm = false
-input.onGesture(Gesture.Shake, function () {
+input.onGesture(Gesture.Shake, function() {
     adjust = hours;
     if (ampm) {
         if (hours > 12) {

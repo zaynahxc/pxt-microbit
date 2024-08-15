@@ -48,7 +48,7 @@ basic.showLeds(`
         . . . . .
         . . . . .
         `)
-input.onPinPressed(TouchPin.P0, function () {})
+input.onPinPressed(TouchPin.P0, function() {})
 let t = 0
 input.runningTime()
 t - 1
@@ -101,7 +101,7 @@ basic.showLeds(`
         . . . . .
         . . . . .
         `)
-input.onPinPressed(TouchPin.P0, function () {
+input.onPinPressed(TouchPin.P0, function() {
     basic.showLeds(`
         # . . . .
         # . . . .
@@ -156,7 +156,7 @@ basic.showLeds(`
         . . . . .
         . . . . .
         `)
-input.onPinPressed(TouchPin.P0, function () {
+input.onPinPressed(TouchPin.P0, function() {
     basic.showLeds(`
         # . . . .
         # . . . .
@@ -165,7 +165,7 @@ input.onPinPressed(TouchPin.P0, function () {
         # . . . .
         `)
 })
-input.onPinPressed(TouchPin.P1, function () {
+input.onPinPressed(TouchPin.P1, function() {
     basic.showLeds(`
         # . . . #
         # . . . #
@@ -195,7 +195,7 @@ basic.showLeds(`
         . . . . .
         . . . . .
         `)
-input.onPinPressed(TouchPin.P0, function () {
+input.onPinPressed(TouchPin.P0, function() {
     t0 = control.eventTimestamp()
     basic.showLeds(`
         # . . . .
@@ -205,7 +205,7 @@ input.onPinPressed(TouchPin.P0, function () {
         # . . . .
         `)
 })
-input.onPinPressed(TouchPin.P1, function () {
+input.onPinPressed(TouchPin.P1, function() {
     t1 = control.eventTimestamp()
     basic.showLeds(`
         # . . . #
