@@ -11,15 +11,6 @@ screenhelpers.setPalette(hex`000000ffffffff2121ff93c4ff8135fff609249ca378dc52003
 //% whenUsed
 const screen: ScreenBitmap = _screen_internal.createScreen();
 
-namespace screenhelpers {
-    //% shim=pxt::setPalette
-    export function setPalette(buf: Buffer) { }
-    //% shim=pxt::displayWidth
-    export function displayWidth(): number { return 0 }
-    //% shim=pxt::displayHeight
-    export function displayHeight(): number { return 0 }
-}
-
 namespace _screen_internal {
     //% shim=pxt::updateScreen
     function updateScreen(img: Bitmap): void { }

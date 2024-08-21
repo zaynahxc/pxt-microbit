@@ -17,6 +17,7 @@
         "pins.cpp",
         "pinsDigital.cpp",
         "controllerbuttons.cpp",
+        "screenhelpers.ts",
         "screen.cpp",
         "shims.d.ts",
         "bitmap.cpp",
