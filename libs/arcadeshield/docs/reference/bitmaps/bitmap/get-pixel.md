@@ -37,7 +37,3 @@ screen.drawBitmap(randoColors, 0, 0)
 
 [bitmap](/types/bitmap),
 [set pixel](/reference/bitmaps/bitmap/set-pixel)
-
-```package
-pxt-arcadeshield=github:microsoft/pxt-arcadeshield
-```

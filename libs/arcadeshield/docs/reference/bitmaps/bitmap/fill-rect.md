@@ -54,7 +54,3 @@ screen.drawBitmap(chessBoard, 0, 0)
 
 [fill](/reference/bitmaps/bitmap/fill),
 [draw rect](/reference/bitmaps/bitmap/draw-rect)
-
-```package
-pxt-arcadeshield=github:microsoft/pxt-arcadeshield
-```

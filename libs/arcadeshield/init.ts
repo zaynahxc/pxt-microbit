@@ -31,7 +31,7 @@ namespace bitmap {
     */
     //% blockNamespace="bitmaps" group="Create"
     //% blockId=imagescreen block="screen"
-    //% help=images/screen-image
+    //% help=bitmaps/screen-bitmap
     export function screenImage(): Bitmap {
         return screen;
     }

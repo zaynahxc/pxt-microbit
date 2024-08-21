@@ -219,7 +219,3 @@ The [bitmap](/reference/bitmaps) functions let you do more complex pixel operati
 ## See also
 
 [bitmap](/reference/bitmaps)
-
-```package
-pxt-arcadeshield=github:microsoft/pxt-arcadeshield
-```

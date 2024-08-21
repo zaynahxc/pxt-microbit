@@ -53,7 +53,3 @@ controller.setRepeatDefault(500, 200)
 ## See also #seealso
 
 [on event](/reference/controller/on-event)
-
-```package
-pxt-arcadeshield=github:microsoft/pxt-arcadeshield
-```

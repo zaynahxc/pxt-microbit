@@ -41,6 +41,3 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 [repeatDelay](/reference/controller/button/repeat-delay),
 [repeatInterval](/reference/controller/button/repeat-interval)
 
-```package
-pxt-arcadeshield=github:microsoft/pxt-arcadeshield
-```
