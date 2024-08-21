@@ -43,12 +43,14 @@ namespace pxsim {
             return true;
         }
 
-        private sendMessage(msg: Uint8Array) {
+        private sendMessage(msg: string) {
+            let encoder = new TextEncoder();
+            let buf = encoder.encode(msg)
             Runtime.postMessage({
                 type: "messagepacket",
                 broadcast: false,
                 channel: "arcadeshield",
-                data: msg
+                data: buf
             } as SimulatorControlMessage)
         }
 
@@ -59,7 +61,7 @@ namespace pxsim {
                 runId: this.runId,
                 value: b
             }
-            this.sendMessage(Buffer.from(JSON.stringify(msg)))
+            this.sendMessage(JSON.stringify(msg))
         }
 
         setPalette(buf: RefBuffer) {
@@ -69,7 +71,7 @@ namespace pxsim {
                 runId: this.runId,
                 data: buf.data.toString()
             }
-            this.sendMessage(Buffer.from(JSON.stringify(msg)))
+            this.sendMessage(JSON.stringify(msg))
         }
 
         updateStats(s: string) {
@@ -83,7 +85,7 @@ namespace pxsim {
                 runId: this.runId,
                 data: img.data.toString()
             }
-            this.sendMessage(Buffer.from(JSON.stringify(msg)))
+            this.sendMessage(JSON.stringify(msg))
         }
     }
 

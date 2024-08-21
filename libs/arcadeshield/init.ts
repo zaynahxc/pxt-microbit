@@ -6,12 +6,12 @@
 function bmp(lits: any, ...args: any[]): Bitmap { return null; }
 
 // set palette before creating screen, which initializes the display
-screen.setPalette(hex`000000ffffffff2121ff93c4ff8135fff609249ca378dc52003fad87f2ff8e2ec4a4839f5c406ce5cdc491463d000000`)
+screenhelpers.setPalette(hex`000000ffffffff2121ff93c4ff8135fff609249ca378dc52003fad87f2ff8e2ec4a4839f5c406ce5cdc491463d000000`)
 
 //% whenUsed
-const theScreen: ScreenBitmap = _screen_internal.createScreen();
+const screen: ScreenBitmap = _screen_internal.createScreen();
 
-namespace screen {
+namespace screenhelpers {
     //% shim=pxt::setPalette
     export function setPalette(buf: Buffer) { }
     //% shim=pxt::displayWidth
@@ -26,8 +26,8 @@ namespace _screen_internal {
 
     export function createScreen() {
         const img = bitmap.create(
-            screen.displayWidth(), // control.getConfigValue(DAL.CFG_DISPLAY_WIDTH, 160)
-            screen.displayHeight() // control.getConfigValue(DAL.CFG_DISPLAY_HEIGHT, 128)
+            screenhelpers.displayWidth(), // control.getConfigValue(DAL.CFG_DISPLAY_WIDTH, 160)
+            screenhelpers.displayHeight() // control.getConfigValue(DAL.CFG_DISPLAY_HEIGHT, 128)
         )
         control.__screen.setupUpdate(() => updateScreen(img))
         return img as ScreenBitmap;
@@ -42,6 +42,6 @@ namespace bitmap {
     //% blockId=imagescreen block="screen"
     //% help=images/screen-image
     export function screenImage(): Bitmap {
-        return theScreen;
+        return screen;
     }
 }
