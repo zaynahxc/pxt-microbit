@@ -5,7 +5,7 @@ interface Bitmap {
      */
     //% helper=imageFillRect blockNamespace="bitmaps" inlineInputMode="inline" group="Drawing"
     //% block="fill rectangle in %bmap=variables_get at x %x y %y width %w height %h %c=colorindexpicker"
-    //% help=github:pxt-arcadeshield/reference/bitmaps/bitmap/fill-rect
+    //% help=bitmaps/bitmap/fill-rect
     fillRect(x: number, y: number, w: number, h: number, c: color): void;
 
     /**
@@ -19,7 +19,7 @@ interface Bitmap {
      */
     //% helper=imageDrawLine blockNamespace="bitmaps" inlineInputMode="inline" group="Drawing"
     //% block="draw line in %bmap=variables_get from x %x0 y %y0 to x %x1 y %y1 %c=colorindexpicker"
-    //% help=images/image/draw-line
+    //% help=bitmaps/bitmap/draw-line
     drawLine(x0: number, y0: number, x1: number, y1: number, c: color): void;
 
     /**
@@ -27,7 +27,7 @@ interface Bitmap {
      */
     //% helper=imageDrawRect blockNamespace="bitmaps" inlineInputMode="inline" group="Drawing"
     //% block="draw rectangle in %bmap=variables_get at x %x y %y width %w height %h %c=colorindexpicker"
-    //% help=images/image/draw-rect
+    //% help=bitmaps/bitmap/draw-rect
     drawRect(x: number, y: number, w: number, h: number, c: color): void;
 
     /**
@@ -35,7 +35,7 @@ interface Bitmap {
      */
     //% shim=BitmapMethods::setPixel blockNamespace="bitmaps" group="Drawing"
     //% block="set %bmap=variables_get color at x %x y %y to %c=colorindexpicker"
-    //% help=images/image/set-pixel
+    //% help=bitmaps/bitmap/set-pixel
     setPixel(x: int32, y: int32, c: int32): void;
 
     /**
@@ -43,7 +43,7 @@ interface Bitmap {
      */
     //% shim=BitmapMethods::getPixel blockNamespace="bitmaps" group="Drawing"
     //% block="%bmap=variables_get color at x %x y %y"
-    //% help=images/image/get-pixel
+    //% help=bitmaps/bitmap/get-pixel
     getPixel(x: int32, y: int32): int32;
 
     /**
@@ -51,7 +51,7 @@ interface Bitmap {
      */
     //% shim=BitmapMethods::fill blockNamespace="bitmaps" group="Drawing"
     //% block="fill %bmap=variables_get with %c=colorindexpicker"
-    //% help=images/image/fill
+    //% help=bitmaps/bitmap/fill
     fill(c: int32): void;
 
     /**
@@ -60,7 +60,7 @@ interface Bitmap {
     //% shim=BitmapMethods::clone blockNamespace="bitmaps" group="Create"
     //% weight=60
     //% block="clone %bmap=variables_get"
-    //% help=images/image/clone
+    //% help=bitmaps/bitmap/clone
     clone(): Bitmap;
 
     /**
@@ -68,7 +68,7 @@ interface Bitmap {
      */
     //% shim=BitmapMethods::flipX blockNamespace="bitmaps" group="Transformations"
     //% block="flip %bmap=variables_get horizontally"
-    //% help=images/image/flip-x
+    //% help=bitmaps/bitmap/flip-x
     flipX(): void;
 
     /**
@@ -76,14 +76,14 @@ interface Bitmap {
      */
     //% shim=BitmapMethods::flipY blockNamespace="bitmaps" group="Transformations"
     //% block="flip %bmap=variables_get vertically"
-    //% help=images/image/flip-y
+    //% help=bitmaps/bitmap/flip-y
     flipY(): void;
 
     /**
      * Every pixel in image is moved by (dx,dy)
      */
     //% shim=BitmapMethods::scroll blockNamespace="bitmaps" group="Transformations"
-    //% help=images/image/scroll
+    //% help=bitmaps/bitmap/scroll
     scroll(dx: int32, dy: int32): void;
 
     /**
@@ -91,7 +91,7 @@ interface Bitmap {
      */
     //% shim=BitmapMethods::replace blockNamespace="bitmaps" group="Transformations"
     //% block="change color in %bmap=variables_get from %from=colorindexpicker to %to=colorindexpicker"
-    //% help=images/image/replace
+    //% help=bitmaps/bitmap/replace
     replace(from: int32, to: int32): void;
 
     /**
@@ -104,7 +104,7 @@ interface Bitmap {
     //% this.shadow=variables_get
     //% other.shadow=variables_get
     //% this.defl="bmap"
-    //% help=images/image/equals
+    //% help=bitmaps/bitmap/equals
     equals(other: Bitmap): boolean;
 
     //% shim=BitmapMethods::isStatic
@@ -118,6 +118,6 @@ declare namespace bitmap {
     //% blockNamespace="bitmaps"
     //% block="create bitmap width %width height %height" group="Create"
     //% weight=50
-    //% help=images/create
+    //% help=bitmaps/create
     function create(width: number, height: number): Bitmap;
 }
