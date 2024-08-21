@@ -52,12 +52,12 @@ namespace scene.consoleOverlay {
                 let tOff = 0;
                 for (let tab of t) {
                     let padding = tabSize - ((tOff + tab.length) % tabSize)
-                    screen.print(tab, marginx + (tOff * consoleFont.charWidth), top + i * height, consoleColor, consoleFont);
+                    theScreen.print(tab, marginx + (tOff * consoleFont.charWidth), top + i * height, consoleColor, consoleFont);
                     tOff += tab.length + padding;
                 }
             }
             else
-                screen.print(consoleStrings[i], marginx, top + i * height, consoleColor, consoleFont);
+                theScreen.print(consoleStrings[i], marginx, top + i * height, consoleColor, consoleFont);
         }
     }
 }

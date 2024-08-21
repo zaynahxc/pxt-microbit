@@ -179,7 +179,6 @@
         "dockerImage": "pext/yotta:gcc5"
     },
     "multiVariants": [
-        "mbdal",
         "mbcodal"
     ],
     "alwaysMultiVariant" : true,
