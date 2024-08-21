@@ -43,6 +43,15 @@ namespace pxsim {
             return true;
         }
 
+        private sendMessage(msg: Uint8Array) {
+            Runtime.postMessage({
+                type: "messagepacket",
+                broadcast: false,
+                channel: "arcadshield",
+                data: msg
+            } as SimulatorControlMessage)
+        }
+
         setScreenBrightness(b: number) {
             // NOTE: May need to cache locally for querying
             const msg: _protocol.SetBrightnessMessage = {
@@ -50,13 +59,7 @@ namespace pxsim {
                 runId: this.runId,
                 value: b
             }
-            Runtime.postMessage(<SimulatorSerialMessage>{
-                type: 'serial',
-                data: "TODO", // this.serialOutBuffer
-                id: runtime.id,
-                sim: true
-            })
-            // control.simmessages.send("arcadeshield", Buffer.fromUTF8(JSON.stringify(msg)), false)
+            this.sendMessage(Buffer.from(JSON.stringify(msg)))
         }
 
         setPalette(buf: RefBuffer) {
@@ -66,7 +69,7 @@ namespace pxsim {
                 runId: this.runId,
                 data: buf.data.toString()
             }
-            // TODO control.simmessages.send("arcadeshield", Buffer.fromUTF8(JSON.stringify(msg)), false)
+            this.sendMessage(Buffer.from(JSON.stringify(msg)))
         }
 
         updateStats(s: string) {
@@ -80,7 +83,7 @@ namespace pxsim {
                 runId: this.runId,
                 data: img.data.toString()
             }
-            // TODO control.simmessages.send("arcadeshield", Buffer.fromUTF8(JSON.stringify(msg)), false)
+            this.sendMessage(Buffer.from(JSON.stringify(msg)))
         }
     }
 
