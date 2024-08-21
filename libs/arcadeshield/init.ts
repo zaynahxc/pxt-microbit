@@ -1,4 +1,3 @@
-/// <reference path="./screen.ts"/>
 /**
  * Tagged bitmap literal converter
  */
@@ -12,17 +11,27 @@ screen.setPalette(hex`000000ffffffff2121ff93c4ff8135fff609249ca378dc52003fad87f2
 //% whenUsed
 const theScreen: ScreenBitmap = _screen_internal.createScreen();
 
+namespace screen {
+    //% shim=pxt::setPalette
+    export function setPalette(buf: Buffer) { }
+    //% shim=pxt::displayWidth
+    export function displayWidth(): number { return 0 }
+    //% shim=pxt::displayHeight
+    export function displayHeight(): number { return 0 }
+}
+
 namespace _screen_internal {
-    //% parts="screen"
+    //% shim=pxt::updateScreen
+    function updateScreen(img: Bitmap): void { }
+    //% shim=pxt::updateStats
+    function updateStats(msg: string): void { }
+
     export function createScreen() {
         const img = bitmap.create(
             screen.displayWidth(), // control.getConfigValue(DAL.CFG_DISPLAY_WIDTH, 160)
             screen.displayHeight() // control.getConfigValue(DAL.CFG_DISPLAY_HEIGHT, 128)
         )
-        control.__screen.setupUpdate(() => screen.updateScreen(img))
-        //control.EventContext.onStats = function (msg: string) {
-        //    updateStats(msg);
-        //}
+        control.__screen.setupUpdate(() => updateScreen(img))
         return img as ScreenBitmap;
     }
 }
