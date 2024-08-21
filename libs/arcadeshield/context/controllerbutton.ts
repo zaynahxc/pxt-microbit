@@ -1,3 +1,12 @@
+const KEY_UP = 2048;
+const KEY_DOWN = 2049;
+const INTERNAL_KEY_UP = 2050;
+const INTERNAL_KEY_DOWN = 2051;
+const SYSTEM_KEY_UP = 2052;
+const SYSTEM_KEY_DOWN = 2053;
+const KEY_REPEAT = 2054;
+const SYSTEM_KEY_REPEAT = 2055;
+
 enum ControllerButtonEvent {
     //% block="pressed"
     Pressed = KEY_DOWN,
@@ -80,8 +89,8 @@ namespace controller {
                 // this is to deal with the "anyButton" hack, which creates a button that is not visible
                 // in the UI, but used in event-handler to simulate the wildcard ANY for matching. As
                 // this button can't actually be pressed, we don't want it to propagate events
-                control.myOnEvent(INTERNAL_KEY_UP, this.id, () => this.setPressed(false), 16)
-                control.myOnEvent(INTERNAL_KEY_DOWN, this.id, () => this.setPressed(true), 16)
+                control.onEvent(INTERNAL_KEY_UP, this.id, () => this.setPressed(false), 16)
+                control.onEvent(INTERNAL_KEY_DOWN, this.id, () => this.setPressed(true), 16)
 
                 if (configKey > 0)
                     setupButton(id, configKey)

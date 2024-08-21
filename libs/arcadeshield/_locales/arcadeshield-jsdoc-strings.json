@@ -63,8 +63,6 @@
   "context.onIdle": "Registers a function to run when the device is idling",
   "context.popEventContext": "Pops the current event context and restore handlers if any previous context",
   "context.pushEventContext": "Pushes a new event context and clears all handlers",
-  "control": "Runtime and event utilities.",
-  "control.myOnEvent": "Used internally",
   "controller": "Access to game controls",
   "controller.Button.addEventListener": "Adds an event handler that will fire whenever the specified event\nis triggered on this button. Handlers added using this method will\nnot conflict with events added via onEvent. The same handler can\nnot be added for the same event more than once.\n* @param event     The event to subscribe to for this button",
   "controller.Button.addEventListener|param|handler": "The code to run when the event triggers",

@@ -42,7 +42,6 @@
   "controller.right|block": "right",
   "controller.up|block": "up",
   "controller|block": "controller",
-  "control|block": "control",
   "helpers|block": "helpers",
   "scene|block": "scene",
   "{id:category}Bitmap": "Bitmap",
