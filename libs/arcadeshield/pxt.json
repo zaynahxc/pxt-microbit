@@ -28,13 +28,11 @@
         "text.ts",
         "frame.ts",
         "ns.ts",
-        "context/eventcontext.ts",
-        "context/compat.ts",
-        "context/console.ts",
-        "context/controlleroverrides.ts",
-        "context/controllerbutton.ts",
-        "context/mathUtil.ts",
-        "context/gameutil.ts"
+        "eventcontext.ts",
+        "scene.ts",
+        "controlleroverrides.ts",
+        "controllerbutton.ts",
+        "console.ts"
     ],
     "testFiles": [
         "test.ts"
