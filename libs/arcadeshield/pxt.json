@@ -23,7 +23,6 @@
         "bitmap.ts",
         "bitmap.d.ts",
         "init.ts",
-        "screen.ts",
         "fieldeditors.ts",
         "text.ts",
         "frame.ts",

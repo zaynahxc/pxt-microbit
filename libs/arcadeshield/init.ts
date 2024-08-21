@@ -35,6 +35,6 @@ namespace bitmap {
     //% blockId=imagescreen block="screen"
     //% help=images/screen-image
     export function screenImage(): Bitmap {
-        return screen;
+        return theScreen;
     }
 }
