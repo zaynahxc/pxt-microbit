@@ -47,7 +47,7 @@ namespace pxsim {
             Runtime.postMessage({
                 type: "messagepacket",
                 broadcast: false,
-                channel: "arcadshield",
+                channel: "arcadeshield",
                 data: msg
             } as SimulatorControlMessage)
         }
