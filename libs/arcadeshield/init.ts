@@ -23,8 +23,6 @@ namespace screen {
 namespace _screen_internal {
     //% shim=pxt::updateScreen
     function updateScreen(img: Bitmap): void { }
-    //% shim=pxt::updateStats
-    function updateStats(msg: string): void { }
 
     export function createScreen() {
         const img = bitmap.create(

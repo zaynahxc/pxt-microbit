@@ -50,7 +50,13 @@ namespace pxsim {
                 runId: this.runId,
                 value: b
             }
-            control.simmessages.send("arcadeshield", Buffer.fromUTF8(JSON.stringify(msg)), false)
+            Runtime.postMessage(<SimulatorSerialMessage>{
+                type: 'serial',
+                data: "TODO", // this.serialOutBuffer
+                id: runtime.id,
+                sim: true
+            })
+            // control.simmessages.send("arcadeshield", Buffer.fromUTF8(JSON.stringify(msg)), false)
         }
 
         setPalette(buf: RefBuffer) {
@@ -60,7 +66,7 @@ namespace pxsim {
                 runId: this.runId,
                 data: buf.data.toString()
             }
-            control.simmessages.send("arcadeshield", Buffer.fromUTF8(JSON.stringify(msg)), false)
+            // TODO control.simmessages.send("arcadeshield", Buffer.fromUTF8(JSON.stringify(msg)), false)
         }
 
         updateStats(s: string) {
@@ -74,7 +80,7 @@ namespace pxsim {
                 runId: this.runId,
                 data: img.data.toString()
             }
-            control.simmessages.send("arcadeshield", Buffer.fromUTF8(JSON.stringify(msg)), false)
+            // TODO control.simmessages.send("arcadeshield", Buffer.fromUTF8(JSON.stringify(msg)), false)
         }
     }
 
