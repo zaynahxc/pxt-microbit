@@ -1,16 +1,11 @@
 {
-    "name": "pxt-arcadeshield",
-    "version": "0.0.22",
-    "description": "Arcade Shield extension for MakeCode micro:bit",
+    "name": "arcadeshield",
+    "description": "Support for the Arcade Shield. micro:bit (V2) only.",
     "dependencies": {
-        "core": "*",
-        "radio": "*",
-        "microphone": "*",
-        "settings": "*",
-        "fonts": "*"
+        "core": "file:../core",
+        "fonts": "file:../fonts"
     },
     "files": [
-        "README.md",
         "config.ts",
         "config_nrf.h",
         "arcadegamepad.h",
@@ -26,18 +21,15 @@
         "shims.d.ts",
         "lib.d.ts",
         "pxtsim.d.ts",
-        "screen/bitmap.cpp",
-        "screen/bitmap.ts",
-        "screen/bitmap.d.ts",
-        "screen/screen.ts",
-        "screen/screen.d.ts",
-        "screen/fieldeditors.ts",
-        "screen/text.ts",
-        "screen/frame.ts",
-        "screen/sim/bitmap.ts",
-        "screen/sim/screen.ts",
-        "screen/sim/state.ts",
-        "screen/ns.ts",
+        "bitmap.cpp",
+        "bitmap.ts",
+        "bitmap.d.ts",
+        "screen.ts",
+        "screen.d.ts",
+        "fieldeditors.ts",
+        "text.ts",
+        "frame.ts",
+        "ns.ts",
         "context/control.cpp",
         "context/eventcontext.ts",
         "context/compat.ts",
@@ -46,20 +38,12 @@
         "context/controlleroverrides.ts",
         "context/controllerbutton.ts",
         "context/mathUtil.ts",
-        "context/gameutil.ts",
-        "reference/bitmaps/bitmap/fill-rect.md"
+        "context/gameutil.ts"
     ],
     "testFiles": [
         "test.ts"
     ],
-    "public": true,
-    "targetVersions": {
-        "target": "7.0.18",
-        "targetId": "microbit"
-    },
-    "supportedTargets": [
-        "microbit"
-    ],
+    "public": false,
     "preferredEditor": "tsprj",
     "palette": [
         "#000000",
