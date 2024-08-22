@@ -25,14 +25,8 @@
         "bitmap.d.ts",
         "init.ts",
         "fieldeditors.ts",
-        "text.ts",
-        "frame.ts",
         "ns.ts",
-        "eventcontext.ts",
-        "scene.ts",
-        "controlleroverrides.ts",
-        "controllerbutton.ts",
-        "console.ts"
+        "frame.ts"
     ],
     "testFiles": [
         "test.ts"
