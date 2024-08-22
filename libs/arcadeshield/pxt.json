@@ -22,6 +22,9 @@
         "bitmap.ts",
         "bitmap.cpp"
     ],
+    "test": [
+        "test.ts"
+    ],
     "public": false,
     "preferredEditor": "tsprj",
     "disablesVariants": [
