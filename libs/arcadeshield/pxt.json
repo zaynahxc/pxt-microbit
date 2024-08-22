@@ -23,7 +23,7 @@
         "bitmap.cpp",
         "bitmap.ts",
         "bitmap.d.ts",
-        "bmp.ts",
+        "init.ts",
         "fieldeditors.ts",
         "ns.ts"
     ],
