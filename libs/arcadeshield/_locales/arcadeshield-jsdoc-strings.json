@@ -36,6 +36,5 @@
   "bitmap.create": "Create new empty (transparent) bitmap",
   "bitmap.doubledIcon": "Double the size of an icon",
   "bitmap.ofBuffer": "Create new bitmap with given content",
-  "bitmap.screenImage": "Get the screen image",
   "helpers.imageRotated": "Returns an image rotated by 90, 180, 270 deg clockwise"
 }

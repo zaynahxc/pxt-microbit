@@ -1,16 +1,6 @@
 type color = number
 
 namespace bitmap {
-    /**
-    * Get the screen image
-    */
-    //% blockNamespace="bitmaps" group="Create"
-    //% blockId=imagescreen block="screen"
-    //% help=bitmaps/screen-bitmap
-    export function screenImage(): Bitmap {
-        return screen;
-    }
-
     export function repeatY(count: number, image: Bitmap) {
         let arr = [image]
         while (--count > 0)
