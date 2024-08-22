@@ -16,8 +16,10 @@
         "pins.cpp",
         "pinsDigital.cpp",
         "controllerbuttons.cpp",
+        "screenhelpers.ts",
         "screen.cpp",
         "shims.d.ts",
+        "bitmap.ts",
         "bitmap.cpp"
     ],
     "public": false,

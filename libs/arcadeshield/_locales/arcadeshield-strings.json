@@ -1,4 +1,12 @@
 {
+  "bitmap.screenImage|block": "screen",
   "bitmap|block": "bitmap",
-  "{id:category}Bitmap": "Bitmap"
+  "helpers|block": "helpers",
+  "{id:category}Bitmap": "Bitmap",
+  "{id:category}Bitmaps": "Bitmaps",
+  "{id:category}Helpers": "Helpers",
+  "{id:category}ScreenBitmap": "ScreenBitmap",
+  "{id:category}Screenhelpers": "Screenhelpers",
+  "{id:category}_helpers_workaround": "_helpers_workaround",
+  "{id:group}Create": "Create"
 }
