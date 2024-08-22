@@ -13,14 +13,14 @@ const screen: ScreenBitmap = __screen_internal.createScreen();
 
 namespace __screen_internal {
     //% shim=pxt::updateScreen
-    export function updateScreen(img: Bitmap): void { }
+    function updateScreen(img: Bitmap): void { }
 
     export function createScreen() {
         const img = bitmap.create(
             screenhelpers.displayWidth(), // control.getConfigValue(DAL.CFG_DISPLAY_WIDTH, 160)
             screenhelpers.displayHeight() // control.getConfigValue(DAL.CFG_DISPLAY_HEIGHT, 128)
         )
-        
+        control.__screen.setupUpdate(() => updateScreen(img))
         return img as ScreenBitmap;
     }
 }
