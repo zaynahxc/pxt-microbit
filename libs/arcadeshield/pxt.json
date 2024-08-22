@@ -28,9 +28,6 @@
         "ns.ts",
         "frame.ts"
     ],
-    "testFiles": [
-        "test.ts"
-    ],
     "public": false,
     "preferredEditor": "tsprj",
     "palette": [
