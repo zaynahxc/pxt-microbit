@@ -46,12 +46,14 @@ namespace pxsim {
         private sendMessage(msg: string) {
             let encoder = new TextEncoder();
             let buf = encoder.encode(msg)
-            Runtime.postMessage({
+            let fullmsg = {
                 type: "messagepacket",
                 broadcast: false,
                 channel: "arcadeshield",
                 data: buf
-            } as SimulatorControlMessage)
+            } as SimulatorControlMessage;
+            console.log(fullmsg)
+            Runtime.postMessage(fullmsg)
         }
 
         setScreenBrightness(b: number) {

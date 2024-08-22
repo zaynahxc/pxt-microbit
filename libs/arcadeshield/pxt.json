@@ -6,7 +6,6 @@
         "fonts": "file:../fonts"
     },
     "files": [
-        "config.ts",
         "config_nrf.h",
         "arcadegamepad.h",
         "indexedscreen.h",
@@ -17,19 +16,9 @@
         "pins.cpp",
         "pinsDigital.cpp",
         "controllerbuttons.cpp",
-        "screenhelpers.ts",
         "screen.cpp",
         "shims.d.ts",
-        "bitmap.cpp",
-        "bitmap.ts",
-        "bitmap.d.ts",
-        "frame.ts",
-        "init.ts",
-        "fieldeditors.ts",
-        "ns.ts"
-    ],
-    "testFiles": [
-        "test.ts"
+        "bitmap.cpp"
     ],
     "public": false,
     "preferredEditor": "tsprj",
