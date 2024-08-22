@@ -1,11 +1,11 @@
 namespace pxsim.pxtcore {
-    export function updateScreen(img: Bitmap) {
+    export function updateScreen(img: RefImage) {
 
     }
     export function updateStats(s: string) {
 
     }
-    export function setPalette(b: Buffer) {
+    export function setPalette(b: RefBuffer) {
 
     }
     export function setScreenBrightness(b: number) {
