@@ -31,8 +31,6 @@
   "Bitmap.setRows": "Copy row(s) of pixel from buffer to bitmap.",
   "Bitmap.transposed": "Returns a transposed bitmap (with X/Y swapped)",
   "Bitmap.width": "Get the width of the bitmap",
-  "ScreenBitmap.brightness": "Gets current screen backlight brightness (0-100)",
-  "ScreenBitmap.setBrightness": "Sets the screen backlight brightness (10-100)",
   "bitmap.create": "Create new empty (transparent) bitmap",
   "bitmap.doubledIcon": "Double the size of an icon",
   "bitmap.ofBuffer": "Create new bitmap with given content",
