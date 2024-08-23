@@ -18,7 +18,9 @@
         "libs/datalogger",
         "libs/fonts",
         "libs/color",
-        "libs/audio-recording"
+        "libs/audio-recording",
+        "libs/screen",
+        "libs/screen---st7735"
     ],
     "cloud": {
         "workspace": false,
@@ -257,6 +259,12 @@
             "robot": {
                 "url": "https://microsoft.github.io/microbit-robot/?parentOrigin=$PARENT_ORIGIN$",
                 "localHostUrl": "http://localhost:3000/microbit-robot/?parentOrigin=$PARENT_ORIGIN$",
+                "aspectRatio": 1.22,
+                "permanent": true
+            },
+            "arcadeshield": {
+                "url": "https://microsoft.github.io/pxt-arcadeshield/?parentOrigin=$PARENT_ORIGIN$",
+                "localHostUrl": "http://localhost:3000/pxt-arcadeshield/?parentOrigin=$PARENT_ORIGIN$",
                 "aspectRatio": 1.22,
                 "permanent": true
             }
