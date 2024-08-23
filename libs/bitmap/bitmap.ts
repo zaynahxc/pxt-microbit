@@ -99,25 +99,6 @@ interface Bitmap {
     blit(xDst: number, yDst: number, wDst: number, hDst: number, src: Bitmap, xSrc: number, ySrc: number, wSrc: number, hSrc: number, transparent: boolean, check: boolean): boolean;
 }
 
-interface ScreenBitmap extends Bitmap {
-    /**
-     * Sets the screen backlight brightness (10-100)
-     */
-    //% helper=setScreenBrightness
-    setBrightness(deg: number): Bitmap;
-
-    /**
-     * Gets current screen backlight brightness (0-100)
-     */
-    //% helper=screenBrightness
-    brightness(): number;
-}
-
-// pxt compiler currently crashes on non-functions in helpers namespace; will fix
-namespace _helpers_workaround {
-    export let brightness = 100
-}
-
 namespace helpers {
     //% shim=BitmapMethods::_drawLine
     function _drawLine(img: Bitmap, xy: number, wh: number, c: color): void { }
@@ -275,18 +256,5 @@ namespace helpers {
         } else {
             return null;
         }
-    }
-
-    //% shim=pxt::setScreenBrightness
-    function _setScreenBrightness(brightness: number) { }
-
-    export function setScreenBrightness(img: Bitmap, b: number) {
-        b = Math.clamp(10, 100, b | 0);
-        _helpers_workaround.brightness = b
-        _setScreenBrightness(_helpers_workaround.brightness)
-    }
-
-    export function screenBrightness(img: Bitmap) {
-        return _helpers_workaround.brightness
     }
 }
