@@ -1,4 +1,4 @@
-declare namespace screenhelpers {
+declare namespace __screenhelpers {
     //% shim=pxt::displayPresent
     function displayPresent(): boolean;
     //% shim=pxt::setPalette

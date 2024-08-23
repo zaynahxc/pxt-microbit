@@ -4,6 +4,6 @@
   "{id:category}Bitmap": "Bitmap",
   "{id:category}Helpers": "Helpers",
   "{id:category}ScreenBitmap": "ScreenBitmap",
-  "{id:category}Screenhelpers": "Screenhelpers",
+  "{id:category}__screenhelpers": "__screenhelpers",
   "{id:category}_helpers_workaround": "_helpers_workaround"
 }
