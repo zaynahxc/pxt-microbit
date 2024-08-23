@@ -37,7 +37,7 @@
   "Array.reduce": "Call the specified callback function for all the elements in an array. The return value of the callback function is the accumulated result, and is provided as an argument in the next call to the callback function.",
   "Array.reduce|param|callbackfn": "A function that accepts up to three arguments. The reduce method calls the callbackfn function one time for each element in the array.",
   "Array.reduce|param|initialValue": "Initial value to start the accumulation. The first call to the callbackfn function provides this value as an argument instead of an array value.",
-  "Array.removeAt": "Remove the element at a certain index.",
+  "Array.removeAt": "Remove and return the element at a certain index.",
   "Array.removeElement": "Remove the first occurence of an object. Returns true if removed.",
   "Array.reverse": "Reverse the elements in an array. The first array element becomes the last, and the last array element becomes the first.",
   "Array.set": "Store a value at a particular index",

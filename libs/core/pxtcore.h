@@ -23,6 +23,7 @@ void debuglog(const char *format, ...);
 #define MICROBIT_CODAL 0
 #define GC_MAX_ALLOC_SIZE 9000
 #define GC_BLOCK_SIZE 256
+#define PXT_POWI 1
 #endif
 
 #if !MICROBIT_CODAL
