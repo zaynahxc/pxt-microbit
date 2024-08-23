@@ -254,7 +254,6 @@
   "SoundExpressionPlayMode.InBackground|block": "in background",
   "SoundExpressionPlayMode.UntilDone|block": "until done",
   "String.charAt|block": "char from %this=text|at %pos",
-  "String.charCodeAt|block": "char code from $this=text|at $index",
   "String.compare|block": "compare %this=text| to %that",
   "String.fromCharCode|block": "text from char code %code",
   "String.includes|block": "%this=text|includes %searchValue",

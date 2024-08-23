@@ -3,6 +3,7 @@
     "description": "Support for the Arcade Shield. micro:bit (V2) only.",
     "dependencies": {
         "core": "file:../core",
+        "bitmap": "file:../bitmap",
         "fonts": "file:../fonts"
     },
     "files": [
@@ -17,8 +18,6 @@
         "pinsDigital.cpp",
         "controllerbuttons.cpp",
         "screen.cpp",
-        "bitmap.ts",
-        "bitmap.cpp",
         "screenhelpers.d.ts",
         "shims.d.ts"
     ],
