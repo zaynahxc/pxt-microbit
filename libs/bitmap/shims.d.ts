@@ -3,6 +3,12 @@
 
 declare interface Bitmap {
     /**
+     * Get underlying buffer
+     */
+    //% property shim=BitmapMethods::__buffer
+    __buffer: Buffer;
+
+    /**
      * Get the width of the bitmap
      */
     //% property shim=BitmapMethods::width

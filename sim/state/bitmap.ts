@@ -64,6 +64,10 @@ namespace pxsim.BitmapMethods {
     export function XX(x: number) { return (x << 16) >> 16 }
     export function YY(x: number) { return x >> 16 }
 
+    export function __buffer(img: RefImage): RefBuffer { 
+        return new RefBuffer(img.data)  // no clone for now
+    }
+    
     export function width(img: RefImage) { return img._width }
 
     export function height(img: RefImage) { return img._height }

@@ -123,6 +123,15 @@ bool isLegacyImage(Buffer buf) {
 namespace BitmapMethods {
 
 /**
+ * Get underlying buffer
+ */
+//% property
+Buffer __buffer(Bitmap_ img) {
+    // only for simulator
+    return NULL;
+}
+
+/**
  * Get the width of the bitmap
  */
 //% property
