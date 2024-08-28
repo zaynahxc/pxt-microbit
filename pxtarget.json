@@ -16,7 +16,6 @@
         "libs/settings",
         "libs/flashlog",
         "libs/datalogger",
-        "libs/fonts",
         "libs/color",
         "libs/audio-recording"
     ],
