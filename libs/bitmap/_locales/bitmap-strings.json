@@ -1,0 +1,6 @@
+{
+  "bitmap|block": "bitmap",
+  "helpers|block": "helpers",
+  "{id:category}Bitmap": "Bitmap",
+  "{id:category}Helpers": "Helpers"
+}
