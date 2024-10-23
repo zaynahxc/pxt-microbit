@@ -16,8 +16,7 @@ In MakeCode, from the Variables menu, make and name these three variables: `Play
 
 ![Set new variable name](/static/courses/csintro/variables/new-variable.png)
 
-## Initializing the variable value
-
+## Initializing the variable value 
 It is important to give your variables an initial value. The initial value is the value the variable will hold each time the program starts. For our counter program, we will give each variable the value 0 (zero) at the start of the program.
 
 ```blocks
@@ -71,7 +70,6 @@ input.onButtonPressed(Button.AB, () => {
    PlayersTie += 1
 })
 ```
-
 ## User feedback
 
 Whenever the scorekeeper presses button A, button B, or both buttons together, we will give the user visual feedback acknowledging that the user pressed a button. We can do this by coding our program to display:
@@ -204,6 +202,8 @@ PlayersTie = 0
 
 ### ~ hint
 
+#### History of buttons
+
 Buttons have been used as human input devices since computers first existed. Watch this video and see how they let the user tell the micro:bit to do something.
 
 [https://www.youtube.com/watch?v=t_Qujjd_38o](https://www.youtube.com/watch?v=t_Qujjd_38o)
@@ -214,7 +214,7 @@ Buttons have been used as human input devices since computers first existed. Wat
 
 Download the Scorekeeper program to the micro:bit, and find someone to play *Rock, Paper, Scissors* with you using your micro:bit to act as the Scorekeeper!
 
-## 'Adding' on with mathematical operations
+## ‘Adding’ on with mathematical operations
 
 There is more we can do with the input we received using this program. We can use mathematical operations on our variables.
 
@@ -232,7 +232,6 @@ In order to do this, we can add the code to our program under the 'on shake' eve
 ![Operator selector](/static/courses/csintro/variables/operator-selector.png)
 
 * Replace the default values of zero with the names of the variables we want to add together.
-
 Notice that because we are adding three variables together we need a second math block. First we add the values for `PlayerAWins` and `PlayerBWins`, then add `PlayersTie`.
 	
 ```blocks
@@ -261,7 +260,9 @@ Examples:
 Questions:
 
 1. What's the difference between a constant and a variable?
+    
 2. Why is it important to name variables in a clear and meaningful way?
+	
 3. **True or false:** You can only use the default variable names provided in the Variables toolbox drawer.
 
 Answers:
